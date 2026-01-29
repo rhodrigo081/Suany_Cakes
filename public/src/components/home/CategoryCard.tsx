@@ -13,7 +13,7 @@ export const CategoryCard = ({ picture, label }: CategoriesCardsProps) => {
                     <img
                         src={picture}
                         alt={label}
-                        className="w-full h-full object-cover object-[90%_35%] 
+                        className="w-full h-full object-cover object-[90%_30%] 
                        transition-transform duration-500 group-hover:scale-105"
                     />
                 </div>
