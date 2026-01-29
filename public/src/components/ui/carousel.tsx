@@ -136,13 +136,13 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       ref={carouselRef}
-      className="p-5  overflow-hidden"
+      className="px-10 py-16  overflow-hidden"
       data-slot="carousel-content"
     >
       <div
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-6" : "-mt-4 flex-col",
+          orientation === "horizontal" ? "-ml-10" : "-mt-4 flex-col",
           className
         )}
         {...props}
@@ -161,7 +161,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="carousel-item"
       className={cn(
         "w-sm shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-6" : "pt-4",
+        orientation === "horizontal" ? "pl-11" : "pt-4",
         className
       )}
       {...props}
