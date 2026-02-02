@@ -1,0 +1,16 @@
+FROM maven:3.8.4-openjdk-17 AS build
+WORKDIR /workspace
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:18-jre-alpine
+WORKDIR /app
+
+COPY --from=build /workspace/target/*.jar suany-cakes-api.jar
+EXPOSE 8080
+
+ENTRYPOINT [ "java", "-jar", "suany-cakes-api.jar" ]

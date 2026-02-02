@@ -18,7 +18,7 @@ export const HeroSection = () => {
                     <h1 className="text-6xl font-bold leading-tight tracking-tight">
                         Doces & Salgados
                         <br />
-                        <GradientText colors={["#00C0D1", "#C72C71"]} animationSpeed={5} showBorder={false} direction="horizontal">Artesanais</GradientText>
+                        <GradientText colors={["#00C0D1", "#C72C71"]} animationSpeed={5} showBorder={false} direction="horizontal" yoyo={true}>Artesanais</GradientText>
                     </h1>
                     <p className="text-xl/6 text-muted-foreground w-xl">
                         Transformamos ingredientes de qualidade em momentos inesquecíveis.

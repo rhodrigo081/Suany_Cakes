@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./app
+    container_name: suany-cakes-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/suany-cakes
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - database
+  frontend:
+    build: ./public
+    container_name: suany-cakes-frontend
+    ports:
+      - "5173:80"
+    volumes:
+      - ./public:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+  database:
+    image: postgres
+    container_name: suany-cakes-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=suany-cakes
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

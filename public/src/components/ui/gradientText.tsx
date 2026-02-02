@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
 import type { GradientTextProps } from '@/types/GradientText';
 
@@ -9,10 +9,9 @@ export const GradientText = ({
     animationSpeed,
     showBorder,
     direction,
-    pauseOnHover,
     yoyo
 }: GradientTextProps) => {
-    const [isPaused, setIsPaused] = useState(false);
+    const [isPaused] = useState(false);
     const progress = useMotionValue(0);
     const elapsedRef = useRef(0);
     const lastTimeRef = useRef<number | null>(null);
@@ -63,13 +62,6 @@ export const GradientText = ({
         }
     });
 
-    const handleMouseEnter = useCallback(() => {
-        if (pauseOnHover) setIsPaused(true);
-    }, [pauseOnHover]);
-
-    const handleMouseLeave = useCallback(() => {
-        if (pauseOnHover) setIsPaused(false);
-    }, [pauseOnHover]);
 
     const gradientAngle =
         direction === 'horizontal' ? 'to right' : direction === 'vertical' ? 'to bottom' : 'to bottom right';
@@ -84,8 +76,6 @@ export const GradientText = ({
     return (
         <motion.div
             className={`inline-block ${className}`}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
         >
             {showBorder && (
                 <motion.div

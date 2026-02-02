@@ -1,4 +1,4 @@
-import { ClipboardList, Edit, LogIn, LogOut, Moon, Sun, User, UserPlus } from "lucide-react"
+import { ClipboardList, Edit, LogIn, LogOut, User, UserPlus } from "lucide-react"
 import { Button } from "../../ui/button"
 import { DropdownMenu, DropdownMenuTrigger } from "../../ui/Dropdown/DropdownMenu"
 import { DropdownMenuContent } from "../../ui/Dropdown/MenuContent"
@@ -9,7 +9,7 @@ import { DropdownMenuSeparator } from "../../ui/Dropdown/MenuSeparator"
 
 export const DropDown = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState();
+    const [ isLoggedIn ] = useState();
 
     return (
         <DropdownMenu>
