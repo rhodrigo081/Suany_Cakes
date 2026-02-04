@@ -1,14 +1,14 @@
 import { CategoryCard } from "./CategoryCard"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../../ui/carousel"
 import { categories } from "@/data/categories"
 
 export const Categories = () => {
 
     return (
-        <div className="grid gap-10 w-full px-40 h-full">
-            <h2 className="text-6xl font-bold leading-tight tracking-tight">
+        <div className="grid w-full px-40 h-full">
+            <h1 className="text-6xl font-bold leading-tight tracking-tight">
                 Categorias
-            </h2>
+            </h1>
             <div className="w-full h-full flex justify-center">
                 <Carousel className="w-full grid">
                     <CarouselContent>

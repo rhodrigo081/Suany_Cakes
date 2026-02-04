@@ -1,5 +1,5 @@
 import type { Product } from "./Product"
 
-export type FeaturedCardsProps = {
+export interface FeaturedCardsProps {
     product: Product;
 }

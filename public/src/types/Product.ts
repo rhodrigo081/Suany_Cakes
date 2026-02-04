@@ -1,10 +1,13 @@
-export type Product = {
+type Categories = 'candy' | 'savory' | 'cake' | 'custom'
+
+export interface Product {
     id: string;
     name: string;
     description: string;
     price: number;
     image: string;
-    category: 'candy' | 'savory' | 'cake' | 'custom'
+    category: Categories
     featured?: boolean;
     ingredients?: string[];
 }
+

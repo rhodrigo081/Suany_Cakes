@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 
-export type GradientTextProps = {
+type Directions = "horizontal" | "vertical" | "diagonal";
+
+export interface GradientTextProps {
   children: ReactNode;
   className?: string;
   colors: string[];
   animationSpeed: number;
   showBorder: boolean;
-  direction: "horizontal" | "vertical" | "diagonal";
+  direction: Directions
   yoyo: boolean;
 };

@@ -1,6 +1,7 @@
-import { Categories } from "@/components/home/Categories"
-import { FeaturedProducts } from "@/components/home/FeaturedSection"
+import { Categories } from "@/components/home/Categories/Categories"
+import { FeaturedProducts } from "@/components/home/FeaturedProducts/FeaturedSection"
 import { HeroSection } from "@/components/home/HeroSection"
+import { HowWorksSection } from "@/components/home/HowWorks/HowWorksSection"
 
 export const Home = () => {
 
@@ -9,6 +10,8 @@ export const Home = () => {
             <HeroSection />
             <Categories />
             <FeaturedProducts />
+            <HowWorksSection
+            />
         </div>
     )
 
