@@ -1,4 +1,4 @@
-type Categories = 'Doce' | 'Salgado' | 'Bolo'
+export type Categories = 'doces' | 'salgados' | 'bolos'
 
 export interface Product {
     id: string;
@@ -7,7 +7,8 @@ export interface Product {
     price: number;
     image: string;
     category: Categories
+    favorite?: boolean;
     featured?: boolean;
-    ingredients?: string[];
+    ingredients: string[];
 }
 

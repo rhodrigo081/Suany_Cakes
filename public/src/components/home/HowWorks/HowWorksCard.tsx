@@ -1,4 +1,12 @@
-import type { HowWorksCardsProps } from "@/types/HowWorksCardsProps";
+import type { ReactNode } from "react";
+
+interface HowWorksCardsProps {
+    icon: ReactNode;
+    iconColor: string;
+    backgroundIcon: string;
+    title: string;
+    description: string;
+}
 
 export const HowWorksCard = ({ icon, iconColor, backgroundIcon, title, description }: HowWorksCardsProps) => {
     return (

@@ -1,6 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
-import type { GradientTextProps } from '@/types/GradientText';
+
+type Directions = "horizontal" | "vertical" | "diagonal";
+
+interface GradientTextProps {
+    children: ReactNode;
+    className?: string;
+    colors: string[];
+    animationSpeed: number;
+    showBorder: boolean;
+    direction: Directions
+    yoyo: boolean;
+};
+
 
 export const GradientText = ({
     children,

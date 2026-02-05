@@ -1,13 +1,13 @@
-import type { FeaturedCardsProps } from "@/types/FeaturedCardsProps";
 import { Button } from "../../ui/button";
 import { formatCurrency } from "@/utils/formatters";
 import { Badge } from "@/components/ui/badge";
+import type { ProductCardsProps } from "@/types/ProductCardsProps";
 
-export const FeaturedCards = ({ product }: FeaturedCardsProps) => {
+export const FeaturedCards = ({ product }: ProductCardsProps) => {
     return (
         <div className="group relative flex flex-col items-center w-sm h-full rounded-4xl shadow-cards overflow-hidden cursor-pointer 
                         bg-card-background transition-all duration-300 
-                        hover:shadow-xl/30 hover:scale-105">
+                        hover:shadow-xl/30 hover:scale-105" key={product.id}>
 
             <div className="relative z-20 flex flex-col items-center gap-4 pb-12">
                 <div className="h-64 w-full overflow-hidden">
@@ -18,11 +18,11 @@ export const FeaturedCards = ({ product }: FeaturedCardsProps) => {
                                    transition-transform duration-500 group-hover:scale-110
                                    will-change-transform"
                     />
-                     <Badge className="absolute left-3 top-3" variant="secondary">
-                    {product.category}
-                </Badge>
+                    <Badge className="absolute left-3 top-3" variant="secondary">
+                        {product.category}
+                    </Badge>
                 </div>
-               
+
                 <div className="flex flex-col gap-6">
                     <h2 className="text-3xl text-start px-4 font-bold group-hover:text-primary transition-colors">
                         {product.name}
