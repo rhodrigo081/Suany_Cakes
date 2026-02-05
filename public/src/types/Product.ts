@@ -1,4 +1,4 @@
-type Categories = 'candy' | 'savory' | 'cake' | 'custom'
+type Categories = 'Doce' | 'Salgado' | 'Bolo'
 
 export interface Product {
     id: string;

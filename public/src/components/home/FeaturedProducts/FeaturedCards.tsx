@@ -1,6 +1,7 @@
 import type { FeaturedCardsProps } from "@/types/FeaturedCardsProps";
 import { Button } from "../../ui/button";
 import { formatCurrency } from "@/utils/formatters";
+import { Badge } from "@/components/ui/badge";
 
 export const FeaturedCards = ({ product }: FeaturedCardsProps) => {
     return (
@@ -17,7 +18,11 @@ export const FeaturedCards = ({ product }: FeaturedCardsProps) => {
                                    transition-transform duration-500 group-hover:scale-110
                                    will-change-transform"
                     />
+                     <Badge className="absolute left-3 top-3" variant="secondary">
+                    {product.category}
+                </Badge>
                 </div>
+               
                 <div className="flex flex-col gap-6">
                     <h2 className="text-3xl text-start px-4 font-bold group-hover:text-primary transition-colors">
                         {product.name}
