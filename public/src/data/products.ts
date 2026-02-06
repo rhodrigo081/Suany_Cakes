@@ -19,9 +19,9 @@ export const products: Product[] = [
   },
   {
     id: "2",
-    name: "Bolo de Chocolate",
+    name: "Torta de Chocolate",
     description:
-      "Bolo de chocolate intenso com cobertura de ganache e raspas de chocolate.",
+      "Torta de chocolate intenso com cobertura de ganache e raspas de chocolate.",
     price: 95,
     image: cakeImg,
     category: 'bolos',

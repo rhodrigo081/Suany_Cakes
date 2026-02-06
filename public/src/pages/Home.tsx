@@ -2,8 +2,15 @@ import { Categories } from "@/components/categories/Categories"
 import { FeaturedProducts } from "@/components/home/FeaturedProducts/FeaturedSection"
 import { HeroSection } from "@/components/home/HeroSection"
 import { HowWorksSection } from "@/components/home/HowWorks/HowWorksSection"
+import { useNavigate } from "react-router-dom"
 
 export const Home = () => {
+
+    const navigate = useNavigate();
+
+    const handleCategoryClick = ((categoryId: string) => {
+        navigate(`/catalogo?category=${categoryId}`)
+    })
 
     return (
         <div className="grid relative w-full h-full gap-10">
@@ -12,7 +19,7 @@ export const Home = () => {
                 <h1 className="text-6xl font-bold leading-tight tracking-tight">
                     Categorias
                 </h1>
-                <Categories/>
+                <Categories onCategoryChange={handleCategoryClick} activeCategory=" "/>
             </div>
             <FeaturedProducts />
             <HowWorksSection

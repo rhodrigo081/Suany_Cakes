@@ -31,7 +31,7 @@ export const Categories = ({ activeCategory, onCategoryChange }: CategoriesSecti
     {
         id: "bolos",
         picture: cake,
-        label: "Bolos",
+        label: "Bolos & Tortas",
     },]
 
     return (
