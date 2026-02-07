@@ -1,6 +1,6 @@
-import type { Product } from "./Product"
+import type { Product } from "./Product";
 
 export interface ProductCardsProps {
-    product: Product;
-    onOpen: () => void;
+  product: Product;
+  onOpen: (product: Product) => void;
 }

@@ -56,7 +56,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4 justify-end items-end">
-          <a href="#" className="cursor-pointer hover:text-primary transition-colors">
+          <a href="https://www.instagram.com/suanycarlacake/" target="blank" className="cursor-pointer hover:text-primary transition-colors">
             <FaInstagram size={50} />
           </a>
           <a href="#" className="cursor-pointer hover:text-primary transition-colors">

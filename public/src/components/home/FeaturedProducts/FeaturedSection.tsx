@@ -1,7 +1,12 @@
 import { products } from "@/data/products"
 import { FeaturedCards } from "./FeaturedCards";
+import type { Product } from "@/types/Product";
 
-export const FeaturedProducts = () => {
+interface FeaturedSectionProps {
+    onOpenProduct: (product: Product) => void;
+}
+
+export const FeaturedSection = ({onOpenProduct}: FeaturedSectionProps) => {
     const featuredProducts = products.filter((p) => p.featured).slice(0, 4);
 
     return (
@@ -15,7 +20,7 @@ export const FeaturedProducts = () => {
 
                 <div className="flex justify-center gap-10">
                     {featuredProducts.map((product) => (
-                        <FeaturedCards key={product.id} product={product} />
+                        <FeaturedCards key={product.id} product={product} onOpen={() => onOpenProduct(product)} />
                     ))}
                 </div>
             </div>

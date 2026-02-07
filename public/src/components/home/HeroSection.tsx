@@ -34,7 +34,7 @@ export const HeroSection = () => {
                         </Button>
                     </Link>
                     <Link to="/contato">
-                        <Button buttonSize="lg" variant="outline" className="w-full sm:w-auto">
+                        <Button buttonSize="lg" variant="secondary" className="w-full sm:w-auto">
                             Fale Conosco
                         </Button>
                     </Link>

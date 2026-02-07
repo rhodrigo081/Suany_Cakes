@@ -2,10 +2,11 @@ import { Button } from "../../ui/button";
 import { formatCurrency } from "@/utils/formatters";
 import { Badge } from "@/components/ui/badge";
 import type { ProductCardsProps } from "@/types/ProductCardsProps";
+import { CATEGORY_LABELS } from "@/types/Product";
 
-export const FeaturedCards = ({ product }: ProductCardsProps) => {
+export const FeaturedCards = ({ product, onOpen }: ProductCardsProps) => {
     return (
-        <div className="group relative flex flex-col items-center w-sm h-full rounded-4xl shadow-cards overflow-hidden cursor-pointer 
+        <div onClick={() => onOpen(product)} className="group relative flex flex-col items-center w-sm h-full rounded-4xl shadow-cards overflow-hidden cursor-pointer 
                         bg-card-background transition-all duration-300 
                         hover:shadow-xl/30 hover:scale-105" key={product.id}>
 
@@ -19,7 +20,7 @@ export const FeaturedCards = ({ product }: ProductCardsProps) => {
                                    will-change-transform"
                     />
                     <Badge className="absolute left-3 top-3" variant="secondary">
-                        {product.category}
+                        {CATEGORY_LABELS[product.category]}
                     </Badge>
                 </div>
 
