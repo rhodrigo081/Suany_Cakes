@@ -1,64 +1,65 @@
 import { createBrowserRouter, RouterProvider, } from "react-router-dom"
-import { Home } from "./pages/Home"
-import { Catalog } from "./pages/Catalog"
-import { About } from "./pages/About"
-import { Contact } from "./pages/Contact"
-import { Login } from "./pages/Login"
-import { Register } from "./pages/Register"
-import { ShoppingCart } from "./pages/ShoppingCart"
-import { ProfileEdit } from "./pages/ProfileEdit"
-import { OrderHistory } from "./pages/OrderHistory"
+import { HomePage } from "./pages/HomePage"
+import { CatalogPage } from "./pages/CatalogPage"
+import { AboutPage } from "./pages/AboutPage"
+import { ContactPage } from "./pages/ContactPage"
+import { LoginPage } from "./pages/LoginPage"
+import { RegisterPage } from "./pages/RegisterPage"
+import { ShoppingCartPage } from "./pages/ShoppingCartPage"
+import { ProfileEditPage } from "./pages/ProfileEditPage"
+import { OrderHistoryPage } from "./pages/OrderHistoryPage"
 import { Layout } from "./components/Layout/Layout"
+import { CartProvider } from "./contexts/CartContext"
 
 export const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout/>,
+      element: <Layout />,
       children: [{
         path: "/",
-        element: <Home/>
+        element: <HomePage />
       },
       {
         path: "/catalogo",
-        element: <Catalog/>
+        element: <CatalogPage />
       },
       {
         path: "/sobre",
-        element: <About/>
+        element: <AboutPage />
       },
       {
         path: "/contato",
-        element: <Contact/>
+        element: <ContactPage />
       },
       {
         path: "/login",
-        element: <Login/>
+        element: <LoginPage />
       },
       {
         path: "/cadastro",
-        element: <Register/>
+        element: <RegisterPage />
       },
       {
         path: "/carrinho",
-        element: <ShoppingCart/>
+        element: <ShoppingCartPage />
       },
       {
         path: "/perfil",
-        element: <ProfileEdit/>
+        element: <ProfileEditPage />
       },
       {
         path: "/historico-de-pedidos",
-        element: <OrderHistory/>
+        element: <OrderHistoryPage />
       },
-    ]
+      ]
     }
   ])
-  
-  return(
-    <>
-     <RouterProvider router={router}/>
-    </>
+
+  return (
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>
   )
 
 }

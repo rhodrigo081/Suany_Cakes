@@ -4,8 +4,12 @@ import { ShoppingCart } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { DropDown } from "./Dropdown"
+import { useCart } from "@/contexts/CartContext"
+import { Badge } from "@/components/ui/badge"
 
 export const Header = () => {
+
+    const { totalItems } = useCart()
 
     return (
         <header className="sticky top-0 z-50 h-full w-full bg-accent/34 px-70 py-1 backdrop-blur-lg overflow-hidden">
@@ -16,8 +20,13 @@ export const Header = () => {
                 <NavBar />
                 <div className="flex items-center justify-center gap-4">
                     <Link to="/carrinho">
-                        <Button variant="ghost" buttonSize="icon" className="relative">
+                        <Button variant="secondary" buttonSize="icon" className="relative group">
                             <ShoppingCart size={25} />
+                            {totalItems > 0 && (
+                                <Badge className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center p-0 text-xs group-hover:text-foreground group-hover:bg-background transition-all duration-200">
+                                    {totalItems}
+                                </Badge>
+                            )}
                         </Button>
                     </Link>
                     <DropDown />

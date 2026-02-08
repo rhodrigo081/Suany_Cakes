@@ -18,7 +18,7 @@ export const ProductCards = ({ product, onOpen }: ProductCardsProps) => {
         <div onClick={() => onOpen(product)} className="group relative flex flex-col w-full rounded-3xl shadow-md overflow-hidden cursor-pointer transition-all duration-300
         hover:shadow-xl/30 hover:scale-105 bg-card-background text-start pb-4">
             <div className="relative z-20 flex flex-col">
-                <div className="relative w-full h-64 overflow-hidden mb-2">
+                <div className="relative w-full h-64 mb-2">
                     <img src={product.image} alt={product.name} className="w-full h-full object-cover object-[40%_40%] transition-transform duration-500 group-hover:scale-105" />
                     <Badge className="absolute left-3 top-3" variant="secondary">
                         {CATEGORY_LABELS[product.category]}

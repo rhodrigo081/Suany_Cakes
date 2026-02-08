@@ -1,11 +1,11 @@
 import { CatalogSection } from "@/components/catalog/CatalogSection"
 import { Categories } from "@/components/categories/Categories"
-import { ModalProduct } from "@/components/ModalProduct";
+import { ModalProduct } from "@/components/ui/modalProduct";
 import type { Product } from "@/types/Product";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-export const Catalog = () => {
+export const CatalogPage = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -17,7 +17,7 @@ export const Catalog = () => {
     })
 
     return (
-        <div className="grid w-full px-40 h-full">
+        <div className="grid w-full px-40 h-full pb-20">
             <ModalProduct
                 product={selectedProduct}
                 onClose={() => setSelectedProduct(null)}

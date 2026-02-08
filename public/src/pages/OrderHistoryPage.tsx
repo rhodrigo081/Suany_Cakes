@@ -1,4 +1,4 @@
-export const OrderHistory = () => {
+export const OrderHistoryPage = () => {
     return(
         <h1>
             Order History

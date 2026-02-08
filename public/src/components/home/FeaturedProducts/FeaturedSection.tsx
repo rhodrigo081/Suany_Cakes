@@ -1,4 +1,4 @@
-import { products } from "@/data/products"
+import { products } from "@/pages/data/products"
 import { FeaturedCards } from "./FeaturedCards";
 import type { Product } from "@/types/Product";
 

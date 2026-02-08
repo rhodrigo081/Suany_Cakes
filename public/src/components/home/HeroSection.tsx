@@ -7,22 +7,25 @@ import { GradientText } from "../ui/gradientText"
 export const HeroSection = () => {
 
     return (
-        <section className="relative overflow-hidden">
+        <section className="fixed top-0 left-0 w-full h-full overflow-hidden z-0">
             <div className="absolute inset-0 w-full">
-                <img src={heroImage} className="w-full object-cover" />
+                <img
+                    src={heroImage}
+                    alt="Hero"
+                    className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-r from-background/100 via-background/60 to-background/5"></div>
             </div>
 
-            <div className="container relative py-75 px-40 flex flex-col justify-center">
+            <div className="container relative h-full px-40 flex flex-col justify-center">
                 <div className="max-w-wxl animate-fade-up space-y-6">
                     <h1 className="text-6xl font-bold leading-tight tracking-tight">
                         Doces & Salgados
                         <br />
                         <GradientText colors={["#00C0D1", "#C72C71"]} animationSpeed={5} showBorder={false} direction="horizontal" yoyo={true}>Artesanais</GradientText>
                     </h1>
-                    <p className="text-xl/6 text-muted-foreground w-xl">
-                        Transformamos ingredientes de qualidade em momentos inesquecíveis.
-                        Encomende agora e adoce o seu dia.
+                    <p className="text-xl/6 text-foreground w-xl">
+                        Transformamos ingredientes de qualidade em momentos inesquecíveis. Encomende agora e adoce o seu dia.
                     </p>
                 </div>
 
@@ -34,7 +37,7 @@ export const HeroSection = () => {
                         </Button>
                     </Link>
                     <Link to="/contato">
-                        <Button buttonSize="lg" variant="secondary" className="w-full sm:w-auto">
+                        <Button buttonSize="lg" variant="secondary" className="w-full bg-background sm:w-auto">
                             Fale Conosco
                         </Button>
                     </Link>

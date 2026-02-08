@@ -18,5 +18,6 @@ export interface Product {
     favorite?: boolean;
     featured?: boolean;
     ingredients: string[];
+    quantity: number
 }
 

@@ -1,9 +1,10 @@
 import { Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Badge } from "./badge";
+import { Button } from "./button";
 import type { Product } from "@/types/Product";
 import { formatCurrency } from "@/utils/formatters";
+import { useCart } from "@/contexts/CartContext";
 
 interface ModalProductProps {
     product: Product | null;
@@ -12,6 +13,7 @@ interface ModalProductProps {
 
 export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
     const [quantity, setQuantity] = useState(1);
+    const { addToCart } = useCart();
 
     useEffect(() => {
         setQuantity(1);
@@ -26,6 +28,11 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
         salgados: 'Salgado',
         bolos: 'Bolo'
     };
+
+    const handleAddToCart = () => {
+        addToCart({ ...product, quantity })
+        onClose()
+    }
 
     return (
         <div
@@ -45,12 +52,14 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
                 </div>
 
                 <div className="w-full md:w-1/2 p-6 flex flex-col relative">
-                    <button
+                    <Button
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-destructive-foreground p-1 rounded-full bg-destructive transition-colors cursor-pointer hover:opacity-70 z-10"
+                        variant="destructive"
+                        className="absolute top-4 right-4"
+                        buttonSize="destructive"
                     >
-                        <X size={16} className="stroke-[3px]" />
-                    </button>
+                        <X size={12} className="stroke-[4px]" />
+                    </Button>
 
                     <Badge className="flex w-fit px-4 mb-4" variant="ghost">
                         {categoryLabel[product.category]}
@@ -104,7 +113,7 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
                             <span className="text-2xl font-bold text-foreground">{formatCurrency(total)}</span>
                         </div>
 
-                        <Button className="w-full h-13 rounded-2xl gap-2">
+                        <Button className="w-full h-13 rounded-2xl gap-2" onClick={handleAddToCart}>
                             <ShoppingCart size={18} />
                             Adicionar ao Carrinho
                         </Button>

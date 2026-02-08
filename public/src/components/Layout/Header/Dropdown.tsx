@@ -9,12 +9,12 @@ import { DropdownMenuSeparator } from "../../ui/Dropdown/MenuSeparator"
 
 export const DropDown = () => {
 
-    const [ isLoggedIn ] = useState();
+    const [isLoggedIn] = useState();
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="outline-none border-none">
-                <Button variant="ghost" buttonSize="icon" className="relative">
+            <DropdownMenuTrigger className="outline-none border-none" asChild>
+                <Button variant="secondary" buttonSize="icon" className="relative">
                     <User size={25} />
                 </Button>
             </DropdownMenuTrigger>
