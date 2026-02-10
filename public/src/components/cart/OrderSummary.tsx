@@ -2,13 +2,15 @@ import { useCart } from "@/contexts/CartContext";
 import { Button } from "../ui/button"
 import { formatCurrency } from './../../utils/formatters';
 import { MessageCircle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const OrderSummary = () => {
   const { cartItems, subtotal } = useCart();
 
   const handleFinishOrder = () => {
-    const PHONE_NUMBER = "5581900000000"; 
-    
+    const PHONE_NUMBER = "5581900000000";
+
     const itemsList = cartItems
       .map(item => `• *${item.quantity}x ${item.name}* (${formatCurrency(item.price * item.quantity)})`)
       .join("\n");
@@ -42,15 +44,15 @@ export const OrderSummary = () => {
           <span className="text-2xl">{formatCurrency(subtotal)}</span>
         </div>
       </div>
-      
-      <Button 
-        onClick={handleFinishOrder} 
+
+      <Button
+        onClick={handleFinishOrder}
         className="w-full"
       >
-        <MessageCircle/>
+        <MessageCircle />
         Finalizar Via Whatsapp
       </Button>
-      
+
       <p className="text-[10px] text-center text-muted-foreground mt-3 leading-tight">
         Você será redirecionado para o WhatsApp para confirmar seu pedido e combinar a entrega ou retirada.
       </p>

@@ -8,8 +8,7 @@ import { Link } from "react-router-dom"
 import { DropdownMenuSeparator } from "../../ui/Dropdown/MenuSeparator"
 
 export const DropDown = () => {
-
-    const [isLoggedIn] = useState();
+    const [isLoggedIn] = useState(false);
 
     return (
         <DropdownMenu>
@@ -18,7 +17,8 @@ export const DropDown = () => {
                     <User size={25} />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-background">
+
+            <DropdownMenuContent align="end" className="w-48 bg-card-background border border-border z-[110]">
                 {isLoggedIn ? (
                     <>
                         <DropdownMenuItem asChild>

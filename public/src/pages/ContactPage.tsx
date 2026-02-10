@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ContactCard } from '@/components/ui/contactCard';
 import { MessageCircle, Phone, Instagram, Clock, MoveRight } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa6';
 
 export const ContactPage = () => {
     return (
@@ -64,7 +65,7 @@ export const ContactPage = () => {
                             Entre em contato pelo WhatsApp para encomendas e informações.
                         </p>
                         <Button variant="secondary" className='w-1/2 bg-background text-accent-foreground'>
-                            <MessageCircle size={20} />
+                            <FaWhatsapp size={20} />
                             Falar no Whatsapp
                         </Button>
                     </div>

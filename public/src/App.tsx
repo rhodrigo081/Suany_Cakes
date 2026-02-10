@@ -10,6 +10,7 @@ import { ProfileEditPage } from "./pages/ProfileEditPage"
 import { OrderHistoryPage } from "./pages/OrderHistoryPage"
 import { Layout } from "./components/Layout/Layout"
 import { CartProvider } from "./contexts/CartContext"
+import { AuthProvider } from "./contexts/AuthContext"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -57,9 +58,11 @@ export const App = () => {
   ])
 
   return (
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </AuthProvider>
   )
 
 }

@@ -3,8 +3,12 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { FaApple, FaFacebook, FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 export const RegisterForm = () => {
+
+    const [isAgreed, setIsAgreed] = useState(false);
+
     return (
         <div className="flex items-center justify-center pt-20">
             <div className="w-xl bg-white rounded-4xl border border-gray-100 shadow-sm p-8 md:p-12">
@@ -73,9 +77,48 @@ export const RegisterForm = () => {
                         placeholder="••••••••"
                     />
 
+                    <div className="flex items-start gap-3 py-2">
+                        <label className="relative flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                className="sr-only peer"
+                                checked={isAgreed}
+                                onChange={(e) => setIsAgreed(e.target.checked)}
+                            />
+
+                            <div className="w-6 h-6 border-2 border-primary rounded-full transition-all 
+            peer-checked:bg-primary peer-checked:border-primary 
+            flex items-center justify-center">
+
+                                <svg
+                                    className={`w-3.5 h-3.5 text-white transition-opacity ${isAgreed ? 'opacity-100' : 'opacity-0'}`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={4}
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                        </label>
+
+                        <span className="text-base text-accent-foreground">
+                            Eu concordo com os{' '}
+                            <Link to="/termos" className="text-primary font-bold hover:underline">
+                                Termos de Uso
+                            </Link>{' '}
+                            e{' '}
+                            <Link to="/privacidade" className="text-primary font-bold hover:underline">
+                                Política de Privacidade
+                            </Link>
+                        </span>
+                    </div>
+
                     <Button
                         type="submit"
-                        className='w-full text-xl font-semibold rounded-xl py-6'
+                        disabled={!isAgreed}
+                        className={`w-full text-xl font-semibold rounded-xl py-6 transition-all ${!isAgreed ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
+                            }`}
                     >
                         Criar Conta
                     </Button>

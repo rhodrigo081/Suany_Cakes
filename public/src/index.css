@@ -53,6 +53,13 @@
     --border: 0 0% 85%;
     --input: 30 20% 88%;
     --card-background: 30 30% 99%;
+
+    scrollbar-gutter: stable;
+  }
+
+  html.no-scroll,
+  body.no-scroll {
+    overflow: hidden !important;
   }
 
   .dark {
@@ -67,10 +74,15 @@
 
   body {
     @apply bg-background text-foreground font-inter antialiased;
+    min-height: 100vh;
+    @apply !min-w-full;
   }
 
-  h1 
-  {
+  html {
+    @apply overflow-x-hidden;
+  }
+
+  h1 {
     @apply font-display;
   }
 }

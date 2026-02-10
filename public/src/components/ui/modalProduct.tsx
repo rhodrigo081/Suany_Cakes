@@ -16,7 +16,19 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        setQuantity(1);
+        if (product) {
+            setQuantity(1);
+            document.documentElement.classList.add("no-scroll");
+            document.body.classList.add("no-scroll");
+        } else {
+            document.documentElement.classList.remove("no-scroll");
+            document.body.classList.remove("no-scroll");
+        }
+
+        return () => {
+            document.documentElement.classList.remove("no-scroll");
+            document.body.classList.remove("no-scroll");
+        };
     }, [product]);
 
     if (!product) return null;
@@ -36,7 +48,7 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
 
     return (
         <div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/30 backdrop-blur-md p-4 transition-all"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-background/30 backdrop-blur-md p-4 transition-all overflow-scroll-hidden"
             onClick={onClose}
         >
             <div
