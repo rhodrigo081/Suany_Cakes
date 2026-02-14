@@ -1,12 +1,17 @@
 import { Button } from "../../ui/button";
 import { formatCurrency } from "@/utils/formatters";
 import { Badge } from "@/components/ui/badge";
-import type { ProductCardsProps } from "@/types/ProductCardsProps";
-import { CATEGORY_LABELS } from "@/types/Product";
+import { CATEGORY_LABELS, type Product } from "@/types/Product";
+import { useProductModal } from "@/contexts/ModalContext";
 
-export const FeaturedCards = ({ product, onOpen }: ProductCardsProps) => {
+interface FeaturedCardsProps {
+    product: Product;
+}
+
+export const FeaturedCards = ({ product }: FeaturedCardsProps) => {
+    const { openModal } = useProductModal();
     return (
-        <div onClick={() => onOpen(product)} className="group relative flex flex-col items-center w-sm h-full rounded-4xl shadow-cards overflow-hidden cursor-pointer 
+        <div onClick={() => openModal(product)} className="group relative flex flex-col items-center w-sm h-full rounded-4xl shadow-xl overflow-hidden cursor-pointer 
                         bg-card-background transition-all duration-300 
                         hover:shadow-xl/30 hover:scale-105" key={product.id}>
 

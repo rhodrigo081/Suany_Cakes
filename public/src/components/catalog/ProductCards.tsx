@@ -1,21 +1,27 @@
 import { formatCurrency } from "@/utils/formatters"
 import { Eye, Heart } from "lucide-react"
-import { useState } from "react"
 import { Badge } from "../ui/badge"
-import type { ProductCardsProps } from "@/types/ProductCardsProps"
-import { CATEGORY_LABELS } from "@/types/Product"
+import { CATEGORY_LABELS, type Product } from "@/types/Product"
+import { useAuth } from "@/contexts/AuthContext"
+import { useProductModal } from "@/contexts/ModalContext"
 
-export const ProductCards = ({ product, onOpen }: ProductCardsProps) => {
-    const [isFavorite, setIsFavorite] = useState(product.favorite || false);
+interface ProductCardsProps {
+    product: Product;
+}
 
+export const ProductCards = ({ product }: ProductCardsProps) => {
+    const { user, toggleFavorite } = useAuth();
+    const { openModal } = useProductModal();
 
-    const toggleFavorite = (e: React.MouseEvent) => {
+    const isFavorite = user?.favorites?.some(fav => String(fav.id) === String(product.id)) ?? false;
+
+    const handleFavoriteClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        setIsFavorite(!isFavorite);
+        toggleFavorite(product);
     };
 
     return (
-        <div onClick={() => onOpen(product)} className="group relative flex flex-col w-full rounded-3xl shadow-md overflow-hidden cursor-pointer transition-all duration-300
+        <div onClick={() => openModal(product)} className="group relative flex flex-col w-full rounded-3xl shadow-md overflow-hidden cursor-pointer transition-all duration-300
         hover:shadow-xl/30 hover:scale-105 bg-card-background text-start pb-4">
             <div className="relative z-20 flex flex-col">
                 <div className="relative w-full h-64 mb-2">
@@ -35,12 +41,11 @@ export const ProductCards = ({ product, onOpen }: ProductCardsProps) => {
                 </div>
 
                 <div className="w-full h-8 flex justify-between px-4 items-center">
-                    <button onClick={toggleFavorite} className="focus:outline-none transition-transform active:scale-125">
+                    <button onClick={handleFavoriteClick} className="focus:outline-none transition-transform active:scale-125">
                         <Heart
-                            className={`transition-colors duration-300 cursor-pointer ${isFavorite
-                                ? "fill-destructive text-destructive"
-                                : "text-accent-foreground hover:text-destructive"
+                            className={`transition-colors duration-300 cursor-pointer ${isFavorite ? "text-destructive" : "text-accent-foreground hover:text-destructive"
                                 }`}
+                            fill={isFavorite ? "currentColor" : "none"}
                         />
                     </button>
 

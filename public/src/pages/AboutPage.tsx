@@ -22,23 +22,28 @@ export const AboutPage = () => {
                 />
             </section>
 
-            <main className="pt-12 flex flex-col gap-8">
-                <InfoCard title="Localização">
-                    <p className="text-accent-foreground flex items-center gap-2">
-                        <MapPin /> São Lourenço - PE
-                    </p>
-                </InfoCard>
-
-                <InfoCard title="Formas de Pagamento">
-                    <ul className="space-y-3">
-                        <li className="flex items-center gap-3 text-accent-foreground">
-                            <Banknote size={20} /> Dinheiro
-                        </li>
-                        <li className="flex items-center gap-3 text-accent-foreground">
-                            <FaPix size={20} /> Pix
-                        </li>
-                    </ul>
-                </InfoCard>
+            <main className="pt-12 flex flex-col gap-8 px-60">
+                <div className="flex flex-col gap-4">
+                    <h1 className="text-3xl font-semibold">Localização</h1>
+                    <InfoCard>
+                        <p className="text-accent-foreground flex items-center gap-2">
+                            <MapPin /> São Lourenço - PE
+                        </p>
+                    </InfoCard>
+                </div>
+                <div className="flex flex-col gap-4">
+                    <h1 className="text-3xl font-semibold">Formas de Pagamento</h1>
+                    <InfoCard>
+                        <ul className="space-y-3">
+                            <li className="flex items-center gap-3 text-accent-foreground">
+                                <Banknote size={20} /> Dinheiro
+                            </li>
+                            <li className="flex items-center gap-3 text-accent-foreground">
+                                <FaPix size={20} /> Pix
+                            </li>
+                        </ul>
+                    </InfoCard>
+                </div>
             </main>
         </div>
     );

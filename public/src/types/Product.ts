@@ -15,9 +15,7 @@ export interface Product {
     price: number;
     image: string;
     category: CategorySlug
-    favorite?: boolean;
     featured?: boolean;
     ingredients: string[];
-    quantity: number
 }
 

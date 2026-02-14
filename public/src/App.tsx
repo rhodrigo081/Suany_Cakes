@@ -11,6 +11,9 @@ import { OrderHistoryPage } from "./pages/OrderHistoryPage"
 import { Layout } from "./components/Layout/Layout"
 import { CartProvider } from "./contexts/CartContext"
 import { AuthProvider } from "./contexts/AuthContext"
+import { FavoritesPage } from "./pages/FavoritesPage"
+import { ModalProvider } from "./contexts/ModalContext"
+import { ThemeProvider } from "./contexts/ThemeContext"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -53,15 +56,23 @@ export const App = () => {
         path: "/historico-de-pedidos",
         element: <OrderHistoryPage />
       },
+      {
+        path: "/favoritos",
+        element: <FavoritesPage />
+      },
       ]
     }
   ])
 
   return (
     <AuthProvider>
-      <CartProvider>
-        <RouterProvider router={router} />
-      </CartProvider>
+      <ThemeProvider>
+        <ModalProvider>
+          <CartProvider>
+            <RouterProvider router={router} />
+          </CartProvider>
+        </ModalProvider>
+      </ThemeProvider>
     </AuthProvider>
   )
 

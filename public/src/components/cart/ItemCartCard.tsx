@@ -14,25 +14,26 @@ export const ItemCartCard = ({ item }: { item: Product }) => {
                 <div>
                     <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
                     <p className="text-sm text-muted-foreground">{formatCurrency(item.price)} / unidade</p>
-                    <div className="flex items-center gap-4 mt-2">
-                        <Button
-                            onClick={() => updateQuantity(item.id, -1)}
-                            variant="outline"
-                            buttonSize="icon"
-                            className="border border-border"
-                        >
-                            <Minus size={16} />
-                        </Button>
-                        <span className="font-medium">{item.quantity}</span>
-                        <Button
-                            onClick={() => updateQuantity(item.id, +1)}
-                            variant="outline"
-                            buttonSize="icon"
-                            className="border border-border"
-                        >
-                            <Plus size={16} />
-                        </Button>
-                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                            <Button
+                                onClick={() => updateQuantity(item.id, -1)}
+                                variant="outline"
+                                buttonSize="icon"
+                                className="border border-border"
+                            >
+                                <Minus size={16} />
+                            </Button>
+                            <span className="text-lg font-bold text-foreground w-4 text-center">{item.quantity}</span>
+                            <Button
+                                onClick={() => updateQuantity(item.id, +1)}
+                                variant="outline"
+                                buttonSize="icon"
+                                className="border border-border"
+                            >
+                                <Plus size={16} />
+                            </Button>
+                        </div>
                 </div>
             </div>
             <div className="flex flex-col items-end relative">

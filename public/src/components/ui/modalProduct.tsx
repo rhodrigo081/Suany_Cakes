@@ -2,36 +2,30 @@ import { Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Badge } from "./badge";
 import { Button } from "./button";
-import type { Product } from "@/types/Product";
 import { formatCurrency } from "@/utils/formatters";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useProductModal } from "@/contexts/ModalContext";
 
-interface ModalProductProps {
-    product: Product | null;
-    onClose: () => void;
-}
-
-export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
+export const ModalProduct = () => {
+    const { selectedProduct: product, isOpen, closeModal } = useProductModal(); // Lendo do contexto
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
+    const { isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (product) {
+        if (isOpen) {
             setQuantity(1);
-            document.documentElement.classList.add("no-scroll");
-            document.body.classList.add("no-scroll");
+            document.body.style.overflow = "hidden";
         } else {
-            document.documentElement.classList.remove("no-scroll");
-            document.body.classList.remove("no-scroll");
+            document.body.style.overflow = "unset";
         }
+        return () => { document.body.style.overflow = "unset"; };
+    }, [isOpen]);
 
-        return () => {
-            document.documentElement.classList.remove("no-scroll");
-            document.body.classList.remove("no-scroll");
-        };
-    }, [product]);
-
-    if (!product) return null;
+    if (!isOpen || !product) return null;
 
     const total = quantity * product.price;
 
@@ -42,14 +36,19 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
     };
 
     const handleAddToCart = () => {
-        addToCart({ ...product, quantity })
-        onClose()
-    }
+        if (isAuthenticated) {
+            addToCart({ ...product, quantity });
+            closeModal();
+        } else {
+            closeModal();
+            navigate("/login");
+        }
+    };
 
     return (
         <div
-            className="fixed inset-0 z-100 flex items-center justify-center bg-background/30 backdrop-blur-md p-4 transition-all overflow-scroll-hidden"
-            onClick={onClose}
+            className="fixed inset-0 z-100 flex items-center justify-center bg-background/10 backdrop-blur-xs p-4 transition-all overflow-scroll-hidden"
+            onClick={closeModal}
         >
             <div
                 className="relative flex flex-col md:flex-row w-full max-w-2xl bg-card-background rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200"
@@ -65,7 +64,7 @@ export const ModalProduct = ({ product, onClose }: ModalProductProps) => {
 
                 <div className="w-full md:w-1/2 p-6 flex flex-col relative">
                     <Button
-                        onClick={onClose}
+                        onClick={closeModal}
                         variant="destructive"
                         className="absolute top-4 right-4"
                         buttonSize="destructive"

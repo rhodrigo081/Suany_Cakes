@@ -23,7 +23,7 @@ export const Input = ({ label, icon: Icon, rightElement, type, ...props }: Input
                 <input
                     {...props}
                     type={inputType}
-                    className="w-full pl-10 pr-12 py-2 bg-accent/20 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-accent-foreground"
+                    className="w-full pl-10 pr-12 py-2 bg-accent/20 border border-border rounded-xl focus:outline-none font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-accent-foreground"
                 />
                 {isPassword && (
                     <button

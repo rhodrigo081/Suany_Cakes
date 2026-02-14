@@ -9,9 +9,9 @@ interface ContactCardProps {
 }
 
 export const ContactCard = ({ icon, iconBgColor, title, children, className = "" }: ContactCardProps) => {
-    
+
   return (
-    <div className={`bg-background w-lg rounded-2xl p-6 shadow-[0_0_0_2px_rgba(0,0,0,0.05)] flex items-start gap-4 ${className}`}>
+    <div className={`bg-background border border-border w-lg rounded-2xl p-6 flex items-start gap-4 ${className}`}>
       <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${iconBgColor}`}>
         {icon}
       </div>

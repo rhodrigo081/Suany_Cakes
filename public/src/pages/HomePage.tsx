@@ -25,7 +25,7 @@ export const HomePage = () => {
 
             <div className="relative z-10 bg-background mt-[100vh] grid gap-10 pb-20">
                 <div className="grid w-full px-40 py-20 h-full">
-                    <h1 className="text-6xl font-bold leading-tight tracking-tight mb-8">
+                    <h1 className="text-6xl font-bold mb-8">
                         Categorias
                     </h1>
                     <Categories onCategoryChange={handleCategoryClick} activeCategory=" " />

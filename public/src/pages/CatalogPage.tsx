@@ -1,14 +1,11 @@
 import { CatalogSection } from "@/components/catalog/CatalogSection"
 import { Categories } from "@/components/categories/Categories"
 import { ModalProduct } from "@/components/ui/modalProduct";
-import type { Product } from "@/types/Product";
-import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 export const CatalogPage = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     const selectedCategory = searchParams.get("category") || "todos"
 
@@ -18,12 +15,9 @@ export const CatalogPage = () => {
 
     return (
         <div className="grid w-full px-40 h-full pb-20">
-            <ModalProduct
-                product={selectedProduct}
-                onClose={() => setSelectedProduct(null)}
-            />
+            <ModalProduct />
             <Categories activeCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
-            <CatalogSection activeCategory={selectedCategory} onOpenProduct={setSelectedProduct} />
+            <CatalogSection activeCategory={selectedCategory} />
         </div>
     )
 

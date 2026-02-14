@@ -53,9 +53,9 @@ export const ContactPage = () => {
                         iconBgColor="bg-primary/10"
                     >
                         <div className="grid grid-cols-2 mt-2">
-                            <span>Segunda - Sexta</span> <span className="font-bold text-right text-black ml-24">8h - 18h</span>
-                            <span>Sábado</span> <span className="font-bold text-right text-black ml-24">8h - 14h</span>
-                            <span>Domingo</span> <span className="font-bold text-right text-black ml-24">Fechado</span>
+                            <span>Segunda - Sexta</span> <span className="font-bold text-right text-foreground ml-24">8h - 18h</span>
+                            <span>Sábado</span> <span className="font-bold text-right text-foreground ml-24">8h - 14h</span>
+                            <span>Domingo</span> <span className="font-bold text-right text-foreground ml-24">Fechado</span>
                         </div>
                     </ContactCard>
 

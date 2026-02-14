@@ -33,7 +33,7 @@ export const Header = () => {
                     <Button variant="secondary" buttonSize="icon" className="relative group" onClick={handleClickCart}>
                         <ShoppingCart size={25} />
                         {totalItems > 0 && (
-                            <Badge className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center p-0 text-xs group-hover:text-foreground group-hover:bg-background transition-all duration-200">
+                            <Badge className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center p-0 text-xs group-hover:bg-primary group-hover:text-white transition-all duration-200">
                                 {totalItems}
                             </Badge>
                         )}
