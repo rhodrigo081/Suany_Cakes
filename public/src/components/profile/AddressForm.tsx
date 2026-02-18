@@ -7,7 +7,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAddresses } from "@/contexts/AddressContext";
 import { useEffect } from "react";
 
-type AddressFormData = Omit<Address, "id" | "isPrimary">;
+type AddressFormData = Omit<Address, "id" | "isPrimary"> & {
+    complement?: string;
+};
 
 const labelOptions = ["Casa", "Trabalho", "Outro"];
 
@@ -21,9 +23,11 @@ export const AddressForm = () => {
 
     useEffect(() => {
         if (id && addressToEdit) {
-            (Object.keys(addressToEdit) as Array<keyof AddressFormData>).forEach((key) => {
+            const keys = Object.keys(addressToEdit) as Array<keyof Address>;
+            
+            keys.forEach((key) => {
                 if (key !== "id" && key !== "isPrimary") {
-                    setValue(key, addressToEdit[key]);
+                    setValue(key as keyof AddressFormData, addressToEdit[key] as any);
                 }
             });
         }
@@ -49,7 +53,7 @@ export const AddressForm = () => {
 
     return (
         <div className="bg-card-background w-xl rounded-3xl mt-20 border border-border p-8 shadow-sm">
-            <h2 className="flex gap-2 font-serif text-2xl font-bold text-foreground items-center mb-8">
+            <h2 className="flex gap-2 font-display text-2xl font-bold text-foreground items-center mb-8">
                 <MapPin size={24} className="text-primary" />
                 {id ? "Editar Endereço" : "Novo Endereço"}
             </h2>

@@ -4,7 +4,8 @@ import { Wrapper } from '@/components/Wrapper';
 import { useAddresses } from '@/contexts/AddressContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { LogOut, Phone, Mail, MapPin, Plus, Pencil, } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const formatDate = (date: Date | string) => {
     const d = new Date(date);
@@ -14,8 +15,15 @@ const formatDate = (date: Date | string) => {
 export const ProfilePage = () => {
     const { user, logout } = useAuth();
     const { addresses } = useAddresses();
+    const navigate = useNavigate();
 
-    if (!user) return <div className="p-8 text-center text-accent-foreground">Carregando perfil...</div>;
+    useEffect(() => {
+        if (!user) {
+            navigate("/login");
+        }
+    }, [user, navigate]);
+
+    if (!user) return null;
 
     const initials = (user.firstName[0] + (user.lastName?.[0] || "")).toUpperCase();
 
@@ -27,21 +35,9 @@ export const ProfilePage = () => {
                     <div className="flex flex-col md:flex-row md:items-end justify-between -mt-12 gap-4">
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-4">
                             <div className="relative">
-                                {user.picture ? (
-                                    <img
-                                        src={user.picture}
-                                        alt={`${user.firstName} ${user.lastName}`}
-                                        className="w-32 h-32 rounded-full object-cover"
-                                    />
-                                ) : (
-
-                                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/100 to-secondary/100 flex items-center justify-center text-white text-6xl font-bold font-display">
-
-                                        {initials}
-
-                                    </div>
-
-                                )}
+                                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/100 to-secondary/100 flex items-center justify-center text-white text-6xl font-bold font-display">
+                                    {initials}
+                                </div>
                             </div>
                             <div className="text-center md:text-left pb-2">
                                 <h1 className="text-3xl font-bold text-foreground font-display">
@@ -52,10 +48,12 @@ export const ProfilePage = () => {
                                 </p>
                             </div>
                         </div>
-                        <Button variant="secondary">
-                            <Pencil size={16} />
-                            Editar Perfil
-                        </Button>
+                        <Link to="/editar-perfil">
+                            <Button variant="secondary">
+                                <Pencil size={16} />
+                                Editar Perfil
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </section>

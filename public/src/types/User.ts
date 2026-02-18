@@ -1,8 +1,5 @@
 import type { Address } from "./Address";
-import type { Order } from "./Order";
 import type { Product } from "./Product";
-
-
 
 export interface User {
   id: string;
@@ -14,5 +11,4 @@ export interface User {
   phone: string;
   createdAt: Date;
   favorites: Product[];
-  orders: Order[]
 }

@@ -1,30 +1,13 @@
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "../ui/button"
 import { formatCurrency } from './../../utils/formatters';
-import { MessageCircle } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export const OrderSummary = () => {
-  const { cartItems, subtotal } = useCart();
+  const { clearCart, subtotal } = useCart();
 
   const handleFinishOrder = () => {
-    const PHONE_NUMBER = "5581900000000";
-
-    const itemsList = cartItems
-      .map(item => `• *${item.quantity}x ${item.name}* (${formatCurrency(item.price * item.quantity)})`)
-      .join("\n");
-
-    const message = encodeURIComponent(
-      `*Novo Pedido - Suany Cakes*\n\n` +
-      `Olá! Gostaria de encomendar os seguintes itens:\n\n` +
-      `${itemsList}\n\n` +
-      `*Subtotal:* ${formatCurrency(subtotal)}\n` +
-      `*Entrega:* A combinar\n\n` +
-      `Aguardando confirmação! 🍰`
-    );
-
-    window.open(`https://wa.me/${PHONE_NUMBER}?text=${message}`, "_blank");
+    console.log("Pedido Finalizado!")
+    clearCart();
   };
 
   return (
@@ -47,10 +30,9 @@ export const OrderSummary = () => {
 
       <Button
         onClick={handleFinishOrder}
-        className="w-full"
+        className="w-full text-lg"
       >
-        <MessageCircle />
-        Finalizar Via Whatsapp
+        Finalizar Pedido
       </Button>
 
       <p className="text-[10px] text-center text-muted-foreground mt-3 leading-tight">

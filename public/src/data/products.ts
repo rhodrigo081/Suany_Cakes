@@ -32,7 +32,7 @@ export const products: Product[] = [
     name: "Brigadeiro",
     description:
       "O clássico brigadeiro brasileiro, feito com chocolate de qualidade e muito amor.",
-    price: 4,
+    price: 1,
     image: chocolateTruffleImg,
     category: 'doces',
     ingredients: ["Chocolate", "Leite condensado", "Manteiga", "Granulado"],

@@ -36,7 +36,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                         : item
                 );
             }
-            return [...prev, product]; 
+            return [...prev, product];
         });
     };
 
@@ -49,9 +49,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const removeItem = (id: string) => setCartItems(prev => prev.filter(item => item.id !== id));
 
     const clearCart = () => {
-        if (confirm("Deseja realmente limpar o carrinho?")) {
-            setCartItems([]);
-        }
+        setCartItems([]);
     };
 
     const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);

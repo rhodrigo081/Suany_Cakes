@@ -16,6 +16,7 @@ import { ModalProvider } from "./contexts/ModalContext"
 import { ThemeProvider } from "./contexts/ThemeContext"
 import { AddressFormPage } from "./pages/AddressFormPage"
 import { AddressProvider } from "./contexts/AddressContext"
+import { EditProfilePage } from "./pages/EditProfilePage"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -69,6 +70,10 @@ export const App = () => {
       {
         path: "/editar-endereco/:id",
         element: <AddressFormPage />
+      },
+      {
+        path: "/editar-perfil",
+        element: <EditProfilePage />
       },
       ]
     }

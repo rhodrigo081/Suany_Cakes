@@ -1,4 +1,3 @@
-
 import type { Product } from "@/types/Product";
 import type { User } from "@/types/User";
 import { createContext, useContext, useState, type ReactNode } from "react";
@@ -9,6 +8,7 @@ interface AuthContextType {
     login: (token: string, userData: User) => void;
     logout: () => void;
     toggleFavorite: (product: Product) => void;
+    updateUser: (data: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,6 +36,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         setUser(userData);
         setIsAuthenticated(true);
+    };
+
+    const updateUser = (data: Partial<User>) => {
+        if (!user) return;
+        const updatedUser = {
+            ...user,
+            ...data
+        };
+
+        setUser(updatedUser);
+
+        localStorage.setItem("@SuanyCakes:user", JSON.stringify(updatedUser));
     };
 
     const logout = () => {
@@ -67,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, user, toggleFavorite }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, user, toggleFavorite, updateUser }}>
             {children}
         </AuthContext.Provider>
     );

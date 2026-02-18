@@ -17,6 +17,6 @@ export interface Product {
     category: CategorySlug
     featured?: boolean;
     ingredients: string[];
-    quantity: number;
+    quantity?: number;
 }
 
