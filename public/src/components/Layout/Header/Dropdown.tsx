@@ -1,6 +1,5 @@
 import {
     ClipboardList,
-    Edit,
     LogIn,
     LogOut,
     User,
@@ -28,27 +27,25 @@ export const DropDown = () => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="outline-none border-none" asChild>
+            <DropdownMenuTrigger asChild>
                 <Button variant="secondary" buttonSize="icon" className="relative">
                     <User size={25} />
                 </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-52 bg-card-background border border-border z-[110]">
+            <DropdownMenuContent align="end" className="w-52 bg-card-background z-[110]">
                 <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2 cursor-pointer">
                     <Moon className="absolute h-4 w-4 rotate-0 scale-100 transition-all dark:rotate-90 dark:scale-0" />
                     <Sun className="h-4 w-4 rotate-0 scale-0 transition-all dark:-rotate-0 dark:scale-100" />
                     <span>{theme === 'dark' ? 'Claro' : 'Escuro'}</span>
                 </DropdownMenuItem>
 
-                <DropdownMenuSeparator />
-
                 {isAuthenticated ? (
                     <>
                         <DropdownMenuItem asChild>
                             <Link to="/perfil" className="flex items-center gap-2 cursor-pointer">
-                                <Edit className="h-4 w-4" />
-                                Editar Perfil
+                                <User className="h-4 w-4" />
+                                Perfil
                             </Link>
                         </DropdownMenuItem>
 

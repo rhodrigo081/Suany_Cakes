@@ -5,7 +5,7 @@ import { HowWorksSection } from "@/components/home/HowWorks/HowWorksSection"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import type { Product } from "@/types/Product";
-import { ModalProduct } from "@/components/ui/modalProduct"
+import { ListFilter } from "lucide-react"
 
 export const HomePage = () => {
     const navigate = useNavigate();
@@ -15,18 +15,14 @@ export const HomePage = () => {
         navigate(`/catalogo?category=${categoryId}`)
     });
 
-
-
     return (
         <div className="relative w-full">
             <HeroSection />
 
-            <ModalProduct product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-
             <div className="relative z-10 bg-background mt-[100vh] grid gap-10 pb-20">
                 <div className="grid w-full px-40 py-20 h-full">
-                    <h1 className="text-6xl font-bold mb-8">
-                        Categorias
+                    <h1 className="text-6xl font-bold mb-8 flex items-center gap-4">
+                        <ListFilter size={60} className="text-primary stroke-[3px]" /> Categorias
                     </h1>
                     <Categories onCategoryChange={handleCategoryClick} activeCategory=" " />
                 </div>

@@ -15,7 +15,7 @@ export const ItemCartCard = ({ item }: { item: Product }) => {
                     <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
                     <p className="text-sm text-muted-foreground">{formatCurrency(item.price)} / unidade</p>
                     
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 pt-2">
                             <Button
                                 onClick={() => updateQuantity(item.id, -1)}
                                 variant="outline"
@@ -37,10 +37,10 @@ export const ItemCartCard = ({ item }: { item: Product }) => {
                 </div>
             </div>
             <div className="flex flex-col items-end relative">
-                <Button onClick={() => removeItem(item.id)} variant="ghost" className="relative bottom-6">
+                <Button onClick={() => removeItem(item.id)} variant="destructive" className="relative bottom-6">
                     <Trash2 size={20} />
                 </Button>
-                <span className="text-xl font-bold text-primary relative top-4">
+                <span className="text-xl font-bold text-primary relative top-4 right-2">
                     {formatCurrency(item.price * item.quantity)}
                 </span>
             </div>

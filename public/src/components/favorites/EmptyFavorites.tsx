@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 export const EmptyFavorites = () => {
 
     return (
-        <div className="flex flex-col items-center justify-center pt-40 pb-30 bg-background">
+        <div className="flex flex-col items-center justify-center pt-50 pb-30 bg-background">
             <div className="bg-primary/30 text-primary p-4 rounded-full mb-6">
                 <HeartOff size={60} />
             </div>

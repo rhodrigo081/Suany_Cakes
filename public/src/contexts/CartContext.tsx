@@ -32,11 +32,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             if (existing) {
                 return prev.map(item =>
                     item.id === product.id
-                        ? { ...item, quantity: item.quantity + product.quantity } // Soma a quantidade do modal
+                        ? { ...item, quantity: item.quantity + product.quantity }
                         : item
                 );
             }
-            return [...prev, product]; // Já vem com a quantity correta do modal
+            return [...prev, product]; 
         });
     };
 

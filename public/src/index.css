@@ -84,6 +84,7 @@
     @apply bg-background text-foreground font-inter antialiased;
     min-height: 100vh;
     @apply !min-w-full;
+    @apply transition-all duration-300;
   }
 
   html {

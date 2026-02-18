@@ -4,19 +4,19 @@ import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 cursor-pointer",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/60",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/60 rounded-full transition-colors cursor-pointer z-10",
+          "text-accent-foreground hover:text-destructive rounded-full transition-colors cursor-pointer z-10",
         outline:
-          "hover:bg-secondary/40 border border-border hover:text-secondary-foreground hover:border-card-background",
+          "hover:bg-secondary/40 border border-border hover:text-secondary-foreground",
         secondary:
           "hover:bg-secondary hover:text-secondary-foreground outline-none border-none",
         tertiary: "bg-accent/20 text-foreground border text-sm font-normal hover:opacity-60",
-        ghost: "text-accent-foreground hover:text-destructive cursor-pointer transition-all duration-300",
+        ghost: "text-accent-foreground hover:text-secondary cursor-pointer transition-all duration-300",
         link: "text-primary underline-offset-4 hover:underline",
       },
       buttonSize: {

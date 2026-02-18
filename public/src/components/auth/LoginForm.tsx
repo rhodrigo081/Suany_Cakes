@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 export const LoginForm = () => {
     return (
         <div className="flex items-center justify-center pt-20">
-            <div className="w-xl bg-white rounded-4xl border border-gray-100 shadow-sm p-8 md:p-12">
+            <div className="w-xl bg-card-background rounded-4xl border border-gray-100 shadow-sm p-8 md:p-12">
 
                 <div className="text-center mb-8">
                     <h1 className="text-5xl font-display font-bold text-foreground">
@@ -31,9 +31,9 @@ export const LoginForm = () => {
                 </div >
 
                 <div className="flex items-center my-8">
-                    <div className="flex-1 border-t border-border"></div>
+                    <div className="flex-1 border-1 border-border"></div>
                     <span className="px-4 text-foreground text-sm">ou</span>
-                    <div className="flex-1 border-t border-border"></div>
+                    <div className="flex-1 border-1 border-border"></div>
                 </div>
 
                 <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
@@ -66,7 +66,7 @@ export const LoginForm = () => {
                     </Button>
                 </form>
 
-                <p className="text-center mt-6 text-gray-400 text-sm">
+                <p className="text-center mt-6 text-accent-foreground text-sm">
                     Não tem uma conta?{' '}
                     <Link to="/cadastro">
                         <button className="text-primary font-bold hover:underline cursor-pointer hover:opacity-80">

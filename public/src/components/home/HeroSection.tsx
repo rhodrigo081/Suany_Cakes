@@ -17,7 +17,7 @@ export const HeroSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-background/100 via-background/60 to-background/5"></div>
             </div>
 
-            <div className="container relative h-full px-40 flex flex-col justify-center">
+            <div className="container relative h-full px-25 flex flex-col justify-center">
                 <div className="max-w-wxl animate-fade-up space-y-6">
                     <h1 className="text-6xl font-bold leading-tight tracking-tight">
                         Doces & Salgados
@@ -29,15 +29,15 @@ export const HeroSection = () => {
                     </p>
                 </div>
 
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-4 pt-8">
                     <Link to="/catalogo">
-                        <Button buttonSize="lg" className="group w-full gap-2 sm:w-auto">
+                        <Button buttonSize="lg" className="group gap-2 px-12 py-4 text-base">
                             Ver Catálogo
                             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Button>
                     </Link>
                     <Link to="/contato">
-                        <Button buttonSize="lg" variant="secondary" className="w-full bg-background sm:w-auto">
+                        <Button buttonSize="lg" variant="secondary" className="bg-background px-12 py-4 text-base">
                             Fale Conosco
                         </Button>
                     </Link>

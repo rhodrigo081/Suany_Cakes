@@ -1,20 +1,18 @@
+import type { Address } from "./Address";
+import type { Order } from "./Order";
 import type { Product } from "./Product";
 
-interface Address {
-  street: string;
-  number: number;
-  neighborhood: string;
-  city: string;
-  federativeUnit: string;
-}
+
 
 export interface User {
   id: string;
   picture: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  address: Address;
+  addresses: Address[];
   phone: string;
   createdAt: Date;
   favorites: Product[];
+  orders: Order[]
 }

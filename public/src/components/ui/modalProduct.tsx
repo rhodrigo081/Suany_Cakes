@@ -69,7 +69,7 @@ export const ModalProduct = () => {
                         className="absolute top-4 right-4"
                         buttonSize="destructive"
                     >
-                        <X size={12} className="stroke-[4px]" />
+                        <X size={16} className="stroke-[4px]" />
                     </Button>
 
                     <Badge className="flex w-fit px-4 mb-4" variant="ghost">

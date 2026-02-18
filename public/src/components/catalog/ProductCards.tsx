@@ -31,7 +31,7 @@ export const ProductCards = ({ product }: ProductCardsProps) => {
                     </Badge>
                 </div>
 
-                <div className="absolute self-center top-30 text-3xs text-muted-foreground bg-background/70 p-3 py-1 gap-2 flex justify-center rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:opacity-80">
+                <div className="absolute self-center top-30 text-3xs text-muted-foreground bg-background/70 p-3 py-1 gap-2 flex justify-center rounded-lg opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
                     <Eye /> Ver Detalhes
                 </div>
 

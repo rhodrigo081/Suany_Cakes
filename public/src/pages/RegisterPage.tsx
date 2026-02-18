@@ -1,9 +1,10 @@
 import { RegisterForm } from "@/components/auth/RegisterForm"
+import { Wrapper } from "@/components/Wrapper"
 
 export const RegisterPage = () => {
     return (
-        <div className="pb-20">
+        <Wrapper>
             <RegisterForm />
-        </div>
+        </Wrapper>
     )
 }

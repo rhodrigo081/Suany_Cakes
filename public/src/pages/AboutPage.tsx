@@ -2,11 +2,12 @@ import { Banknote, MapPin } from "lucide-react";
 import { FaPix } from "react-icons/fa6";
 import Logo from "@/assets/suany_carla_cake_logo.svg"
 import { InfoCard } from '@/components/ui/infoCard';
+import { Wrapper } from "@/components/Wrapper";
 
 export const AboutPage = () => {
 
     return (
-        <div className="pb-20">
+        <Wrapper>
             <section className="relative bg-gradient-to-r from-background/100 via-primary/30 to-secondary/40 py-40 px-60 flex items-center justify-between overflow-hidden">
                 <div className="text-center w-xl">
                     <h1 className="text-5xl font-semibold font-display text-foreground mb-6">Nossa História</h1>
@@ -27,25 +28,25 @@ export const AboutPage = () => {
                     <h1 className="text-3xl font-semibold">Localização</h1>
                     <InfoCard>
                         <p className="text-accent-foreground flex items-center gap-2">
-                            <MapPin /> São Lourenço - PE
+                            <MapPin size={24}/> São Lourenço - PE
                         </p>
                     </InfoCard>
                 </div>
                 <div className="flex flex-col gap-4">
                     <h1 className="text-3xl font-semibold">Formas de Pagamento</h1>
                     <InfoCard>
-                        <ul className="space-y-3">
+                        <ul className="flex flex-col gap-3">
                             <li className="flex items-center gap-3 text-accent-foreground">
-                                <Banknote size={20} /> Dinheiro
+                                <Banknote size={24} /> Dinheiro
                             </li>
                             <li className="flex items-center gap-3 text-accent-foreground">
-                                <FaPix size={20} /> Pix
+                                <FaPix size={24} /> Pix
                             </li>
                         </ul>
                     </InfoCard>
                 </div>
             </main>
-        </div>
+        </Wrapper>
     );
 
 }

@@ -6,7 +6,7 @@ import { ContactPage } from "./pages/ContactPage"
 import { LoginPage } from "./pages/LoginPage"
 import { RegisterPage } from "./pages/RegisterPage"
 import { ShoppingCartPage } from "./pages/ShoppingCartPage"
-import { ProfileEditPage } from "./pages/ProfileEditPage"
+import { ProfilePage } from "./pages/ProfilePage"
 import { OrderHistoryPage } from "./pages/OrderHistoryPage"
 import { Layout } from "./components/Layout/Layout"
 import { CartProvider } from "./contexts/CartContext"
@@ -14,6 +14,8 @@ import { AuthProvider } from "./contexts/AuthContext"
 import { FavoritesPage } from "./pages/FavoritesPage"
 import { ModalProvider } from "./contexts/ModalContext"
 import { ThemeProvider } from "./contexts/ThemeContext"
+import { AddressFormPage } from "./pages/AddressFormPage"
+import { AddressProvider } from "./contexts/AddressContext"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -50,7 +52,7 @@ export const App = () => {
       },
       {
         path: "/perfil",
-        element: <ProfileEditPage />
+        element: <ProfilePage />
       },
       {
         path: "/historico-de-pedidos",
@@ -60,6 +62,14 @@ export const App = () => {
         path: "/favoritos",
         element: <FavoritesPage />
       },
+      {
+        path: "/novo-endereco",
+        element: <AddressFormPage />
+      },
+      {
+        path: "/editar-endereco/:id",
+        element: <AddressFormPage />
+      },
       ]
     }
   ])
@@ -67,11 +77,13 @@ export const App = () => {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <ModalProvider>
-          <CartProvider>
-            <RouterProvider router={router} />
-          </CartProvider>
-        </ModalProvider>
+        <AddressProvider>
+          <ModalProvider>
+            <CartProvider>
+              <RouterProvider router={router} />
+            </CartProvider>
+          </ModalProvider>
+        </AddressProvider>
       </ThemeProvider>
     </AuthProvider>
   )
