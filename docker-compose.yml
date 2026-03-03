@@ -1,35 +1,68 @@
 services:
+  database:
+    image: postgres
+    container_name: suany-cakes-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: suany-cakes
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d suany-cakes"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./app
     container_name: suany-cakes-backend
     ports:
       - "8080:8080"
+    volumes:
+      - ~/.m2:/root/.m2
+    working_dir: /app
+    command: sh -c "chmod +x mvnw && ./mvnw spring-boot:run"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/suany-cakes
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/suany-cakes
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      API_SECRET_TOKEN: ${API_SECRET_TOKEN}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /app
+          ignore:
+            - target/
+        - action: rebuild
+          path: ./app/pom.xml
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+
   frontend:
     build: ./public
     container_name: suany-cakes-frontend
     ports:
-      - "5173:80"
-    volumes:
-      - ./public:/app
-      - /app/node_modules
+      - "5173:5173"
+    working_dir: /app
+    command: npm run dev -- --host 0.0.0.0
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    develop:
+      watch:
+        - action: sync
+          path: ./public
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./public/package.json
     depends_on:
       - backend
-  database:
-    image: postgres
-    container_name: suany-cakes-database
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=suany-cakes
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-volumes:
-  pgdata:

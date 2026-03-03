@@ -14,22 +14,22 @@ interface CategoriesSectionProps {
 export const Categories = ({ activeCategory, onCategoryChange }: CategoriesSectionProps) => {
 
     const categories: Category[] = [{
-        id: "todos",
+        id: "all",
         picture: all,
         label: "Todos",
     },
     {
-        id: "doces",
+        id: "candy",
         picture: candies,
         label: "Doces",
     },
     {
-        id: "salgados",
+        id: "savory",
         picture: savories,
         label: "Salgados",
     },
     {
-        id: "bolos",
+        id: "cake",
         picture: cake,
         label: "Bolos & Tortas",
     },]

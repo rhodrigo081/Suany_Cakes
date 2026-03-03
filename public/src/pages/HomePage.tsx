@@ -3,17 +3,18 @@ import { FeaturedSection } from "@/components/home/FeaturedProducts/FeaturedSect
 import { HeroSection } from "@/components/home/HeroSection"
 import { HowWorksSection } from "@/components/home/HowWorks/HowWorksSection"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react";
-import type { Product } from "@/types/Product";
 import { ListFilter } from "lucide-react"
+import { useCategory } from "@/contexts/CategoryContext/useCategory"
 
 export const HomePage = () => {
     const navigate = useNavigate();
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-    const handleCategoryClick = ((categoryId: string) => {
-        navigate(`/catalogo?category=${categoryId}`)
-    });
+    const { setActiveCategory } = useCategory();
+
+    const handleCategoryClick = (categoryId: string) => {
+        setActiveCategory(categoryId);
+        navigate("/catalogo");
+    };
 
     return (
         <div className="relative w-full">
@@ -27,7 +28,7 @@ export const HomePage = () => {
                     <Categories onCategoryChange={handleCategoryClick} activeCategory=" " />
                 </div>
 
-                <FeaturedSection onOpenProduct={setSelectedProduct} />
+                <FeaturedSection />
                 <HowWorksSection />
 
             </div>

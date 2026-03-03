@@ -1,14 +1,15 @@
 import type { Address } from "./Address";
-import type { Product } from "./Product";
+import type { OrderItem } from "./OrderItem";
 
 type OrderStatus = "Entregue" | "Preparando" | "Pendente" | "Cancelado";
 
 export interface Order {
   id: string;
   userId: string;
-  items: Product[];
+  items: OrderItem[];
   status: OrderStatus;
   createdAt: Date;
   totalPrice: number;
+  deliveryDate: Date;
   shippingAddress: Address;
 }

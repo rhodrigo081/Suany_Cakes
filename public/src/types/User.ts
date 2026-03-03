@@ -9,6 +9,6 @@ export interface User {
   email: string;
   addresses: Address[];
   phone: string;
-  createdAt: Date;
+  createdAt: string;
   favorites: Product[];
 }

@@ -1,9 +1,20 @@
-import { products } from "@/data/products"
+import { useEffect, useState } from "react";
 import { FeaturedCards } from "./FeaturedCards";
-
+import type { Product } from "@/types/Product";
+import { productsService } from "@/services/products";
 
 export const FeaturedSection = () => {
+    const [products, setProducts] = useState<Product[]>([])
     const featuredProducts = products.filter((p) => p.featured).slice(0, 4);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const data = await productsService.getAllProducts();
+            setProducts(data);
+        };
+
+        fetchProducts();
+    }, []);
 
     return (
         <section className="relative overflow-hidden flex justify-center items-center">

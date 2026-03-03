@@ -4,9 +4,9 @@ import { ShoppingCart } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { DropDown } from "./Dropdown"
-import { useCart } from "@/contexts/CartContext"
 import { Badge } from "@/components/ui/badge"
-import { useAuth } from "@/contexts/AuthContext"
+import { useCart } from "@/contexts/CartContext/useCart"
+import { useAuth } from "@/contexts/AuthContext/useAuth"
 
 export const Header = () => {
 
@@ -30,14 +30,18 @@ export const Header = () => {
                 </Link>
                 <NavBar />
                 <div className="flex items-center justify-center gap-4">
-                    <Button variant="secondary" buttonSize="icon" className="relative group" onClick={handleClickCart}>
-                        <ShoppingCart size={25} />
-                        {totalItems > 0 && (
-                            <Badge className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center p-0 text-xs group-hover:bg-primary group-hover:text-white transition-all duration-200">
-                                {totalItems}
-                            </Badge>
-                        )}
-                    </Button>
+
+                    {isAuthenticated && (
+                        <Button variant="secondary" buttonSize="icon" className="relative group" onClick={handleClickCart}>
+                            <ShoppingCart size={25} />
+                            {totalItems > 0 && (
+                                <Badge className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center p-0 text-xs group-hover:bg-primary group-hover:text-white transition-all duration-200">
+                                    {totalItems}
+                                </Badge>
+                            )}
+                        </Button>
+                    )}
+
                     <DropDown />
                 </div>
             </div>

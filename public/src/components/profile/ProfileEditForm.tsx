@@ -1,10 +1,11 @@
 import { Pencil, Save } from "lucide-react"
 import { Input } from "../ui/input"
-import { useAuth } from "@/contexts/AuthContext"
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { formatters } from "@/utils/formatters";
+import { useAuth } from "@/contexts/AuthContext/useAuth";
 
 interface ProfileFormData {
     firstName: string;
@@ -14,10 +15,10 @@ interface ProfileFormData {
 }
 
 export const ProfileEditForm = () => {
-    const { user, updateUser } = useAuth() 
+    const { user, updateUser } = useAuth()
     const navigate = useNavigate()
 
-    const { register, handleSubmit, reset } = useForm<ProfileFormData>({
+    const { register, handleSubmit, reset, setValue } = useForm<ProfileFormData>({
         defaultValues: {
             firstName: user?.firstName || '',
             lastName: user?.lastName || '',
@@ -28,20 +29,36 @@ export const ProfileEditForm = () => {
 
     useEffect(() => {
         if (user) {
-            reset(user);
+            const formattedUser = {
+                ...user,
+                phone: user.phone ? formatters.maskPhone(user.phone) : ''
+            };
+            reset(formattedUser);
         }
     }, [user, reset]);
 
     const onSubmit = async (data: ProfileFormData) => {
         try {
             if (updateUser) {
-                await updateUser(data);
+                const payload = {
+                    ...data,
+                    phone: formatters.clearMask(data.phone)
+                };
+                await updateUser(payload);
                 alert("Perfil atualizado com sucesso!");
                 navigate("/perfil");
             }
         } catch (error) {
             console.error("Erro ao atualizar perfil:", error);
         }
+    };
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/\D/g, "");
+        const limitedValue = rawValue.slice(0, 11);
+        const maskedValue = formatters.maskPhone(limitedValue);
+
+        setValue("phone", maskedValue);
     };
 
     return (
@@ -54,26 +71,29 @@ export const ProfileEditForm = () => {
                 <Input
                     label="Primeiro Nome"
                     {...register("firstName", { required: "Campo obrigatório" })}
+                    placeholder="Seu nome"
                 />
                 <Input
                     label="Sobrenome"
                     {...register("lastName")}
+                    placeholder="Seu sobrenome"
                 />
                 <Input
                     label="E-mail"
                     type="email"
                     {...register("email", { required: "E-mail obrigatório" })}
+                    placeholder="seu@email.com"
                 />
+
                 <Input
                     label="Telefone"
                     {...register("phone")}
+                    onChange={handlePhoneChange}
+                    placeholder="(00) 00000-0000"
                 />
 
                 <div className="flex gap-4 pt-6">
-                    <Button
-                        type="submit"
-                        buttonSize="lg"
-                    >
+                    <Button type="submit" buttonSize="lg">
                         <Save size={20} /> Salvar
                     </Button>
                     <Link to="/perfil">

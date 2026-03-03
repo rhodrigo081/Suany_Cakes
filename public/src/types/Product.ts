@@ -1,9 +1,7 @@
-export type Categories = 'doces' | 'salgados' | 'bolos'
-
 export const CATEGORY_LABELS = {
-  doces: "Doce",
-  salgados: "Salgado",
-  bolos: "Bolo",
+  candy: "Doce",
+  savory: "Salgado",
+  cake: "Bolo",
 } as const;
 
 export type CategorySlug = keyof typeof CATEGORY_LABELS;
@@ -17,6 +15,5 @@ export interface Product {
     category: CategorySlug
     featured?: boolean;
     ingredients: string[];
-    quantity?: number;
 }
 

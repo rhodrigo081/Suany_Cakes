@@ -2,23 +2,18 @@ import { CatalogSection } from "@/components/catalog/CatalogSection"
 import { Categories } from "@/components/categories/Categories"
 import { ModalProduct } from "@/components/ui/modalProduct";
 import { Wrapper } from "@/components/Wrapper";
-import { useSearchParams } from "react-router-dom";
+import { useCategory } from "@/contexts/CategoryContext/useCategory";
 
 export const CatalogPage = () => {
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const { activeCategory, setActiveCategory } = useCategory();
 
-    const selectedCategory = searchParams.get("category") || "todos"
-
-    const handleCategoryChange = ((id: string) => {
-        setSearchParams({ category: id })
-    })
 
     return (
         <Wrapper className="grid w-full px-40 h-full pb-20">
             <ModalProduct />
-            <Categories activeCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
-            <CatalogSection activeCategory={selectedCategory} />
+            <Categories activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
+            <CatalogSection activeCategory={activeCategory} />
         </Wrapper>
     )
 

@@ -1,4 +1,4 @@
-import type { Product } from "@/types/Product";
+/* import type { Product } from "@/types/Product";
 import chocolateTruffleImg from "@/assets/chocolate_truffle.svg";
 import cakeImg from "@/assets/chocolate_cake.svg";
 import chickenCroquetteImg from "@/assets/chicken_croquette.svg";
@@ -46,12 +46,41 @@ export const products: Product[] = [
     price: 1.5,
     image: chickenCroquetteImg,
     category: 'salgados',
-    ingredients: [
-      "Frango desfiado",
-      "Massa de batata",
-      "Temperos especiais",
-      "Farinha de rosca",
-    ],
+    ingredients: [ "Frango desfiado","Massa de batata", "Temperos especiais","Farinha de rosca" ],
+    featured: true,
+  },
+    {
+    id: "9",
+    name: "Empadão de Frango",
+    description:
+      "Fatia generosa de empadão com massa 'podre' que derrete na boca e recheio de frango cremoso com requeijão.",
+    price: 15,
+    image: chickenPotPieImg, // Importe seu asset aqui
+    category: 'salgados',
+    ingredients: ["Frango desfiado", "Massa amanteigada", "Requeijão cremoso", "Milho"],
+    featured: true,
+  },
+  {
+    id: "10",
+    name: "Beijinho",
+    description:
+      "Doce tradicional de coco, feito com leite condensado de alta qualidade e finalizado com flocos de coco seco.",
+    price: 1,
+    image: coconutTruffleImg, // Importe seu asset aqui
+    category: 'doces',
+    ingredients: ["Leite condensado", "Coco ralado", "Manteiga", "Cravo da índia"],
+    featured: false,
+  },
+  {
+    id: "11",
+    name: "Bolo de Morango",
+    description:
+      "Massa pão de ló fofinha com camadas de creme de confeiteiro e morangos frescos colhidos no dia.",
+    price: 110,
+    image: strawberryCakeImg, 
+    category: 'bolos',
+    ingredients: ["Morangos frescos", "Creme de confeiteiro", "Chantilly", "Pão de ló"],
     featured: true,
   },
 ];
+ */

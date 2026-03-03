@@ -1,8 +1,8 @@
 import { Pencil, Star, Trash2 } from "lucide-react"
 import { Button } from "../ui/button"
 import type { Address } from "@/types/Address"
-import { useAddresses } from "@/contexts/AddressContext"
 import { useNavigate } from "react-router-dom"
+import { useAddresses } from "@/contexts/AddressContext/useAddress"
 
 interface AddressCardProps {
     addresses?: Address[]
@@ -11,6 +11,22 @@ interface AddressCardProps {
 export const AddressCard = ({ addresses = [] }: AddressCardProps) => {
     const { removeAddress, setPrimaryAddress } = useAddresses();
     const navigate = useNavigate();
+
+    const handleRemove = async (id: string) => {
+        try {
+            await removeAddress(id);
+        } catch (error) {
+            console.error("Erro ao remover endereço:", error);
+        }
+    };
+
+    const handleSetPrimary = async (id: string) => {
+        try {
+            await setPrimaryAddress(id);
+        } catch (error) {
+            console.error("Erro ao definir endereço principal:", error);
+        }
+    };
 
     if (addresses.length === 0) {
         return <div className="p-8 text-center text-sm text-accent-foreground">Nenhum endereço cadastrado.</div>;
@@ -29,7 +45,7 @@ export const AddressCard = ({ addresses = [] }: AddressCardProps) => {
                                 </span>
                             ) : (
                                 <button
-                                    onClick={() => setPrimaryAddress(addr.id)}
+                                    onClick={() => handleSetPrimary(addr.id)}
                                     className="text-[10px] text-accent-foreground hover:underline cursor-pointer"
                                 >
                                     Tornar principal
@@ -38,6 +54,7 @@ export const AddressCard = ({ addresses = [] }: AddressCardProps) => {
                         </div>
                         <p className="text-sm text-accent-foreground leading-relaxed">
                             {addr.street}, {addr.number}<br />
+                            {addr.complement}<br />
                             {addr.neighborhood}, {addr.city}/{addr.state}<br />
                             CEP: {addr.zipCode}
                         </p>
@@ -47,10 +64,9 @@ export const AddressCard = ({ addresses = [] }: AddressCardProps) => {
                         <Button variant="ghost" buttonSize="icon" onClick={() => navigate(`/editar-endereco/${addr.id}`)}>
                             <Pencil size={18} />
                         </Button>
-
                         <Button
                             variant="destructive"
-                            onClick={() => removeAddress(addr.id)}
+                            onClick={() => handleRemove(addr.id)}
                             buttonSize="icon"
                         >
                             <Trash2 size={18} />
@@ -59,5 +75,5 @@ export const AddressCard = ({ addresses = [] }: AddressCardProps) => {
                 </div>
             ))}
         </div>
-    )
-}
+    );
+};

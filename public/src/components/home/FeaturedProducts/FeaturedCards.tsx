@@ -1,8 +1,8 @@
 import { Button } from "../../ui/button";
-import { formatCurrency } from "@/utils/formatters";
 import { Badge } from "@/components/ui/badge";
+import { useProductModal } from "@/contexts/ModalContext/useModal";
 import { CATEGORY_LABELS, type Product } from "@/types/Product";
-import { useProductModal } from "@/contexts/ModalContext";
+import { formatters } from "@/utils/formatters";
 
 interface FeaturedCardsProps {
     product: Product;
@@ -38,7 +38,7 @@ export const FeaturedCards = ({ product }: FeaturedCardsProps) => {
                     </p>
                 </div>
                 <Button buttonSize="lg" className="group w-3xs font-semibold text-2xl">
-                    {formatCurrency(product.price)}
+                    {formatters.formatCurrency(product.price)}
                 </Button>
             </div>
         </div>

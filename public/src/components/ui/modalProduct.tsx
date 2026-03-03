@@ -1,43 +1,39 @@
 import { Minus, Plus, ShoppingCart, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Badge } from "./badge";
 import { Button } from "./button";
-import { formatCurrency } from "@/utils/formatters";
-import { useCart } from "@/contexts/CartContext";
-import { useAuth } from "@/contexts/AuthContext";
+import { formatters } from "@/utils/formatters";
 import { useNavigate } from "react-router-dom";
-import { useProductModal } from "@/contexts/ModalContext";
+import { useProductModal } from "@/contexts/ModalContext/useModal";
+import { useCart } from "@/contexts/CartContext/useCart";
+import { useAuth } from "@/contexts/AuthContext/useAuth";
 
 export const ModalProduct = () => {
-    const { selectedProduct: product, isOpen, closeModal } = useProductModal(); // Lendo do contexto
+    const { selectedProduct: product, isOpen, closeModal } = useProductModal();
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (isOpen) {
-            setQuantity(1);
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
-        }
-        return () => { document.body.style.overflow = "unset"; };
-    }, [isOpen]);
+    const prevProductId = useRef<string | undefined>(undefined);
 
+    if (product?.id !== prevProductId.current) {
+        prevProductId.current = product?.id;
+        setQuantity(1);
+    }
     if (!isOpen || !product) return null;
 
     const total = quantity * product.price;
 
     const categoryLabel: Record<string, string> = {
-        doces: 'Doce',
-        salgados: 'Salgado',
-        bolos: 'Bolo'
+        candy: 'Doce',
+        savory: 'Salgado',
+        cake: 'Bolo'
     };
 
     const handleAddToCart = () => {
         if (isAuthenticated) {
-            addToCart({ ...product, quantity });
+            addToCart(product, quantity);
             closeModal();
         } else {
             closeModal();
@@ -91,7 +87,7 @@ export const ModalProduct = () => {
                     </div>
 
                     <div className="mb-6">
-                        <span className="text-3xl font-bold text-primary">{formatCurrency(product.price)}</span>
+                        <span className="text-3xl font-bold text-primary">{formatters.formatCurrency(product.price)}</span>
                         <span className="text-accent-foreground text-sm font-medium"> / unidade</span>
                     </div>
 
@@ -121,7 +117,7 @@ export const ModalProduct = () => {
                     <div className="mt-auto">
                         <div className="flex justify-between items-center border border-border rounded-xl p-3 mb-4">
                             <span className="text-accent-foreground font-medium">Total:</span>
-                            <span className="text-2xl font-bold text-foreground">{formatCurrency(total)}</span>
+                            <span className="text-2xl font-bold text-foreground">{formatters.formatCurrency(total)}</span>
                         </div>
 
                         <Button className="w-full h-13 rounded-2xl gap-2" onClick={handleAddToCart}>

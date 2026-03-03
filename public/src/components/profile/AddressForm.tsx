@@ -1,11 +1,11 @@
-import { MapPin, Save, } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { MapPin, Save } from "lucide-react";
+import { useForm, useWatch } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import type { Address } from "@/types/Address";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useAddresses } from "@/contexts/AddressContext";
 import { useEffect } from "react";
+import { useAddresses } from "@/contexts/AddressContext/useAddress";
 
 type AddressFormData = Omit<Address, "id" | "isPrimary"> & {
     complement?: string;
@@ -15,40 +15,42 @@ const labelOptions = ["Casa", "Trabalho", "Outro"];
 
 export const AddressForm = () => {
     const { id } = useParams<{ id: string }>();
-    const { register, handleSubmit, setValue, reset, watch } = useForm<AddressFormData>();
+    const { register, handleSubmit, setValue, reset, control } = useForm<AddressFormData>();
     const { addresses, addAddress, updateAddress } = useAddresses();
     const navigate = useNavigate();
     const addressToEdit = addresses.find((a) => a.id === id);
-    const currentLabel = watch("label");
+    const currentLabel = useWatch({ control, name: "label" });
 
     useEffect(() => {
         if (id && addressToEdit) {
-            const keys = Object.keys(addressToEdit) as Array<keyof Address>;
-            
-            keys.forEach((key) => {
-                if (key !== "id" && key !== "isPrimary") {
-                    setValue(key as keyof AddressFormData, addressToEdit[key] as any);
-                }
-            });
+            (Object.keys(addressToEdit) as Array<keyof Address>)
+                .filter((key): key is keyof AddressFormData => key !== "id" && key !== "isPrimary")
+                .forEach((key) => {
+                    setValue(key, addressToEdit[key]);
+                });
         }
     }, [id, addressToEdit, setValue]);
 
-    const onSubmit = (data: AddressFormData) => {
-        if (id) {
-            updateAddress(id, {
-                ...data,
-                number: Number(data.number),
-                isPrimary: addressToEdit?.isPrimary || false
-            });
-        } else {
-            addAddress({
-                ...data,
-                number: Number(data.number),
-                isPrimary: false
-            });
+    const onSubmit = async (data: AddressFormData) => {
+        try {
+            if (id) {
+                await updateAddress(id, {
+                    ...data,
+                    number: Number(data.number),
+                    isPrimary: addressToEdit?.isPrimary || false
+                });
+            } else {
+                await addAddress({
+                    ...data,
+                    number: Number(data.number),
+                    isPrimary: false
+                });
+            }
+            reset();
+            navigate("/perfil");
+        } catch (error) {
+            console.error("Erro ao salvar endereço:", error);
         }
-        reset();
-        navigate("/perfil");
     };
 
     return (
@@ -83,75 +85,38 @@ export const AddressForm = () => {
                     />
                 </div>
 
-                <Input
-                    label="CEP *"
-                    placeholder="00000-000"
-                    {...register("zipCode")}
-                />
-
+                <Input label="CEP *" placeholder="00000-000" {...register("zipCode")} />
 
                 <div className="flex gap-2">
                     <div className="w-3/4">
-                        <Input
-                            label="Rua *"
-                            placeholder="Nome da Rua"
-                            {...register("street")}
-                        />
+                        <Input label="Rua *" placeholder="Nome da Rua" {...register("street")} />
                     </div>
                     <div className="w-1/4">
-                        <Input
-                            label="Número *"
-                            placeholder="123"
-                            {...register("number")}
-                        />
+                        <Input label="Número *" placeholder="123" {...register("number")} />
                     </div>
                 </div>
 
-
-                <Input
-                    label="Complemento"
-                    placeholder="Apto, Bloco, referência..."
-                    {...register("complement")}
-                />
-
-
-                <Input
-                    label="Bairro *"
-                    placeholder="Nome do Bairro"
-                    {...register("neighborhood")}
-                />
-
+                <Input label="Complemento" placeholder="Apto, Bloco, referência..." {...register("complement")} />
+                <Input label="Bairro *" placeholder="Nome do Bairro" {...register("neighborhood")} />
 
                 <div className="flex gap-2">
                     <div className="w-3/4">
-                        <Input
-                            label="Cidade *"
-                            placeholder="Sua Cidade"
-                            {...register("city")}
-                        />
+                        <Input label="Cidade *" placeholder="Sua Cidade" {...register("city")} />
                     </div>
                     <div className="w-1/4">
-                        <Input
-                            label="Estado *"
-                            placeholder="UF"
-                            {...register("state")}
-                        />
+                        <Input label="Estado *" placeholder="UF" {...register("state")} />
                     </div>
                 </div>
-
 
                 <div className="flex gap-4 pt-6">
-                    <Button
-                        type="submit"
-                        buttonSize="lg"
-                    >
+                    <Button type="submit" buttonSize="lg">
                         <Save size={20} /> Salvar
                     </Button>
                     <Link to="/perfil">
                         <Button
                             type="button"
                             variant="destructive"
-                            className='border  border-border rounded-xl hover:border-destructive transition-all duration-300'
+                            className="border border-border rounded-xl hover:border-destructive transition-all duration-300"
                             buttonSize="lg"
                             onClick={() => reset()}
                         >

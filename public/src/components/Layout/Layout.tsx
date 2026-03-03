@@ -10,7 +10,7 @@ export const Layout = () => {
         <div className="flex flex-col min-h-screen">
             <ScrollToTop />
             <Header />
-            <main className="flex-grow w-full min-h-screen pt-20">
+            <main className="flex-row w-full min-h-screen pt-20">
                 <Outlet />
             </main>
             <Footer />

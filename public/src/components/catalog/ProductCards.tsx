@@ -1,23 +1,29 @@
-import { formatCurrency } from "@/utils/formatters"
+import { formatters } from "@/utils/formatters"
 import { Eye, Heart } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { CATEGORY_LABELS, type Product } from "@/types/Product"
-import { useAuth } from "@/contexts/AuthContext"
-import { useProductModal } from "@/contexts/ModalContext"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/contexts/AuthContext/useAuth"
+import { useProductModal } from "@/contexts/ModalContext/useModal"
 
 interface ProductCardsProps {
     product: Product;
 }
 
 export const ProductCards = ({ product }: ProductCardsProps) => {
-    const { user, toggleFavorite } = useAuth();
+    const { user, favorites, toggleFavorite } = useAuth();
     const { openModal } = useProductModal();
+    const navigate = useNavigate();
 
-    const isFavorite = user?.favorites?.some(fav => String(fav.id) === String(product.id)) ?? false;
+    const isFavorite = favorites.some(fav => String(fav.id) === String(product.id));
 
-    const handleFavoriteClick = (e: React.MouseEvent) => {
+    const handleFavoriteClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        toggleFavorite(product);
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+        await toggleFavorite(product);
     };
 
     return (
@@ -43,14 +49,12 @@ export const ProductCards = ({ product }: ProductCardsProps) => {
                 <div className="w-full h-8 flex justify-between px-4 items-center">
                     <button onClick={handleFavoriteClick} className="focus:outline-none transition-transform active:scale-125">
                         <Heart
-                            className={`transition-colors duration-300 cursor-pointer ${isFavorite ? "text-destructive" : "text-accent-foreground hover:text-destructive"
-                                }`}
+                            className={`transition-colors duration-300 cursor-pointer ${isFavorite ? "text-destructive" : "text-accent-foreground hover:text-destructive"}`}
                             fill={isFavorite ? "currentColor" : "none"}
                         />
                     </button>
-
                     <h4 className="font-semibold text-3xl text-primary">
-                        {formatCurrency(product.price)}
+                        {formatters.formatCurrency(product.price)}
                     </h4>
                 </div>
             </div>

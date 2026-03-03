@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ContactCard } from '@/components/ui/contactCard';
 import { Wrapper } from '@/components/Wrapper';
-import { MessageCircle, Phone, Instagram, Clock, MoveRight } from 'lucide-react';
+import { MessageCircle, Instagram, Clock, MoveRight } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa6';
 
 export const ContactPage = () => {
@@ -18,23 +18,14 @@ export const ContactPage = () => {
 
                     <div className="space-y-6">
                         <ContactCard
-                            title="WhatsApp"
+                            title="WhatsApp / Telefone"
                             icon={<MessageCircle className="text-primary" size={24} />}
                             iconBgColor="bg-primary/10"
                         >
-                            <p>(81) 99999-9999</p>
+                            <p>(81) 99658-1539</p>
                             <a href="#" className="text-primary hover:underline inline-flex items-center gap-1 mt-1">
                                 Enviar mensagem <MoveRight className="stroke-[1px]" />
                             </a>
-                        </ContactCard>
-
-                        <ContactCard
-                            title="Telefone"
-                            icon={<Phone className="text-secondary" size={24} />}
-                            iconBgColor="bg-secondary/10"
-                        >
-                            <p>(81) 99999-9999</p>
-                            <p className="text-sm">Atendemos de segunda a sábado</p>
                         </ContactCard>
 
                         <ContactCard
@@ -52,8 +43,8 @@ export const ContactPage = () => {
                     <div className="space-y-6 flex flex-col">
                         <ContactCard
                             title="Horário de Funcionamento"
-                            icon={<Clock className="text-primary" size={24} />}
-                            iconBgColor="bg-primary/10"
+                            icon={<Clock className="text-secondary" size={24} />}
+                            iconBgColor="bg-secondary/10"
                         >
                             <div className="grid grid-cols-2 mt-2">
                                 <span>Segunda - Sexta</span> <span className="font-bold text-right text-foreground ml-24">8h - 18h</span>

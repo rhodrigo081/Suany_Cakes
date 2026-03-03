@@ -1,11 +1,11 @@
-import { ArrowRight, Plus, ShoppingBag } from "lucide-react";
+import { ArrowRight, ShoppingBag } from "lucide-react";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 
 export const EmptyCar = () => {
 
     return (
-        <div className="flex flex-col items-center justify-center pt-50 pb-30 bg-background">
+        <div className="flex flex-col items-center justify-center pt-50 pb-30">
             <div className="bg-accent/40 p-4 rounded-full mb-6">
                 <ShoppingBag size={60} />
             </div>

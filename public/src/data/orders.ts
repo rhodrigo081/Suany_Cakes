@@ -1,13 +1,17 @@
-import type { Order } from "@/types/Order";
-import { products } from "./products";
+/* import type { Order } from "@/types/Order";
+
 
 export const MOCK_ORDERS: Order[] = [
   {
     id: "order-507f1f77bcf86cd799439011",
     userId: "1",
-    items: [products[0], products[2], products[2]],
+    items: [
+      { ...products[0], quantity: 1 },
+      { ...products[2], quantity: 2 },
+    ],
     status: "Entregue",
     createdAt: new Date("2024-02-15T14:30:00"),
+    deliveryDate: new Date("2024-02-17T10:00:00"),
     totalPrice: 8.0,
     shippingAddress: {
       id: "1",
@@ -24,9 +28,10 @@ export const MOCK_ORDERS: Order[] = [
   {
     id: "order-507f1f77bcf86cd799439012",
     userId: "1",
-    items: [products[1]],
+    items: [{ ...products[1], quantity: 1 }],
     status: "Preparando",
     createdAt: new Date("2024-02-18T10:15:00"),
+    deliveryDate: new Date("2026-03-01T15:00:00"),
     totalPrice: 95.0,
     shippingAddress: {
       id: "1",
@@ -43,9 +48,10 @@ export const MOCK_ORDERS: Order[] = [
   {
     id: "order-507f1f77bcf86cd799439013",
     userId: "1",
-    items: [products[3], products[3], products[3], products[3]],
+    items: [{ ...products[3], quantity: 4 }],
     status: "Pendente",
     createdAt: new Date(),
+    deliveryDate: new Date("2026-03-05T14:00:00"),
     totalPrice: 6.0,
     shippingAddress: {
       id: "1",
@@ -62,9 +68,13 @@ export const MOCK_ORDERS: Order[] = [
   {
     id: "order-507f1f77bcf86cd799439014",
     userId: "1",
-    items: [products[0], products[1]],
+    items: [
+      { ...products[0], quantity: 1 },
+      { ...products[1], quantity: 1 },
+    ],
     status: "Cancelado",
     createdAt: new Date("2024-01-10T09:00:00"),
+    deliveryDate: new Date("2024-01-12T11:00:00"),
     totalPrice: 101.0,
     shippingAddress: {
       id: "1",
@@ -78,4 +88,4 @@ export const MOCK_ORDERS: Order[] = [
       zipCode: "12345678",
     },
   },
-];
+]; */

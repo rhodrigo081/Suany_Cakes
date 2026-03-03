@@ -42,7 +42,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             focus:border-primary transition-all placeholder:text-accent-foreground/50 
                             text-foreground
                             ${paddingLeft} 
-                            ${paddingRight}
+                            ${paddingRight} 
                         `}
                     />
 

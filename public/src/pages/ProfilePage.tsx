@@ -1,16 +1,12 @@
 import { AddressCard } from '@/components/profile/AddressCard';
 import { Button } from '@/components/ui/button';
 import { Wrapper } from '@/components/Wrapper';
-import { useAddresses } from '@/contexts/AddressContext';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAddresses } from '@/contexts/AddressContext/useAddress';
+import { useAuth } from '@/contexts/AuthContext/useAuth';
+import { formatters } from '@/utils/formatters';
 import { LogOut, Phone, Mail, MapPin, Plus, Pencil, } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-const formatDate = (date: Date | string) => {
-    const d = new Date(date);
-    return d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-};
 
 export const ProfilePage = () => {
     const { user, logout } = useAuth();
@@ -44,7 +40,7 @@ export const ProfilePage = () => {
                                     {user.firstName} {user.lastName}
                                 </h1>
                                 <p className="text-sm text-accent-foreground">
-                                    Cliente desde {formatDate(user.createdAt)}
+                                    Cliente desde {formatters.formatDate(user.createdAt)}
                                 </p>
                             </div>
                         </div>
@@ -62,7 +58,7 @@ export const ProfilePage = () => {
                 <h2 className="text-2xl font-bold text-foreground font-display">Informações de Contato</h2>
                 <div className="py-6 px-2 text-accent-foreground flex gap-2 items-center">
                     <Phone size={20} />
-                    <p className=" font-medium">{user.phone || "Não informado"}</p>
+                    <p className=" font-medium">{formatters.maskPhone(user.phone) || "Não informado"}</p>
                 </div>
                 <hr className="w-full" />
                 <div className="py-6 px-2 text-accent-foreground flex gap-2 items-center">
@@ -87,16 +83,17 @@ export const ProfilePage = () => {
             </section>
 
             <div className="flex justify-center pt-8">
-                <Button
-                    variant="destructive"
-                    onClick={logout}
-                    buttonSize="lg"
-                    className='border  border-border rounded-xl hover:border-destructive transition-all duration-300'
-                >
-                    <LogOut size={20} />
-                    Sair da Conta
-                </Button>
-
+                <Link to="/login">
+                    <Button
+                        variant="destructive"
+                        onClick={logout}
+                        buttonSize="lg"
+                        className='border  border-border rounded-xl hover:border-destructive transition-all duration-300'
+                    >
+                        <LogOut size={20} />
+                        Sair da Conta
+                    </Button>
+                </Link>
             </div>
         </Wrapper>
     );

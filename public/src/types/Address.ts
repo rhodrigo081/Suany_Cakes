@@ -3,6 +3,7 @@ export interface Address {
   street: string;
   label: string;
   isPrimary: boolean;
+  complement?: string;
   number: number;
   neighborhood: string;
   city: string;

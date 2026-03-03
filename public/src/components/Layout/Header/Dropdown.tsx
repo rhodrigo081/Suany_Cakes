@@ -14,8 +14,8 @@ import { DropdownMenuContent } from "../../ui/Dropdown/MenuContent"
 import { DropdownMenuItem } from "../../ui/Dropdown/MenuItem"
 import { Link } from "react-router-dom"
 import { DropdownMenuSeparator } from "../../ui/Dropdown/MenuSeparator"
-import { useAuth } from "@/contexts/AuthContext"
-import { useTheme } from "@/contexts/ThemeContext"
+import { useAuth } from "@/contexts/AuthContext/useAuth"
+import { useTheme } from "@/contexts/ThemeContext/useTheme"
 
 export const DropDown = () => {
     const { isAuthenticated, logout } = useAuth();
@@ -65,13 +65,15 @@ export const DropDown = () => {
 
                         <DropdownMenuSeparator />
 
-                        <DropdownMenuItem
-                            onClick={logout}
-                            className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
-                        >
-                            <LogOut className="h-4 w-4" />
-                            Sair
-                        </DropdownMenuItem>
+                        <Link to="/login">
+                            <DropdownMenuItem
+                                onClick={logout}
+                                className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+                            >
+                                <LogOut className="h-4 w-4" />
+                                Sair
+                            </DropdownMenuItem>
+                        </Link>
                     </>
                 ) : (
                     <>

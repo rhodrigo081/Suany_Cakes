@@ -1,12 +1,40 @@
 import { Mail, Lock } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { FaApple, FaFacebook, FaGoogle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaGoogle } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { authService } from '@/services/auth';
+import { useAuth } from '@/contexts/AuthContext/useAuth';
 
 export const LoginForm = () => {
+
+    const navigate = useNavigate();
+
+    const handleGoogleLogin = () => {
+
+        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    };
+
+    const { login } = useAuth();
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const credentials = Object.fromEntries(formData.entries());
+
+        try {
+            const data = await authService.login(credentials);
+
+            login(data.token, data.user);
+
+            navigate('/');
+        } catch (error) {
+            alert(error + "E-mail ou senha incorretos.");
+        }
+    }
+
     return (
-        <div className="flex items-center justify-center pt-20">
+        <div className="flex items-center justify-center">
             <div className="w-xl bg-card-background rounded-4xl border border-gray-100 shadow-sm p-8 md:p-12">
 
                 <div className="text-center mb-8">
@@ -19,14 +47,8 @@ export const LoginForm = () => {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    <Button variant="tertiary">
+                    <Button onClick={handleGoogleLogin} variant="tertiary">
                         <FaGoogle size={20} /> Continuar com Google
-                    </Button>
-                    <Button variant="tertiary">
-                        <FaFacebook size={20} /> Continuar com Facebook
-                    </Button>
-                    <Button variant="tertiary">
-                        <FaApple size={20} /> Continuar com Apple
                     </Button>
                 </div >
 
@@ -36,10 +58,11 @@ export const LoginForm = () => {
                     <div className="flex-1 border-1 border-border"></div>
                 </div>
 
-                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                
+                <form className="space-y-5" onSubmit={handleSubmit}>
+
 
                     <Input
+                        name='email'
                         label="E-mail"
                         type="email"
                         icon={Mail}
@@ -47,6 +70,7 @@ export const LoginForm = () => {
                     />
 
                     <Input
+                        name='password'
                         label="Senha"
                         type="password"
                         icon={Lock}
