@@ -1,15 +1,28 @@
 import type { Address } from "./Address";
-import type { OrderItem } from "./OrderItem";
 
-type OrderStatus = "Entregue" | "Preparando" | "Pendente" | "Cancelado";
+export const ORDER_STATUS_LABELS = {
+  WAITING_PAYMENT: "Aguardando Pagamento",
+  PENDING: "Pendente",
+  IN_PRODUCTION: "Em Produção",
+  FOR_DELIVERY: "Saiu Para Entrega",
+  FINISHED: "Finalizado",
+  CANCELED: "Cancelado",
+} as const;
+
+export interface OrderItem {
+  productName: string;
+  productImage: string;
+  quantity: number;
+  unitPrice: number;
+  subtotal: number;
+}
 
 export interface Order {
   id: string;
-  userId: string;
-  items: OrderItem[];
-  status: OrderStatus;
-  createdAt: Date;
+  status: string;
+  createdAt: string;
   totalPrice: number;
-  deliveryDate: Date;
+  deliveryDate: string;
   shippingAddress: Address;
+  items: OrderItem[];
 }

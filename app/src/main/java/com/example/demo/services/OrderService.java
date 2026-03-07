@@ -1,13 +1,13 @@
 package com.example.demo.services;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.dtos.AddressResponseDTO;
 import com.example.demo.dtos.OrderItemResponseDTO;
 import com.example.demo.dtos.OrderRequestDTO;
@@ -28,29 +28,26 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
-    private ShoppingCartRepository shopingCartRepository;
-
+    private ShoppingCartRepository shoppingCartRepository;
     @Autowired
     private AddressRepository addressRepository;
-
     @Autowired
     private OrderItemService orderItemService;
 
     @Transactional
     public OrderResponseDTO createOrder(UserModel user, OrderRequestDTO request) {
-        ShoppingCartModel cart = shopingCartRepository.findByUser(user)
+        ShoppingCartModel cart = shoppingCartRepository.findByUser(user)
                 .orElseThrow(() -> new NotFoundException("Carrinho não encontrado"));
 
         if (cart.getItems().isEmpty()) {
             throw new InvalidArgumentException("O carrinho está vazio");
         }
 
-        AddressModel address = addressRepository.findById(request.addressId())
+        AddressModel address = addressRepository.findByIdAndUser(request.addressId(), user)
                 .orElseThrow(() -> new InvalidArgumentException("Endereço inválido"));
 
-        if (request.deliveryDate() != null && request.deliveryDate().isBefore(LocalDateTime.now())) {
+        if (request.deliveryDate() != null && request.deliveryDate().isBefore(LocalDate.now())) {
             throw new InvalidArgumentException("A data de entrega não pode ser no passado.");
         }
 
@@ -61,13 +58,13 @@ public class OrderService {
         order.setTotalPrice(cart.getTotalPrice());
         order.setDeliveryDate(request.deliveryDate() != null
                 ? request.deliveryDate()
-                : LocalDateTime.now().plusDays(7));
+                : LocalDate.now().plusDays(7));
 
         order.setItems(orderItemService.convertFromCart(cart.getItems(), order));
 
         cart.getItems().clear();
         cart.setTotalPrice(BigDecimal.ZERO);
-        shopingCartRepository.save(cart);
+        shoppingCartRepository.save(cart);
 
         return convertToResponseDTO(orderRepository.save(order));
     }
@@ -75,18 +72,13 @@ public class OrderService {
     public List<OrderResponseDTO> getOrdersByUser(UserModel user) {
         return orderRepository.findByUserOrderByCreatedAtDesc(user).stream()
                 .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private OrderResponseDTO convertToResponseDTO(OrderModel model) {
         List<OrderItemResponseDTO> items = model.getItems().stream()
-                .map(item -> new OrderItemResponseDTO(
-                item.getProduct().getName(),
-                item.getProduct().getImage(),
-                item.getQuantity(),
-                item.getProduct().getPrice()
-        ))
-                .collect(Collectors.toList());
+                .map(orderItemService::toResponseDTO)
+                .toList();
 
         AddressResponseDTO addressDTO = new AddressResponseDTO(
                 model.getShippingAddress().getId(),
@@ -105,6 +97,7 @@ public class OrderService {
                 model.getId(),
                 model.getOrderStatus().name(),
                 model.getCreatedAt(),
+                model.getDeliveryDate(),
                 model.getTotalPrice(),
                 addressDTO,
                 items

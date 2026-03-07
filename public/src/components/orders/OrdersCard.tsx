@@ -2,9 +2,8 @@ import { useState } from "react";
 import { Box, ChevronDown, Calendar, ShoppingBag, MapPin, Clock } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import type { Order } from "@/types/Order";
+import { ORDER_STATUS_LABELS, type Order } from "@/types/Order";
 import { formatters } from "@/utils/formatters";
-
 
 interface OrderCardProps {
     order: Order;
@@ -15,28 +14,16 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
 
     const getStatusConfig = (status: string) => {
         const s = status.toLowerCase();
-        if (s.includes("entregue")) return "bg-green-100 text-green-700 hover:bg-green-100";
-        if (s.includes("preparando")) return "bg-blue-100 text-blue-700 hover:bg-blue-100";
-        if (s.includes("pendente")) return "bg-yellow-100 text-yellow-700 hover:bg-yellow-100";
-        if (s.includes("cancelado")) return "bg-red-100 text-red-700 hover:bg-red-100";
+        if (s.includes("finished")) return "bg-green-100 text-green-700 hover:bg-green-100";
+        if (s.includes("in_production") || s.includes("for_delivery")) return "bg-blue-100 text-blue-700 hover:bg-blue-100";
+        if (s.includes("pending") || s.includes("waiting")) return "bg-yellow-100 text-yellow-700 hover:bg-yellow-100";
+        if (s.includes("canceled")) return "bg-red-100 text-red-700 hover:bg-red-100";
         return "bg-gray-100 text-gray-700";
-    };
-
-    const formatDateSafely = (dateValue: any) => {
-        const d = new Date(dateValue);
-        if (isNaN(d.getTime())) return "Data não informada";
-
-        return new Intl.DateTimeFormat('pt-BR', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        }).format(d);
     };
 
     const formattedCreatedAt = new Intl.DateTimeFormat('pt-BR').format(new Date(order.createdAt));
     const formattedCreatedTime = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.createdAt));
-
-    const deliveryDateDisplay = formatDateSafely(order.deliveryDate);
+    const deliveryDateDisplay = formatters.formatDate(order.deliveryDate);
 
     return (
         <div
@@ -51,7 +38,6 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
                     <div className="flex items-center justify-center w-14 h-14 bg-primary/10 rounded-full shrink-0">
                         <Box className="text-primary" size={28} />
                     </div>
-
                     <div className="flex flex-col">
                         <h3 className="text-lg font-bold text-foreground font-display uppercase">
                             ORD - {order.id.slice(-6)}
@@ -66,9 +52,9 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
                 <div className="flex items-center gap-6">
                     <div className="flex flex-col items-end gap-1">
                         <Badge variant="secondary" className={cn("border-none px-4 py-0.5 font-semibold", getStatusConfig(order.status))}>
-                            {order.status}
+                            {ORDER_STATUS_LABELS[order.status as keyof typeof ORDER_STATUS_LABELS] ?? order.status}
                         </Badge>
-                        <span className="text-2xl font-bold text-primary ">
+                        <span className="text-2xl font-bold text-primary">
                             {formatters.formatCurrency(order.totalPrice)}
                         </span>
                     </div>
@@ -93,21 +79,20 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
                                 Itens do Pedido
                             </h4>
                             <div className="px-6 space-y-2">
-                                {order.items.map((item) => (
-                                    <div key={item.id} className="flex justify-between items-center border-b border-border pb-2 last:border-0">
+                                {order.items.map((item, index) => (
+                                    <div key={index} className="flex justify-between items-center border-b border-border pb-2 last:border-0">
                                         <div className="flex items-center gap-6">
-                                            <img src={item.image} className="w-32 h-32 object-cover object-[40%_40%] rounded-xl" />
+                                            <img src={item.productImage} className="w-32 h-32 object-cover object-[40%_40%] rounded-xl" />
                                             <div className="flex flex-col gap-1">
                                                 <span className="text-lg text-foreground font-medium leading-tight">
-                                                    {item.name}
+                                                    {item.productName}
                                                 </span>
                                                 <span className="text-sm text-accent-foreground">
-                                                    x{item.quantity} - {formatters.formatCurrency(item.price)}
+                                                    x{item.quantity} - {formatters.formatCurrency(item.unitPrice)}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-
                                 ))}
                             </div>
                         </div>

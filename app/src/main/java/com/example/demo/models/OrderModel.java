@@ -1,12 +1,14 @@
 package com.example.demo.models;
 
 import com.example.demo.enums.OrderStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +39,7 @@ public class OrderModel {
     private BigDecimal totalPrice;
 
     @Column(name="delivery_date", nullable = false)
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
 
     @OneToMany( mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemModel> items;

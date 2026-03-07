@@ -1,23 +1,32 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dtos.CartItemRequestDTO;
-import com.example.demo.dtos.ShoppingCartResponseDTO;
-import com.example.demo.models.UserModel;
-import com.example.demo.services.ShoppingCartService;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
+import com.example.demo.dtos.CartItemRequestDTO;
+import com.example.demo.dtos.ShoppingCartResponseDTO;
+import com.example.demo.dtos.UpdateQuantityRequestDTO;
+import com.example.demo.models.UserModel;
 import com.example.demo.services.CartItemService;
+import com.example.demo.services.ShoppingCartService;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/cart")
+@RequiredArgsConstructor
 public class ShoppingCartController {
 
     @Autowired
@@ -28,7 +37,7 @@ public class ShoppingCartController {
 
     @PostMapping("/items")
     public ResponseEntity<ShoppingCartResponseDTO> addItem(Authentication authentication,
-            @RequestBody CartItemRequestDTO request) {
+            @RequestBody @Valid CartItemRequestDTO request) {
         UserModel user = (UserModel) authentication.getPrincipal();
         return ResponseEntity.ok(cartItemService.addItem(user, request));
     }
@@ -36,9 +45,9 @@ public class ShoppingCartController {
     @PutMapping("/items/{productId}")
     public ResponseEntity<ShoppingCartResponseDTO> updateItem(Authentication authentication,
             @PathVariable UUID productId,
-            @RequestBody @NotNull Integer quantity) {
+            @RequestBody @Valid UpdateQuantityRequestDTO request) {
         UserModel user = (UserModel) authentication.getPrincipal();
-        return ResponseEntity.ok(cartItemService.updateItemQuantity(user, productId, quantity));
+        return ResponseEntity.ok(cartItemService.updateItemQuantity(user, productId, request.quantity()));
     }
 
     @DeleteMapping("/items/{productId}")

@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -35,5 +36,8 @@ public class OrderItemModel {
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private OrderModel order;
+
+    @Column(name = "subtotal", nullable = false)
+    private BigDecimal subtotal;
 
 }

@@ -1,68 +1,107 @@
-import type { CartItem } from "@/types/CartItem";
+import type { ShoppingCartResponse } from "@/types/ShoppingCart";
+import { createContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import type { Product } from "@/types/Product";
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { cartService } from "@/services/shoppingcart";
 
 interface CartContextType {
-    cartItems: CartItem[];
-    addToCart: (product: Product, quantity?: number) => void;
-    updateQuantity: (id: string, amount: number) => void;
-    removeItem: (id: string) => void;
-    clearCart: () => void;
+    cart: ShoppingCartResponse | null;
+    addToCart: (product: Product, quantity?: number) => Promise<void>;
+    updateQuantity: (productId: string, quantity: number) => Promise<void>;
+    removeItem: (productId: string) => Promise<void>;
+    clearCart: () => Promise<void>;
     totalItems: number;
-    subtotal: number;
+    isLoading: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-        if (typeof window !== "undefined") {
-            const savedCart = localStorage.getItem("@SuanyCakes:cart-1.0");
-            return savedCart ? JSON.parse(savedCart) : [];
+    const [cart, setCart] = useState<ShoppingCartResponse | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const isAuthenticated = () => !!localStorage.getItem("@SuanyCakes:token");
+
+    const fetchCart = useCallback(async () => {
+        if (!isAuthenticated()) return;
+
+        try {
+            setIsLoading(true);
+            const data = await cartService.getCart();
+            setCart(data);
+        } catch (error) {
+            console.error("Erro ao buscar carrinho:", error);
+        } finally {
+            setIsLoading(false);
         }
-        return [];
-    });
+    }, []);
 
     useEffect(() => {
-        localStorage.setItem("@SuanyCakes:cart-1.0", JSON.stringify(cartItems));
-    }, [cartItems]);
+        fetchCart();
+    }, [fetchCart]);
 
-    const addToCart = (product: Product) => {
-        setCartItems(prev => {
-            const existing = prev.find(item => item.id === product.id);
-
-            if (existing) {
-                return prev.map(item =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
-                );
-            }
-
-            return [...prev, { ...product, quantity: 1 }];
-        });
+    const addToCart = async (product: Product, quantity = 1) => {
+        if (!isAuthenticated()) return;
+        try {
+            setIsLoading(true);
+            const data = await cartService.addItem({ productId: product.id, quantity });
+            setCart(data);
+        } catch (error) {
+            console.error("Erro ao adicionar item:", error);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const updateQuantity = (id: string, amount: number) => {
-        setCartItems(prev => prev.map(item =>
-            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item
-        ));
+    const updateQuantity = async (productId: string, quantity: number) => {
+        if (!isAuthenticated()) return;
+        try {
+            setIsLoading(true);
+            const data = await cartService.updateItemQuantity(productId, quantity);
+            setCart(data);
+        } catch (error) {
+            console.error("Erro ao atualizar quantidade:", error);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const removeItem = (id: string) => setCartItems(prev => prev.filter(item => item.id !== id));
-
-    const clearCart = () => {
-        setCartItems([]);
+    const removeItem = async (productId: string) => {
+        if (!isAuthenticated()) return;
+        try {
+            setIsLoading(true);
+            const data = await cartService.removeItem(productId);
+            setCart(data);
+        } catch (error) {
+            console.error("Erro ao remover item:", error);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    const clearCart = async () => {
+        if (!isAuthenticated()) return;
+        try {
+            setIsLoading(true);
+            await cartService.clearCart();
+            setCart(null);
+        } catch (error) {
+            console.error("Erro ao limpar carrinho:", error);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const totalItems = cart?.items.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, clearCart, totalItems, subtotal }}>
+        <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeItem, clearCart, totalItems, isLoading }}>
             {children}
         </CartContext.Provider>
     );
 };
 
-export {CartContext}
+export { CartContext };

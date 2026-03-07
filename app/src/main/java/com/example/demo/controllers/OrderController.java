@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import com.example.demo.dtos.OrderResponseDTO;
 import com.example.demo.models.UserModel;
 import com.example.demo.services.OrderService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -25,17 +26,15 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> checkout(Authentication authentication, @RequestBody OrderRequestDTO request) {
+    public ResponseEntity<OrderResponseDTO> checkout(Authentication authentication,
+            @RequestBody @Valid OrderRequestDTO request) {
         UserModel user = (UserModel) authentication.getPrincipal();
-
         return ResponseEntity.ok(orderService.createOrder(user, request));
     }
 
     @GetMapping("/history")
     public ResponseEntity<List<OrderResponseDTO>> getOrderHistory(Authentication authentication) {
         UserModel user = (UserModel) authentication.getPrincipal();
-
-        List<OrderResponseDTO> history = orderService.getOrdersByUser(user);
-        return ResponseEntity.ok(history);
+        return ResponseEntity.ok(orderService.getOrdersByUser(user));
     }
 }

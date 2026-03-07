@@ -20,6 +20,7 @@ import { EditProfilePage } from "./pages/EditProfilePage"
 import { LoginSuccess } from "./pages/LoginSuccess"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import { CategoryProvider } from "./contexts/CategoryContext/CategoryProvider"
+import { OrderProvider } from "./contexts/OrderContext/OrderProvider"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -55,13 +56,15 @@ export const App = () => {
     <AuthProvider>
       <ThemeProvider>
         <AddressProvider>
-          <ModalProvider>
-            <CartProvider>
-              <CategoryProvider>
-                <RouterProvider router={router} />
-              </CategoryProvider>
-            </CartProvider>
-          </ModalProvider>
+          <OrderProvider>
+            <ModalProvider>
+              <CartProvider>
+                <CategoryProvider>
+                  <RouterProvider router={router} />
+                </CategoryProvider>
+              </CartProvider>
+            </ModalProvider>
+          </OrderProvider>
         </AddressProvider>
       </ThemeProvider>
     </AuthProvider>

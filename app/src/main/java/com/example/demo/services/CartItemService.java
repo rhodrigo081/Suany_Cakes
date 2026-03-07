@@ -3,6 +3,7 @@ package com.example.demo.services;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +18,17 @@ import com.example.demo.models.UserModel;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.repositories.ShoppingCartRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class CartItemService {
 
-    private final ShoppingCartRepository shoppingCartRepository;
-    private final ProductRepository productRepository;
-    private final ShoppingCartService shoppingCartService;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @Transactional
     public ShoppingCartResponseDTO addItem(UserModel user, CartItemRequestDTO request) {

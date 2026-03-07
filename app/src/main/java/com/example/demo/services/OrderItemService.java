@@ -1,10 +1,11 @@
 package com.example.demo.services;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dtos.OrderItemResponseDTO;
 import com.example.demo.models.CartItemModel;
 import com.example.demo.models.OrderItemModel;
 import com.example.demo.models.OrderModel;
@@ -18,9 +19,23 @@ public class OrderItemService {
                     OrderItemModel orderItem = new OrderItemModel();
                     orderItem.setProduct(cartItem.getProduct());
                     orderItem.setQuantity(cartItem.getQuantity());
+                    orderItem.setSubtotal(
+                            cartItem.getProduct().getPrice()
+                                    .multiply(BigDecimal.valueOf(cartItem.getQuantity()))
+                    );
                     orderItem.setOrder(order);
                     return orderItem;
                 })
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public OrderItemResponseDTO toResponseDTO(OrderItemModel item) {
+        return new OrderItemResponseDTO(
+                item.getProduct().getName(),
+                item.getProduct().getImage(),
+                item.getQuantity(),
+                item.getProduct().getPrice(),
+                item.getSubtotal()
+        );
     }
 }

@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dtos.CartItemResponseDTO;
-import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.dtos.ShoppingCartResponseDTO;
 import com.example.demo.exception.NotFoundException;
+import com.example.demo.mappers.CartItemMapper;
 import com.example.demo.models.CartItemModel;
-import com.example.demo.models.ProductModel;
 import com.example.demo.models.ShoppingCartModel;
 import com.example.demo.models.UserModel;
 import com.example.demo.repositories.ShoppingCartRepository;
@@ -20,7 +20,11 @@ import com.example.demo.repositories.ShoppingCartRepository;
 @Service
 public class ShoppingCartService {
 
+    @Autowired
     private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private CartItemMapper cartItemMapper;
 
     @Transactional
     public ShoppingCartModel getOrCreateCart(UserModel user) {
@@ -57,22 +61,10 @@ public class ShoppingCartService {
     }
 
     public ShoppingCartResponseDTO convertToResponseDTO(ShoppingCartModel cart) {
-        List<CartItemResponseDTO> items = cart.getItems().stream()
-                .map(item -> {
-                    ProductModel product = item.getProduct();
-                    ProductResponseDTO productDTO = new ProductResponseDTO(
-                            product.getName(),
-                            product.getDescription(),
-                            product.getPrice(),
-                            product.getImage(),
-                            product.getCategory(),
-                            product.isFeatured(),
-                            product.getIngredients()
-                    );
-                    return new CartItemResponseDTO(productDTO, item.getQuantity(), item.getSubtotal());
-                })
+        List<CartItemResponseDTO> itemDTOs = cart.getItems().stream()
+                .map(cartItemMapper::toResponseDTO)
                 .toList();
 
-        return new ShoppingCartResponseDTO(items, cart.getTotalPrice());
+        return new ShoppingCartResponseDTO(itemDTOs, cart.getTotalPrice());
     }
 }

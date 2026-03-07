@@ -44,7 +44,7 @@ export const OrderHistoryPage = () => {
     }
 
     return (
-        <Wrapper className="w-full flex flex-col justify-center px-40 items-center pt-10 gap-8">
+        <Wrapper className="w-full flex flex-col justify-center px-40 pt-10 gap-8">
             {orders.length > 0 ? (
                 <div>
                     <h1 className="text-6xl font-bold mb-8 flex items-center gap-4">

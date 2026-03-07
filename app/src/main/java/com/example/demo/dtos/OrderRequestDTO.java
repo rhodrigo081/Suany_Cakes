@@ -1,9 +1,11 @@
 package com.example.demo.dtos;
 
-import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
-public record OrderRequestDTO(@NotNull UUID addressId, LocalDateTime deliveryDate) {
+import jakarta.validation.constraints.NotNull;
+
+public record OrderRequestDTO(@NotNull
+        UUID addressId, LocalDate deliveryDate) {
+
 }

@@ -1,34 +1,53 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { formatters } from './../../utils/formatters';
+import { formatters } from "./../../utils/formatters";
 import { DeliveryDatePicker } from "./DeliveryDatePicker";
 import { useCart } from "@/contexts/CartContext/useCart";
+import { useOrder } from "@/contexts/OrderContext/useOrder";
+import { MapPin } from "lucide-react";
+import { AddressDropdown } from "./AddressDropdown";
 
 export const OrderSummary = () => {
-  const { clearCart, subtotal } = useCart();
+  const { cart, clearCart } = useCart();
+  const { selectedAddress, checkout, isLoading } = useOrder();
   const [deliveryDate, setDeliveryDate] = useState<Date | undefined>();
 
-  const handleFinishOrder = () => {
+
+  const handleFinishOrder = async () => {
     if (!deliveryDate) {
       alert("Por favor, selecione uma data para a entrega.");
       return;
     }
 
-    console.log("Pedido Finalizado!", {
-      dataEntrega: deliveryDate,
-      total: subtotal
-    });
+    if (!selectedAddress) {
+      alert("Por favor, selecione um endereço de entrega.");
+      return;
+    }
 
-    clearCart();
+    try {
+      await checkout(deliveryDate);
+      await clearCart();
+      alert("Pedido realizado com sucesso!");
+    } catch {
+      alert("Erro ao finalizar pedido. Tente novamente.");
+    }
   };
 
   return (
-    <div className="bg-background p-6 border rounded-xl shadow-sm h-fit w-sm">
+    <div className="bg-card-background p-6 border rounded-xl shadow-sm h-fit w-sm">
       <h2 className="text-2xl font-display font-semibold text-foreground mb-6 border-b pb-2">
         Resumo do Pedido
       </h2>
 
       <div className="flex flex-col gap-4">
+
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium text-foreground flex items-center gap-1">
+            <MapPin size={14} className="text-primary" /> Endereço de Entrega
+          </span>
+          <AddressDropdown />
+        </div>
+
         <DeliveryDatePicker
           date={deliveryDate}
           onDateChange={setDeliveryDate}
@@ -37,26 +56,26 @@ export const OrderSummary = () => {
         <div className="space-y-4 text-sm text-muted-foreground">
           <div className="flex justify-between">
             <span className="text-accent-foreground">Subtotal</span>
-            <span>{formatters.formatCurrency(subtotal)}</span>
+            <span>{formatters.formatCurrency(cart?.totalPrice ?? 0)}</span>
           </div>
 
           <div className="flex justify-between">
-          <span className="text-accent-foreground">Entrega</span>
-          <span className="text-xs">A combinar via Whatsapp</span>
-        </div>
+            <span className="text-accent-foreground">Entrega</span>
+            <span className="text-xs">A combinar via Whatsapp</span>
+          </div>
 
           <div className="border-t pt-4 flex justify-between items-center text-primary font-bold">
             <span className="text-lg text-foreground">Total</span>
-            <span className="text-2xl">{formatters.formatCurrency(subtotal)}</span>
+            <span className="text-2xl">{formatters.formatCurrency(cart?.totalPrice ?? 0)}</span>
           </div>
         </div>
 
         <Button
           onClick={handleFinishOrder}
           className="w-full text-lg"
-          disabled={!deliveryDate}
+          disabled={!deliveryDate || !selectedAddress || isLoading}
         >
-          Finalizar Pedido
+          {isLoading ? "Finalizando..." : "Finalizar Pedido"}
         </Button>
 
         <p className="text-[10px] text-center text-muted-foreground mt-3 leading-tight">

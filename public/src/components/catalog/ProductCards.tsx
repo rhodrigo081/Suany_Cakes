@@ -41,7 +41,7 @@ export const ProductCards = ({ product }: ProductCardsProps) => {
                     <Eye /> Ver Detalhes
                 </div>
 
-                <div className="flex flex-col gap-2 px-4 w-full h-24 mb-4">
+                <div className="flex flex-col gap-2 px-4 w-full h-24 mb-6">
                     <h2 className="w-full text-2xl font-semibold">{product.name}</h2>
                     <p className="text-accent-foreground text-sm">{product.description}</p>
                 </div>
