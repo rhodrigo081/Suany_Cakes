@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react';
 import type { Address } from '@/types/Address';
 import { addressService } from '@/services/address';
-import { useAuth } from '../AuthContext/useAuth';
+import { useAuthStore } from '@/stores/Auth';
 
 interface AddressContextType {
     addresses: Address[];
@@ -23,7 +23,7 @@ export const AddressProvider = ({ children }: { children: ReactNode }) => {
     const [addresses, setAddresses] = useState<Address[]>([]);
     const [editingAddress, setEditingAddress] = useState<Address | null>(null);
     const [loading, setLoading] = useState(false);
-    const { user } = useAuth();
+    const { user } = useAuthStore();
 
     useEffect(() => {
         if (!user) return;

@@ -14,11 +14,11 @@ import { DropdownMenuContent } from "../../ui/Dropdown/MenuContent"
 import { DropdownMenuItem } from "../../ui/Dropdown/MenuItem"
 import { Link } from "react-router-dom"
 import { DropdownMenuSeparator } from "../../ui/Dropdown/MenuSeparator"
-import { useAuth } from "@/contexts/AuthContext/useAuth"
 import { useTheme } from "@/contexts/ThemeContext/useTheme"
+import { useAuthStore } from "@/stores/Auth"
 
 export const DropDown = () => {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout } = useAuthStore();
     const { theme, setTheme } = useTheme();
 
     const toggleTheme = () => {

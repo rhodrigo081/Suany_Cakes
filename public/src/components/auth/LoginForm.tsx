@@ -3,40 +3,40 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { FaGoogle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '@/services/auth';
-import { useAuth } from '@/contexts/AuthContext/useAuth';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuthStore } from '@/stores/Auth';
+import { loginSchema, type LoginFormData } from '@/schemas/LoginSchema';
 
 export const LoginForm = () => {
-
     const navigate = useNavigate();
+    const { login, isLoading } = useAuthStore();
 
-    const handleGoogleLogin = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema)
+    });
 
-        window.location.href = "http://localhost:8080/oauth2/authorization/google";
-    };
-
-    const { login } = useAuth();
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const credentials = Object.fromEntries(formData.entries());
-
+    const onSubmit = async (data: LoginFormData) => {
         try {
-            const data = await authService.login(credentials);
-
-            login(data.token, data.user);
-
+            await login(data);
             navigate('/');
         } catch (error) {
-            alert(error + "E-mail ou senha incorretos.");
+            alert("E-mail ou senha incorretos.");
+            console.error(error);
         }
-    }
+    };
+
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    };
 
     return (
         <div className="flex items-center justify-center">
             <div className="w-xl bg-card-background rounded-4xl border border-gray-100 shadow-sm p-8 md:p-12">
-
                 <div className="text-center mb-8">
                     <h1 className="text-5xl font-display font-bold text-foreground">
                         Bem-vindo de volta!
@@ -50,7 +50,7 @@ export const LoginForm = () => {
                     <Button onClick={handleGoogleLogin} variant="tertiary">
                         <FaGoogle size={20} /> Continuar com Google
                     </Button>
-                </div >
+                </div>
 
                 <div className="flex items-center my-8">
                     <div className="flex-1 border-1 border-border"></div>
@@ -58,23 +58,25 @@ export const LoginForm = () => {
                     <div className="flex-1 border-1 border-border"></div>
                 </div>
 
-                <form className="space-y-5" onSubmit={handleSubmit}>
-
-
+                <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
                     <Input
-                        name='email'
+                        {...register('email')}
                         label="E-mail"
                         type="email"
                         icon={Mail}
                         placeholder="seu@email.com"
+                        isRequired={true}
+                        error={errors.email?.message}
                     />
 
                     <Input
-                        name='password'
+                        {...register('password')}
                         label="Senha"
                         type="password"
                         icon={Lock}
                         placeholder="••••••••"
+                        isRequired={true}
+                        error={errors.password?.message}
                         rightElement={
                             <button type="button" className="text-xs text-primary hover:opacity-80 font-bold cursor-pointer hover:underline">
                                 Esqueceu a senha?
@@ -84,21 +86,22 @@ export const LoginForm = () => {
 
                     <Button
                         type="submit"
+                        disabled={isLoading}
                         className='w-full text-xl font-semibold rounded-xl py-6'
                     >
-                        Entrar
+                        {isLoading ? "Entrando..." : "Entrar"}
                     </Button>
                 </form>
 
                 <p className="text-center mt-6 text-accent-foreground text-sm">
                     Não tem uma conta?{' '}
                     <Link to="/cadastro">
-                        <button className="text-primary font-bold hover:underline cursor-pointer hover:opacity-80">
+                        <span className="text-primary font-bold hover:underline cursor-pointer hover:opacity-80">
                             Criar conta
-                        </button>
+                        </span>
                     </Link>
                 </p>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };

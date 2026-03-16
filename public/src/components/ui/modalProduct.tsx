@@ -6,13 +6,13 @@ import { formatters } from "@/utils/formatters";
 import { useNavigate } from "react-router-dom";
 import { useProductModal } from "@/contexts/ModalContext/useModal";
 import { useCart } from "@/contexts/CartContext/useCart";
-import { useAuth } from "@/contexts/AuthContext/useAuth";
+import { useAuthStore } from "@/stores/Auth";
 
 export const ModalProduct = () => {
     const { selectedProduct: product, isOpen, closeModal } = useProductModal();
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuthStore();
     const navigate = useNavigate();
 
     const prevProductId = useRef<string | undefined>(undefined);

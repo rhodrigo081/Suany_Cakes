@@ -10,7 +10,6 @@ import { ProfilePage } from "./pages/ProfilePage"
 import { OrderHistoryPage } from "./pages/OrderHistoryPage"
 import { Layout } from "./components/Layout/Layout"
 import { CartProvider } from "./contexts/CartContext/CartProvider"
-import { AuthProvider } from "./contexts/AuthContext/AuthProvider"
 import { FavoritesPage } from "./pages/FavoritesPage"
 import { ModalProvider } from "./contexts/ModalContext/ModalProvider"
 import { ThemeProvider } from "./contexts/ThemeContext/ThemeProvider"
@@ -53,20 +52,18 @@ export const App = () => {
   ])
 
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <AddressProvider>
-          <OrderProvider>
-            <ModalProvider>
-              <CartProvider>
-                <CategoryProvider>
-                  <RouterProvider router={router} />
-                </CategoryProvider>
-              </CartProvider>
-            </ModalProvider>
-          </OrderProvider>
-        </AddressProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AddressProvider>
+        <OrderProvider>
+          <ModalProvider>
+            <CartProvider>
+              <CategoryProvider>
+                <RouterProvider router={router} />
+              </CategoryProvider>
+            </CartProvider>
+          </ModalProvider>
+        </OrderProvider>
+      </AddressProvider>
+    </ThemeProvider>
   )
 }

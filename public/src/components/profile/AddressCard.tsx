@@ -3,6 +3,7 @@ import { Button } from "../ui/button"
 import type { Address } from "@/types/Address"
 import { useNavigate } from "react-router-dom"
 import { useAddresses } from "@/contexts/AddressContext/useAddress"
+import { formatters } from "@/utils/formatters"
 
 interface AddressCardProps {
     addresses?: Address[]
@@ -53,10 +54,16 @@ export const AddressCard = ({ addresses = [] }: AddressCardProps) => {
                             )}
                         </div>
                         <p className="text-sm text-accent-foreground leading-relaxed">
-                            {addr.street}, {addr.number}<br />
-                            {addr.complement}<br />
+                            {addr.street}, {addr.number}
+                            {addr.complement && (
+                                <>
+                                    <br />
+                                    {addr.complement}
+                                </>
+                            )}
+                            <br />
                             {addr.neighborhood}, {addr.city}/{addr.state}<br />
-                            CEP: {addr.zipCode}
+                            CEP: {formatters.maskCEP(addr.zipCode)}
                         </p>
                     </div>
 

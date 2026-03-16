@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { formatters } from "@/utils/formatters";
-import { useAuth } from "@/contexts/AuthContext/useAuth";
+import { useAuthStore } from "@/stores/Auth";
 
 interface ProfileFormData {
     firstName: string;
@@ -15,7 +15,7 @@ interface ProfileFormData {
 }
 
 export const ProfileEditForm = () => {
-    const { user, updateUser } = useAuth()
+    const { user, updateUser } = useAuthStore()
     const navigate = useNavigate()
 
     const { register, handleSubmit, reset, setValue } = useForm<ProfileFormData>({
@@ -72,6 +72,7 @@ export const ProfileEditForm = () => {
                     label="Primeiro Nome"
                     {...register("firstName", { required: "Campo obrigatório" })}
                     placeholder="Seu nome"
+                    isRequired={true}
                 />
                 <Input
                     label="Sobrenome"
@@ -83,6 +84,8 @@ export const ProfileEditForm = () => {
                     type="email"
                     {...register("email", { required: "E-mail obrigatório" })}
                     placeholder="seu@email.com"
+                    isRequired={true}
+
                 />
 
                 <Input
@@ -90,6 +93,7 @@ export const ProfileEditForm = () => {
                     {...register("phone")}
                     onChange={handlePhoneChange}
                     placeholder="(00) 00000-0000"
+                    isRequired={true}
                 />
 
                 <div className="flex gap-4 pt-6">

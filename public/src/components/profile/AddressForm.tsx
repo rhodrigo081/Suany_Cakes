@@ -6,6 +6,7 @@ import type { Address } from "@/types/Address";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAddresses } from "@/contexts/AddressContext/useAddress";
+import { formatters } from "@/utils/formatters";
 
 type AddressFormData = Omit<Address, "id" | "isPrimary"> & {
     complement?: string;
@@ -20,6 +21,7 @@ export const AddressForm = () => {
     const navigate = useNavigate();
     const addressToEdit = addresses.find((a) => a.id === id);
     const currentLabel = useWatch({ control, name: "label" });
+    const zipCodeValue = useWatch({ control, name: "zipCode" });
 
     useEffect(() => {
         if (id && addressToEdit) {
@@ -31,18 +33,30 @@ export const AddressForm = () => {
         }
     }, [id, addressToEdit, setValue]);
 
+    const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+        const limitedValue = rawValue.slice(0, 8);         // Limita a 8 dígitos (formato CEP)
+        const maskedValue = formatters.maskCEP(limitedValue);
+
+        setValue("zipCode", maskedValue);
+    };
+
     const onSubmit = async (data: AddressFormData) => {
         try {
+            const payload = {
+                ...data,
+                number: Number(data.number),
+                zipCode: formatters.clearMask(data.zipCode)
+            };
+
             if (id) {
                 await updateAddress(id, {
-                    ...data,
-                    number: Number(data.number),
+                    ...payload,
                     isPrimary: addressToEdit?.isPrimary || false
                 });
             } else {
                 await addAddress({
-                    ...data,
-                    number: Number(data.number),
+                    ...payload,
                     isPrimary: false
                 });
             }
@@ -63,7 +77,7 @@ export const AddressForm = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-3">
                     <div className="flex flex-col gap-2">
-                        <label className="text-foreground font-bold text-sm">Apelido do endereço *</label>
+                        <label className="text-foreground font-bold text-sm">Apelido do endereço</label>
                         <div className="flex gap-2">
                             {labelOptions.map((option) => (
                                 <Button
@@ -82,29 +96,37 @@ export const AddressForm = () => {
                         label=""
                         placeholder="Ex: Casa de Vovó"
                         {...register("label")}
+                        isRequired={true}
                     />
                 </div>
 
-                <Input label="CEP *" placeholder="00000-000" {...register("zipCode")} />
+                <Input
+                    label="CEP"
+                    placeholder="00000-000"
+                    {...register("zipCode")}
+                    value={zipCodeValue}
+                    onChange={handleCEPChange}
+                    isRequired={true}
+                />
 
                 <div className="flex gap-2">
                     <div className="w-3/4">
-                        <Input label="Rua *" placeholder="Nome da Rua" {...register("street")} />
+                        <Input label="Rua" placeholder="Nome da Rua" {...register("street")} isRequired={true} />
                     </div>
                     <div className="w-1/4">
-                        <Input label="Número *" placeholder="123" {...register("number")} />
+                        <Input label="Número" placeholder="123" {...register("number")} isRequired={true} />
                     </div>
                 </div>
 
                 <Input label="Complemento" placeholder="Apto, Bloco, referência..." {...register("complement")} />
-                <Input label="Bairro *" placeholder="Nome do Bairro" {...register("neighborhood")} />
+                <Input label="Bairro" placeholder="Nome do Bairro" {...register("neighborhood")} isRequired={true} />
 
                 <div className="flex gap-2">
                     <div className="w-3/4">
-                        <Input label="Cidade *" placeholder="Sua Cidade" {...register("city")} />
+                        <Input label="Cidade" placeholder="Sua Cidade" {...register("city")} isRequired={true} />
                     </div>
                     <div className="w-1/4">
-                        <Input label="Estado *" placeholder="UF" {...register("state")} />
+                        <Input label="Estado" placeholder="UF" {...register("state")} isRequired={true} />
                     </div>
                 </div>
 

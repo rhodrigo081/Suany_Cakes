@@ -1,12 +1,12 @@
 import { RegisterForm } from "@/components/auth/RegisterForm"
 import { Wrapper } from "@/components/Wrapper"
-import { useAuth } from "@/contexts/AuthContext/useAuth";
+import { useAuthStore } from "@/stores/Auth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const RegisterPage = () => {
 
-    const { user } = useAuth();
+    const { user } = useAuthStore();
     const navigate = useNavigate();
 
     useEffect(() => {

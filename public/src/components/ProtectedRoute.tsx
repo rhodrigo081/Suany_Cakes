@@ -1,17 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { LoaderCircle } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext/useAuth";
+import { useAuthStore } from "@/stores/Auth";
 
 export const ProtectedRoute = () => {
-    const { user, loading } = useAuth();
-
-    if (loading) {
-        return (
-            <div className="h-screen w-full flex items-center justify-center">
-                <LoaderCircle className="animate-spin text-primary" size={40} />
-            </div>
-        );
-    }
+    const { user } = useAuthStore();
 
     if (!user) {
         return <Navigate to="/login" replace />;

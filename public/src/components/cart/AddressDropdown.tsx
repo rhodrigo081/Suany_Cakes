@@ -29,7 +29,7 @@ export const AddressDropdown = () => {
                 </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="bg-background">
+            <DropdownMenuContent className="bg-background w-80">
                 {addresses.length === 0 ? (
                     <p className="text-muted-foreground text-xs p-3">Nenhum endereço cadastrado.</p>
                 ) : (

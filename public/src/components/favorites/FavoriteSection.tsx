@@ -1,9 +1,9 @@
-import { useAuth } from "@/contexts/AuthContext/useAuth";
+import { useAuthStore } from "@/stores/Auth";
 import { ProductCards } from "../catalog/ProductCards"
 import { Heart } from "lucide-react"
 
 export const FavoriteSection = () => {
-    const { favorites } = useAuth();
+    const { favorites } = useAuthStore();
 
     return (
         <div>

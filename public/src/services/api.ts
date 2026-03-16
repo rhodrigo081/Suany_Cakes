@@ -1,14 +1,29 @@
 import axios from "axios";
+
 export const api = axios.create({
   baseURL: "http://localhost:8080",
-  timeout: 5000,
-  withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("@SuanyCakes:token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+api.interceptors.request.use(
+  (config) => {
+    const authStorage = localStorage.getItem("@SuanyCakes:token");
+
+    if (authStorage) {
+      try {
+        const parsed = JSON.parse(authStorage);
+        const token = parsed.state?.token;
+
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (error) {
+        console.error("Erro ao parsear o auth-storage:", error);
+      }
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);

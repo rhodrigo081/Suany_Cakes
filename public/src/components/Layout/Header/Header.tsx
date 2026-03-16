@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button"
 import { DropDown } from "./Dropdown"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/CartContext/useCart"
-import { useAuth } from "@/contexts/AuthContext/useAuth"
+import { useAuthStore } from "@/stores/Auth"
 
 export const Header = () => {
 
     const { totalItems } = useCart()
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated } = useAuthStore();
     const navigate = useNavigate();
 
     const handleClickCart = () => {

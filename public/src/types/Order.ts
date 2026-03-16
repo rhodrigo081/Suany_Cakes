@@ -1,9 +1,8 @@
 import type { Address } from "./Address";
 
 export const ORDER_STATUS_LABELS = {
-  WAITING_PAYMENT: "Aguardando Pagamento",
   PENDING: "Pendente",
-  IN_PRODUCTION: "Em Produção",
+  IN_PRODUCTION: "Preparando",
   FOR_DELIVERY: "Saiu Para Entrega",
   FINISHED: "Finalizado",
   CANCELED: "Cancelado",

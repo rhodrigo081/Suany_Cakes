@@ -2,14 +2,14 @@ import { AddressCard } from '@/components/profile/AddressCard';
 import { Button } from '@/components/ui/button';
 import { Wrapper } from '@/components/Wrapper';
 import { useAddresses } from '@/contexts/AddressContext/useAddress';
-import { useAuth } from '@/contexts/AuthContext/useAuth';
+import { useAuthStore } from '@/stores/Auth';
 import { formatters } from '@/utils/formatters';
 import { LogOut, Phone, Mail, MapPin, Plus, Pencil, } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const ProfilePage = () => {
-    const { user, logout } = useAuth();
+    const { user, logout } = useAuthStore();
     const { addresses } = useAddresses();
     const navigate = useNavigate();
 

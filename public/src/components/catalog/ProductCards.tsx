@@ -3,15 +3,15 @@ import { Eye, Heart } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { CATEGORY_LABELS, type Product } from "@/types/Product"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "@/contexts/AuthContext/useAuth"
 import { useProductModal } from "@/contexts/ModalContext/useModal"
+import { useAuthStore } from "@/stores/Auth"
 
 interface ProductCardsProps {
     product: Product;
 }
 
 export const ProductCards = ({ product }: ProductCardsProps) => {
-    const { user, favorites, toggleFavorite } = useAuth();
+    const { user, favorites, toggleFavorite } = useAuthStore();
     const { openModal } = useProductModal();
     const navigate = useNavigate();
 

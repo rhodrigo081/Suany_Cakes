@@ -1,19 +1,19 @@
 import { EmptyFavorites } from "@/components/favorites/EmptyFavorites";
 import { FavoriteSection } from "@/components/favorites/FavoriteSection";
 import { Wrapper } from "@/components/Wrapper";
-import { useAuth } from "@/contexts/AuthContext/useAuth";
+import { useAuthStore } from "@/stores/Auth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const FavoritesPage = () => {
-    const { user, loading, favorites } = useAuth();
+    const { user, favorites } = useAuthStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!loading && !user) navigate("/login");
-    }, [user, loading, navigate]);
+        if (!user) navigate("/login");
+    }, [user, navigate]);
 
-    if (loading || !user) return null;
+    if (!user) return null;
 
     return (
         <Wrapper>

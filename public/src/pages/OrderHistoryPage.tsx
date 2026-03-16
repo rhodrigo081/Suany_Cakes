@@ -1,8 +1,8 @@
 import { NoneOrders } from "@/components/orders/NoneOrders"
 import { OrdersCards } from "@/components/orders/OrdersCard"
 import { Wrapper } from "@/components/Wrapper"
-import { useAuth } from "@/contexts/AuthContext/useAuth"
 import { ordersService } from "@/services/orders"
+import { useAuthStore } from "@/stores/Auth"
 import type { Order } from "@/types/Order"
 import { LoaderCircle, Package } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -28,7 +28,7 @@ export const OrderHistoryPage = () => {
         fetchProducts();
     }, []);
 
-    const { user } = useAuth();
+    const { user } = useAuthStore();
     const navigate = useNavigate();
 
     useEffect(() => {

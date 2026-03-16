@@ -17,15 +17,23 @@ class Formartters {
       .replace(/(-\d{4})\d+?$/, "$1");
   }
 
+  maskCEP(value: string) {
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{5})(\d)/, "$1-$2")
+      .replace(/(-\d{3})\d+?$/, "$1");
+  }
   clearMask(value: string) {
     return value.replace(/\D/g, "");
   }
 
   formatDate(dateString: string) {
-  if (!dateString) return "Data não disponível";
+    if (!dateString) return "Data não disponível";
 
-  return format(parseISO(dateString), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
-}
+    return format(parseISO(dateString), "dd 'de' MMMM 'de' yyyy", {
+      locale: ptBR,
+    });
+  }
 }
 
 export const formatters = new Formartters();
