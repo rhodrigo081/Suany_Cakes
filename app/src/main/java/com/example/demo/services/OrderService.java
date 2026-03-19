@@ -3,6 +3,7 @@ package com.example.demo.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,26 @@ public class OrderService {
         return orderRepository.findByUserOrderByCreatedAtDesc(user).stream()
                 .map(this::convertToResponseDTO)
                 .toList();
+    }
+
+    public List<OrderResponseDTO> getAllOrders() {
+        return orderRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(this::convertToResponseDTO)
+                .toList();
+    }
+
+    @Transactional
+    public OrderResponseDTO updateOrderStatus(UUID orderId, OrderStatus newStatus) {
+        OrderModel order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Pedido não encontrado"));
+        if (order.getOrderStatus() == OrderStatus.FINISHED || order.getOrderStatus() == OrderStatus.CANCELED) {
+            throw new InvalidArgumentException("Não é possível alterar um pedido já finalizado ou cancelado.");
+        }
+
+        order.setOrderStatus(newStatus);
+
+        return convertToResponseDTO(orderRepository.save(order));
     }
 
     private OrderResponseDTO convertToResponseDTO(OrderModel model) {

@@ -32,7 +32,7 @@ export const Header = () => {
                 <div className="flex items-center justify-center gap-4">
 
                     {isAuthenticated && (
-                        <Button variant="secondary" buttonSize="icon" className="relative group" onClick={handleClickCart}>
+                        <Button variant="secondary" buttonSize="icon" className="relative group border-none" onClick={handleClickCart}>
                             <ShoppingCart size={25} />
                             {totalItems > 0 && (
                                 <Badge className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center p-0 text-xs group-hover:bg-primary group-hover:text-white transition-all duration-200">

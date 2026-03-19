@@ -28,7 +28,7 @@ export const DropDown = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="secondary" buttonSize="icon" className="relative">
+                <Button variant="secondary" buttonSize="icon" className="relative  border-none">
                     <User size={25} />
                 </Button>
             </DropdownMenuTrigger>

@@ -1,5 +1,5 @@
 import { Wrapper } from '@/components/Wrapper';
-import { LoginForm } from './../components/auth/LoginForm';
+import { LoginForm } from '../../components/auth/LoginForm';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/stores/Auth';

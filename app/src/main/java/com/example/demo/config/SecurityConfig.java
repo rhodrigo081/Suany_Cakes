@@ -54,9 +54,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/products/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/orders/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/orders/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/orders/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/address/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/address/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/address/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/admin/**").permitAll()
                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

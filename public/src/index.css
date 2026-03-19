@@ -28,6 +28,8 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   --color-card-background: hsl(var(--card-background));
+  --color-green: hsl(var(--green));
+  --color-light-green: hsl(var(--light-green));
 
   --font-display: "Playfair Display", serif;
   --font-inter: "Inter", sans-serif;
@@ -51,7 +53,8 @@
     --border: 0 0% 85%;
     --input: 30 20% 88%;
     --card-background: 30 30% 99%;
-
+    --green: 97 100% 28%;
+    --light-green: 97 100% 42%;
     scrollbar-gutter: stable;
   }
 

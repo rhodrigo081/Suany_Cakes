@@ -1,11 +1,14 @@
 package com.example.demo.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dtos.OrderRequestDTO;
 import com.example.demo.dtos.OrderResponseDTO;
+import com.example.demo.dtos.StatusUpdateRequestDTO;
 import com.example.demo.models.UserModel;
 import com.example.demo.services.OrderService;
 
@@ -36,5 +40,14 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDTO>> getOrderHistory(Authentication authentication) {
         UserModel user = (UserModel) authentication.getPrincipal();
         return ResponseEntity.ok(orderService.getOrdersByUser(user));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<OrderResponseDTO> updateStatus(
+            @PathVariable UUID id,
+            @RequestBody StatusUpdateRequestDTO request) {
+
+        OrderResponseDTO updatedOrder = orderService.updateOrderStatus(id, request.status());
+        return ResponseEntity.ok(updatedOrder);
     }
 }
