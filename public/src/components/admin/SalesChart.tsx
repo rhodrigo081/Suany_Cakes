@@ -39,7 +39,7 @@ export const SalesChart = () => {
             <CardContent>
                 <ChartContainer config={lineChartConfig} className="h-96 w-full">
                     <LineChart data={salesData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                        <CartesianGrid strokeDasharray="5 5" className="stroke-red" />
                         <XAxis dataKey="day" className="text-xs" />
                         <YAxis className="text-xs" />
                         <ChartTooltip content={<ChartTooltipContent />} />
@@ -47,9 +47,9 @@ export const SalesChart = () => {
                             type="monotone"
                             dataKey="vendas"
                             stroke="hsl(var(--primary))"
-                            strokeWidth={2}
-                            dot={{ fill: 'hsl(var(--primary))', r: 4 }}
-                            activeDot={{ r: 6 }}
+                            strokeWidth={4}
+                            dot={{ fill: 'hsl(var(--primary))', r: 5 }}
+                            activeDot={{ r: 10 }}
                         />
                     </LineChart>
                 </ChartContainer>

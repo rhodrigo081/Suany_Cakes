@@ -1,4 +1,6 @@
+import { BestSellingProduct } from "@/components/admin/BestSellingProduct"
 import { CategoryChart } from "@/components/admin/CategoryChart"
+import { LowOutputProduct } from "@/components/admin/LowOutputProduct"
 import { SalesChart } from "@/components/admin/SalesChart"
 import { StatsCard } from "@/components/admin/StatsCard"
 import { Button } from "@/components/ui/button"
@@ -12,8 +14,8 @@ export const AdminLayout = () => {
                 <h1 className="text-4xl font-display font-bold text-foreground">Painel Administrativo</h1>
 
                 <div className="flex justify-betweena gap-4">
-                    <Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl"> <Package size={32} className="stroke-[1.5px] text-primary group-hover:text-white" /> Gerenciar Produtos</Button>
-                    <Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl"> <ClipboardList size={32} className="stroke-[1.5px] text-secondary group-hover:text-white" /> Gerenciar Pedidos</Button>
+                    <Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl bg-card-background"> <Package size={32} className="stroke-[1.5px] text-primary group-hover:text-white" /> Gerenciar Produtos</Button>
+                    <Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl bg-card-background"> <ClipboardList size={32} className="stroke-[1.5px] text-secondary group-hover:text-white" /> Gerenciar Pedidos</Button>
                 </div>
 
                 <div className="flex justify-between gap-4">
@@ -27,21 +29,31 @@ export const AdminLayout = () => {
                     />
                 </div>
 
-                <Tabs defaultValue="vendas">
+                <Tabs defaultValue="sales">
                     <TabsList className="bg-card-background border border-border rounded-xl flex justify-center gap-2 px-60 w-full">
-                        <TabsTrigger value="vendas">Vendas</TabsTrigger>
-                        <TabsTrigger value="produtos">Produtos</TabsTrigger>
+                        <TabsTrigger value="sales">Vendas</TabsTrigger>
+                        <TabsTrigger value="products">Produtos</TabsTrigger>
                         <TabsTrigger value="operacao">Operação</TabsTrigger>
                         <TabsTrigger value="clientes">Clientes</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="vendas">
+                    <TabsContent value="sales">
                         <div className="flex gap-4 mt-4">
                             <div className="w-2/3">
                                 <SalesChart />
                             </div>
                             <div className="w-1/3">
                                 <CategoryChart />
+                            </div>
+                        </div>
+                    </TabsContent>
+                    <TabsContent value="products">
+                        <div className="flex gap-4 mt-4">
+                            <div className="w-1/2">
+                                <BestSellingProduct />
+                            </div>
+                            <div className="w-1/2">
+                                <LowOutputProduct />
                             </div>
                         </div>
                     </TabsContent>
