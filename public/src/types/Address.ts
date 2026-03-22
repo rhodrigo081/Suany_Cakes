@@ -1,12 +1,12 @@
 export interface Address {
   id: string;
-  street: string;
   label: string;
-  isPrimary: boolean;
-  complement?: string;
-  number: number;
-  neighborhood: string;
+  street: string;
   city: string;
   state: string;
   zipCode: string;
+  neighborhood: string;
+  number: number;
+  complement?: string;
+  isPrimary: boolean;
 }

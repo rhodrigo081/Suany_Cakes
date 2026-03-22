@@ -1,4 +1,5 @@
 import type { Address } from "./Address";
+import type { OrderItem } from "./OrderItemResponse";
 
 export const ORDER_STATUS_LABELS = {
   PENDING: "Pendente",
@@ -7,14 +8,6 @@ export const ORDER_STATUS_LABELS = {
   FINISHED: "Finalizado",
   CANCELED: "Cancelado",
 } as const;
-
-export interface OrderItem {
-  productName: string;
-  productImage: string;
-  quantity: number;
-  unitPrice: number;
-  subtotal: number;
-}
 
 export interface Order {
   id: string;

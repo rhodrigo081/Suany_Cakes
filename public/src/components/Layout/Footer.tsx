@@ -35,6 +35,12 @@ export const Footer = () => {
               >
                 Contato
               </Link>
+              <Link
+                to="/dashboard"
+                className="text-lg text-accent-foreground transition-colors hover:text-primary"
+              >
+                Dashboard
+              </Link>
             </nav>
           </div>
           <div className="space-y-4">

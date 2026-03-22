@@ -6,15 +6,18 @@ import miniLemonTartImg from "@/assets/mini_lemon_tart.svg";
 
 export const products: Product[] = [
   {
-    id: "1",
-    name: "Tortinha de Limão",
-    description:
-      "O equilíbrio perfeito entre a acidez refrescante do limão siciliano e a doçura delicada do merengue suíço.",
-    price: 6,
-    image: miniLemonTartImg,
-    category: 'doces',
-    ingredients: ["Chocolate branco", "Limão siciliano", "Leite condensado"],
-    featured: true,
+    "id": "07f91bab-c669-42b9-ab2e-5f5ede8f360c",
+    "name": "Tortinha de Limão",
+    "description": "O equilíbrio perfeito entre a acidez refrescante do limão siciliano e a doçura delicada do merengue suíço.",
+    "price": 6,
+    "image": "https://laferretti.com.br/wp-content/uploads/2015/06/949641961-985x515.webp",
+    "category": "CANDY",
+    "featured": true,
+    "ingredients": [
+      "Limão siciliano",
+      "Leite condensado",
+      "Chocolate branco"
+    ]
   },
   {
     id: "2",
