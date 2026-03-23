@@ -1,7 +1,12 @@
 import { BestSellingProduct } from "@/components/admin/BestSellingProduct"
 import { CategoryChart } from "@/components/admin/CategoryChart"
+import { CustomerRetention } from "@/components/admin/CustomerRetention"
 import { LowOutputProduct } from "@/components/admin/LowOutputProduct"
+import { MostRequestedNeighborhoods } from "@/components/admin/MostRequestedNeighborhoods"
+import { OrdersStates } from "@/components/admin/OrdersStates"
 import { SalesChart } from "@/components/admin/SalesChart"
+import { SalesOrigin } from "@/components/admin/SalesOrigin"
+import { Scheduling } from "@/components/admin/Scheduling"
 import { StatsCard } from "@/components/admin/StatsCard"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -10,7 +15,7 @@ import { Banknote, ClipboardList, Package, ShoppingCart } from "lucide-react"
 export const AdminLayout = () => {
     return (
         <div>
-            <div className="py-6 space-y-8">
+            <div className="py-6 space-y-6">
                 <h1 className="text-4xl font-display font-bold text-foreground">Painel Administrativo</h1>
 
                 <div className="flex justify-betweena gap-4">
@@ -30,15 +35,15 @@ export const AdminLayout = () => {
                 </div>
 
                 <Tabs defaultValue="sales">
-                    <TabsList className="bg-card-background border border-border rounded-xl flex justify-center gap-2 px-60 w-full">
+                    <TabsList className="bg-card-background border border-border rounded-xl flex justify-center gap-4 px-60 w-full mb-4">
                         <TabsTrigger value="sales">Vendas</TabsTrigger>
                         <TabsTrigger value="products">Produtos</TabsTrigger>
-                        <TabsTrigger value="operacao">Operação</TabsTrigger>
-                        <TabsTrigger value="clientes">Clientes</TabsTrigger>
+                        <TabsTrigger value="operations">Operação</TabsTrigger>
+                        <TabsTrigger value="customers">Clientes</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="sales">
-                        <div className="flex gap-4 mt-4">
+                        <div className="flex gap-4">
                             <div className="w-2/3">
                                 <SalesChart />
                             </div>
@@ -47,15 +52,18 @@ export const AdminLayout = () => {
                             </div>
                         </div>
                     </TabsContent>
-                    <TabsContent value="products">
-                        <div className="flex gap-4 mt-4">
-                            <div className="w-1/2">
+                    <TabsContent value="products" className="grid grid-cols-2 gap-6">
                                 <BestSellingProduct />
-                            </div>
-                            <div className="w-1/2">
                                 <LowOutputProduct />
-                            </div>
-                        </div>
+                    </TabsContent>
+                    <TabsContent value="operations" className="grid grid-cols-2 gap-6">
+                        <OrdersStates />
+                        <Scheduling />
+                    </TabsContent>
+                    <TabsContent value="customers" className="grid grid-cols-3 gap-6">
+                        <CustomerRetention />
+                        <SalesOrigin />
+                        <MostRequestedNeighborhoods />
                     </TabsContent>
 
                 </Tabs>

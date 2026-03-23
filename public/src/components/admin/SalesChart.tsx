@@ -32,12 +32,12 @@ const lineChartConfig = {
 export const SalesChart = () => {
     return (
 
-        <Card>
+        <Card className="h-120">
             <CardHeader>
                 <CardTitle className="font-display text-2xl">Vendas do Último Mês</CardTitle>
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={lineChartConfig} className="h-96 w-full">
+            <CardContent className='h-full'>
+                <ChartContainer config={lineChartConfig} className="w-full h-90">
                     <LineChart data={salesData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <CartesianGrid strokeDasharray="5 5" className="stroke-red" />
                         <XAxis dataKey="day" className="text-xs" />

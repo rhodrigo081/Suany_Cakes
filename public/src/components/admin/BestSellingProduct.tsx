@@ -14,13 +14,13 @@ const getProduct = (id: string) => products.find((p) => p.id === id);
 
 export const BestSellingProduct = () => {
     return (
-        <Card>
+        <Card className="h-120">
             <CardHeader>
                 <CardTitle className="font-display text-2xl">
                     Top 5 Mais Vendidos
                 </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 h-90">
                 {topProducts.map((item, i) => {
                     const product = getProduct(item.id);
                     if (!product) return null;

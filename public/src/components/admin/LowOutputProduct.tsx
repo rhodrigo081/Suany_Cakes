@@ -13,7 +13,7 @@ const getProduct = (id: string) => products.find((p) => p.id === id);
 export const LowOutputProduct = () => {
 
     return (
-        <Card>
+        <Card className="h-120">
             <CardHeader>
                 <CardTitle className="font-display text-2xl">
                     Produtos com Baixa Saída

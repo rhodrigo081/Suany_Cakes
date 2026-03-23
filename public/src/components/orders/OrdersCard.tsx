@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, ChevronDown, Calendar, ShoppingBag, MapPin, Clock } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import { ORDER_STATUS_LABELS, type Order } from "@/types/Order";
+import { ORDER_STATUS_LABELS, orderStatusColors, type Order, type OrderStatus } from "@/types/Order";
 import { formatters } from "@/utils/formatters";
 
 interface OrderCardProps {
@@ -11,15 +11,6 @@ interface OrderCardProps {
 
 export const OrdersCards = ({ order }: OrderCardProps) => {
     const [isOpen, setIsOpen] = useState(false);
-
-    const getStatusConfig = (status: string) => {
-        const s = status.toLowerCase();
-        if (s.includes("finished")) return "bg-green-100 text-green-700 hover:bg-green-100";
-        if (s.includes("in_production") || s.includes("for_delivery")) return "bg-blue-100 text-blue-700 hover:bg-blue-100";
-        if (s.includes("pending") || s.includes("waiting")) return "bg-yellow-100 text-yellow-700 hover:bg-yellow-100";
-        if (s.includes("canceled")) return "bg-red-100 text-red-700 hover:bg-red-100";
-        return "bg-gray-100 text-gray-700";
-    };
 
     const formattedCreatedAt = new Intl.DateTimeFormat('pt-BR').format(new Date(order.createdAt));
     const formattedCreatedTime = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.createdAt));
@@ -51,7 +42,7 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
 
                 <div className="flex items-center gap-6">
                     <div className="flex flex-col items-end gap-1">
-                        <Badge variant="secondary" className={cn("border-none px-4 py-0.5 font-semibold", getStatusConfig(order.status))}>
+                        <Badge variant="secondary" className={cn("border-none px-4 py-0.5 font-semibold", orderStatusColors[order.status as OrderStatus])}>
                             {ORDER_STATUS_LABELS[order.status as keyof typeof ORDER_STATUS_LABELS] ?? order.status}
                         </Badge>
                         <span className="text-2xl font-bold text-primary">

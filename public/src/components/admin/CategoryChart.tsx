@@ -15,12 +15,12 @@ const categoryData = [
 ];
 
 export const CategoryChart = () => (
-    <Card>
+    <Card className="h-120">
         <CardHeader>
             <CardTitle className="font-display text-2xl">Vendas por Categoria</CardTitle>
         </CardHeader>
         <CardContent>
-            <ChartContainer config={pieChartConfig} className="h-96">
+            <ChartContainer config={pieChartConfig} className="h-90">
                 <PieChart>
                     <Pie
                         data={categoryData}
