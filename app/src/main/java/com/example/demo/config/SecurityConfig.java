@@ -81,7 +81,7 @@ public class SecurityConfig {
 
             String token = tokenService.generateToken(user);
 
-            response.sendRedirect("http://localhost:5173/login-success?token=" + token);
+            response.sendRedirect("http://localhost/login-success?token=" + token);
         };
     }
 }

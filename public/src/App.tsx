@@ -21,6 +21,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute"
 import { CategoryProvider } from "./contexts/CategoryContext/CategoryProvider"
 import { OrderProvider } from "./contexts/OrderContext/OrderProvider"
 import { AdminPage } from "./pages/admin/AdminPage"
+import { OrderManager } from "./pages/admin/OrderManager"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -37,6 +38,7 @@ export const App = () => {
         { path: "/carrinho", element: <ShoppingCartPage /> },
         { path: "/login-success", element: <LoginSuccess /> },
         { path: "/dashboard", element: <AdminPage /> },
+        { path: "/gerenciar-pedidos", element: <OrderManager /> },
 
         {
           element: <ProtectedRoute />,

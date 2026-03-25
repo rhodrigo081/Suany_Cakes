@@ -2,7 +2,7 @@ import { Footer } from "./Footer";
 import { Header } from "./Header/Header";
 import { Outlet } from "react-router-dom";
 import { ScrollToTop } from "@/utils/scrollToTop";
-import { ModalProduct } from "../ui/modalProduct";
+
 
 export const Layout = () => {
 
@@ -14,8 +14,6 @@ export const Layout = () => {
                 <Outlet />
             </main>
             <Footer />
-
-            <ModalProduct />
         </div>
     );
 };

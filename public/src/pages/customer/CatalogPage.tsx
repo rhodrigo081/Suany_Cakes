@@ -1,6 +1,6 @@
 import { CatalogSection } from "@/components/catalog/CatalogSection"
 import { Categories } from "@/components/categories/Categories"
-import { ModalProduct } from "@/components/ui/modalProduct";
+import { ModalProduct } from "@/components/Layout/ModalProduct";
 import { Wrapper } from "@/components/Wrapper";
 import { useCategory } from "@/contexts/CategoryContext/useCategory";
 

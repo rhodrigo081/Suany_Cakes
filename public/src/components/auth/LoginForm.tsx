@@ -31,7 +31,7 @@ export const LoginForm = () => {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+        location.href = "http://localhost:8080/oauth2/authorization/google";
     };
 
     return (
@@ -53,9 +53,9 @@ export const LoginForm = () => {
                 </div>
 
                 <div className="flex items-center my-8">
-                    <div className="flex-1 border-1 border-border"></div>
+                    <div className="flex-1 border border-border"></div>
                     <span className="px-4 text-foreground text-sm">ou</span>
-                    <div className="flex-1 border-1 border-border"></div>
+                    <div className="flex-1 border border-border"></div>
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>

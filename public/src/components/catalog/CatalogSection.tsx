@@ -2,10 +2,11 @@ import { productsService } from "@/services/products";
 import { ProductCards } from "./ProductCards";
 import { useEffect, useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import type { Product } from "@/types/Product";
+import { products } from "@/data/products";
+/* import type { Product } from "@/types/Product"; */
 
 export const CatalogSection = ({ activeCategory }: { activeCategory: string }) => {
-    const [products, setProducts] = useState<Product[]>([]);
+    /* const [products, setProducts] = useState<Product[]>([]); */
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,7 +16,8 @@ export const CatalogSection = ({ activeCategory }: { activeCategory: string }) =
                 let data;
 
                 if (activeCategory === "all") {
-                    data = await productsService.getAllProducts();
+                    /* data = await productsService.getAllProducts(); */
+                    data = products;
                 } else {
                     data = await productsService.getProductByCategory(activeCategory);
                 }

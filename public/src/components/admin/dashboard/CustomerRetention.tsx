@@ -1,5 +1,5 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
 
 export const CustomerRetention = () => {
 
@@ -13,7 +13,7 @@ export const CustomerRetention = () => {
     return (
         <Card className="h-120">
             <CardHeader>
-                <CardTitle className="font-display text-[26px] text-foreground font-bold">
+                <CardTitle className="font-display text-2xl">
                     Retenção dos Clientes
                 </CardTitle>
             </CardHeader>

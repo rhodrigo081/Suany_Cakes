@@ -1,16 +1,17 @@
-import { BestSellingProduct } from "@/components/admin/BestSellingProduct"
-import { CategoryChart } from "@/components/admin/CategoryChart"
-import { CustomerRetention } from "@/components/admin/CustomerRetention"
-import { LowOutputProduct } from "@/components/admin/LowOutputProduct"
-import { MostRequestedNeighborhoods } from "@/components/admin/MostRequestedNeighborhoods"
-import { OrdersStates } from "@/components/admin/OrdersStates"
-import { SalesChart } from "@/components/admin/SalesChart"
-import { SalesOrigin } from "@/components/admin/SalesOrigin"
-import { Scheduling } from "@/components/admin/Scheduling"
+import { BestSellingProduct } from "@/components/admin/dashboard/BestSellingProduct"
+import { CategoryChart } from "@/components/admin/dashboard/CategoryChart"
+import { CustomerRetention } from "@/components/admin/dashboard/CustomerRetention"
+import { LowOutputProduct } from "@/components/admin/dashboard/LowOutputProduct"
+import { MostRequestedNeighborhoods } from "@/components/admin/dashboard/MostRequestedNeighborhoods"
+import { OrdersStates } from "@/components/admin/dashboard/OrdersStates"
+import { SalesChart } from "@/components/admin/dashboard/SalesChart"
+import { SalesOrigin } from "@/components/admin/dashboard/SalesOrigin"
+import { Scheduling } from "@/components/admin/dashboard/Scheduling"
 import { StatsCard } from "@/components/admin/StatsCard"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Banknote, ClipboardList, Package, ShoppingCart } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export const AdminLayout = () => {
     return (
@@ -19,8 +20,8 @@ export const AdminLayout = () => {
                 <h1 className="text-4xl font-display font-bold text-foreground">Painel Administrativo</h1>
 
                 <div className="flex justify-betweena gap-4">
-                    <Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl bg-card-background"> <Package size={32} className="stroke-[1.5px] text-primary group-hover:text-white" /> Gerenciar Produtos</Button>
-                    <Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl bg-card-background"> <ClipboardList size={32} className="stroke-[1.5px] text-secondary group-hover:text-white" /> Gerenciar Pedidos</Button>
+                    <Link to={"/gerenciar-produtos"} className="w-full"><Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl bg-card-background"> <Package size={32} className="stroke-[1.5px] text-primary group-hover:text-white" /> Gerenciar Produtos</Button></Link>
+                    <Link to={"/gerenciar-pedidos"} className="w-full"><Button variant={"secondary"} className="w-full text-2xl font-semibold py-6 group rounded-xl bg-card-background"> <ClipboardList size={32} className="stroke-[1.5px] text-secondary group-hover:text-white" /> Gerenciar Pedidos</Button></Link>
                 </div>
 
                 <div className="flex justify-between gap-4">
@@ -53,8 +54,8 @@ export const AdminLayout = () => {
                         </div>
                     </TabsContent>
                     <TabsContent value="products" className="grid grid-cols-2 gap-6">
-                                <BestSellingProduct />
-                                <LowOutputProduct />
+                        <BestSellingProduct />
+                        <LowOutputProduct />
                     </TabsContent>
                     <TabsContent value="operations" className="grid grid-cols-2 gap-6">
                         <OrdersStates />
@@ -68,6 +69,6 @@ export const AdminLayout = () => {
 
                 </Tabs>
             </div>
-        </div>
+        </div >
     )
 }

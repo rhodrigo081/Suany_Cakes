@@ -7,12 +7,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface DeliveryDatePickerProps {
+interface DatePickerProps {
     date: Date | undefined;
     onDateChange: (date: Date | undefined) => void;
+    restriction?: "future-only" | "past-only" | "none";
 }
 
-export const DeliveryDatePicker = ({ date, onDateChange }: DeliveryDatePickerProps) => {
+export const DatePicker = ({
+    date,
+    onDateChange,
+    restriction = "none" // Valor padrão: permite tudo
+}: DatePickerProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleDateSelect = (selectedDate: Date | undefined) => {
@@ -22,29 +27,45 @@ export const DeliveryDatePicker = ({ date, onDateChange }: DeliveryDatePickerPro
         }
     };
 
+    const getDisabledDays = (day: Date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (restriction === "future-only") {
+            return day < today; 
+        }
+        if (restriction === "past-only") {
+            return day > today;
+        }
+        return false;
+    };
+
     return (
         <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-foreground">Data de Entrega</label>
             <Popover open={isOpen} onOpenChange={setIsOpen}>
                 <PopoverTrigger asChild>
                     <Button
-                        variant="outline"
+                        variant="tertiary"
+                        buttonSize="base"
                         className={cn(
-                            "w-full justify-start text-left font-normal bg-background",
+                            "w-full justify-start",
                             !date && "text-muted-foreground"
                         )}
                     >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon size={16} />
                         {date ? format(date, "PPP", { locale: ptBR }) : <span>Selecione uma data</span>}
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="w-auto" align="start">
                     <Calendar
                         mode="single"
                         selected={date}
                         onSelect={handleDateSelect}
-                        disabled={(date) => date < new Date()}
+                        disabled={getDisabledDays}
                         locale={ptBR}
+                        captionLayout="dropdown"
+                        fromYear={2000}
+                        toYear={new Date().getFullYear() + 10}
                     />
                 </PopoverContent>
             </Popover>

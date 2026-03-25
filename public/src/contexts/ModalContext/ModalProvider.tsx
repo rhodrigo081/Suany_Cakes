@@ -4,6 +4,8 @@ import type { Product } from "@/types/Product";
 interface ModalContextType {
   isOpen: boolean;
   selectedProduct: Product | null;
+  quantity: number;
+  setQuantity: (q: number) => void;
   openModal: (product: Product) => void;
   closeModal: () => void;
 }
@@ -13,6 +15,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,6 +30,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   }, [isOpen]);
 
   const openModal = (product: Product) => {
+    setQuantity(1);
     setSelectedProduct(product);
     setIsOpen(true);
   };
@@ -39,10 +43,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ isOpen, selectedProduct, openModal, closeModal }}>
+    <ModalContext.Provider value={{ isOpen, selectedProduct, setQuantity, quantity, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   );
 };
 
-export {ModalContext}
+export { ModalContext }

@@ -1,4 +1,8 @@
-import { ORDER_STATUS_LABELS, type Order } from "@/types/Order";
+import {
+  ORDER_STATUS_LABELS,
+  type Order,
+  type OrderStatus,
+} from "@/types/Order";
 import { products } from "./products";
 
 const MOCK_ADDRESSES = [
@@ -49,19 +53,30 @@ const MOCK_ADDRESSES = [
   },
 ];
 
-const STATUS_OPTIONS = Object.keys(
-  ORDER_STATUS_LABELS,
-) as (keyof typeof ORDER_STATUS_LABELS)[];
+const CUSTOMER_NAMES = [
+  "Ana Silva",
+  "Bruno Oliveira",
+  "Carla Souza",
+  "Diego Fernandes",
+  "Elena Rangel",
+  "Fabio Matos",
+  "Giovanna Lira",
+  "Heitor Costa",
+];
+
+const STATUS_OPTIONS = Object.keys(ORDER_STATUS_LABELS) as OrderStatus[];
 
 export const MOCK_ORDERS: Order[] = Array.from({ length: 40 }).map(
   (_, index) => {
     const status = STATUS_OPTIONS[index % STATUS_OPTIONS.length];
     const address = MOCK_ADDRESSES[index % MOCK_ADDRESSES.length];
+    const customerName = CUSTOMER_NAMES[index % CUSTOMER_NAMES.length];
 
     const itemsCount = (index % 3) + 1;
     const items = Array.from({ length: itemsCount }).map((_, i) => {
       const product = products[(index + i) % products.length];
       const qty = (i % 2) + 1;
+
       return {
         productName: product.name,
         productImage: product.image,
@@ -73,12 +88,20 @@ export const MOCK_ORDERS: Order[] = Array.from({ length: 40 }).map(
 
     const total = items.reduce((acc, item) => acc + item.subtotal, 0);
 
+    const baseDate = new Date(2026, 2, 23, 10, 0);
+    const createdAt = new Date(baseDate);
+    createdAt.setDate(baseDate.getDate() - (index % 10));
+
+    const deliveryDate = new Date(createdAt);
+    deliveryDate.setDate(createdAt.getDate() + 2);
+
     return {
-      id: `ORD-${2026}${index.toString().padStart(3, "0")}`,
+      id: `ORD-26${index.toString().padStart(4, "0")}`,
       status: status,
-      createdAt: new Date(2026, 2, 23 - (index % 10), 10, index).toISOString(),
+      customerName: customerName,
+      createdAt: createdAt.toISOString(),
       totalPrice: total,
-      deliveryDate: new Date(2026, 2, 25 - (index % 5), 14, 0).toISOString(),
+      deliveryDate: deliveryDate.toISOString(),
       shippingAddress: address,
       items: items,
     };

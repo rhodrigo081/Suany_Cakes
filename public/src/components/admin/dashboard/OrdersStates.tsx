@@ -2,7 +2,7 @@ import { XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_ORDERS } from "@/data/orders";
-import { ORDER_STATUS_LABELS, orderStatusColors, type OrderStatus } from "@/types/Order";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type OrderStatus } from "@/types/Order";
 import { cn } from "@/lib/utils";
 
 export const OrdersStates = () => {
@@ -11,7 +11,7 @@ export const OrdersStates = () => {
     acc[s] = (acc[s] || 0) + 1;
     return acc;
   }, {} as Record<OrderStatus, number>);
-  
+
   const statusOrder: OrderStatus[] = ["pending", "in_production", "for_delivery", "finished", "cancelled"];
 
   return (
@@ -26,7 +26,7 @@ export const OrdersStates = () => {
           <div key={status} className="flex items-center justify-between">
             <Badge
               variant="secondary"
-              className={cn("border-0 font-semibold", orderStatusColors[status])}
+              className={cn("border-0 font-semibold", ORDER_STATUS_COLORS[status])}
             >
               {ORDER_STATUS_LABELS[status]}
             </Badge>

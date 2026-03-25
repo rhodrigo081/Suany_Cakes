@@ -16,7 +16,7 @@ const buttonVariants = cva(
           "hover:bg-secondary/40 border border-border hover:text-secondary-foreground",
         secondary:
           "hover:bg-secondary hover:text-secondary-foreground outline-none border border-border",
-        tertiary: "bg-accent/20 text-foreground border text-sm font-normal hover:opacity-60",
+        tertiary: "bg-accent/20 text-foreground border rounded-xl hover:opacity-60",
         ghost: "text-accent-foreground hover:text-secondary cursor-pointer transition-all duration-300",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -24,8 +24,9 @@ const buttonVariants = cva(
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-xl px-8",
-        icon: "h-10 w-10",
-        destructive: "h-6 w-6 rounded-full"
+        icon: "h-10 w-10 border-none",
+        destructive: "h-6 w-6 rounded-full",
+        base: "p-2 font-medium text-base"
       },
     },
     defaultVariants: {

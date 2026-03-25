@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { Progress } from "../ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
+import { Progress } from "../../ui/progress";
 
 const neighborhoodData = [
     { name: 'Boa Viagem', pedidos: 42 },
@@ -17,7 +17,7 @@ const maxPedidos = Math.max(...neighborhoodData.map((n) => n.pedidos));
 export const MostRequestedNeighborhoods = () => {
     return (<Card className="h-120">
         <CardHeader>
-            <CardTitle className="flex items-center gap-2 font-display text-xl">
+            <CardTitle className="font-display text-2xl">
                 Bairros que Mais Pedem
             </CardTitle>
         </CardHeader>

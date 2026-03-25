@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, ChevronDown, Calendar, ShoppingBag, MapPin, Clock } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import { ORDER_STATUS_LABELS, orderStatusColors, type Order, type OrderStatus } from "@/types/Order";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type Order, type OrderStatus } from "@/types/Order";
 import { formatters } from "@/utils/formatters";
 
 interface OrderCardProps {
@@ -42,7 +42,7 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
 
                 <div className="flex items-center gap-6">
                     <div className="flex flex-col items-end gap-1">
-                        <Badge variant="secondary" className={cn("border-none px-4 py-0.5 font-semibold", orderStatusColors[order.status as OrderStatus])}>
+                        <Badge variant="secondary" className={cn("border-none px-4 py-0.5 font-semibold", ORDER_STATUS_COLORS[order.status as OrderStatus])}>
                             {ORDER_STATUS_LABELS[order.status as keyof typeof ORDER_STATUS_LABELS] ?? order.status}
                         </Badge>
                         <span className="text-2xl font-bold text-primary">

@@ -9,13 +9,10 @@ import {
     Sun
 } from "lucide-react"
 import { Button } from "../../ui/button"
-import { DropdownMenu, DropdownMenuTrigger } from "../../ui/Dropdown/DropdownMenu"
-import { DropdownMenuContent } from "../../ui/Dropdown/MenuContent"
-import { DropdownMenuItem } from "../../ui/Dropdown/MenuItem"
 import { Link } from "react-router-dom"
-import { DropdownMenuSeparator } from "../../ui/Dropdown/MenuSeparator"
 import { useTheme } from "@/contexts/ThemeContext/useTheme"
 import { useAuthStore } from "@/stores/Auth"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export const DropDown = () => {
     const { isAuthenticated, logout } = useAuthStore();
@@ -28,15 +25,15 @@ export const DropDown = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="secondary" buttonSize="icon" className="relative  border-none">
+                <Button variant="secondary" buttonSize="icon" className="relative">
                     <User size={25} />
                 </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-52 bg-card-background z-[110]">
+            <DropdownMenuContent align="end" className="w-52 bg-card-background z-110">
                 <DropdownMenuItem onClick={toggleTheme} className="flex items-center gap-2 cursor-pointer">
                     <Moon className="absolute h-4 w-4 rotate-0 scale-100 transition-all dark:rotate-90 dark:scale-0" />
-                    <Sun className="h-4 w-4 rotate-0 scale-0 transition-all dark:-rotate-0 dark:scale-100" />
+                    <Sun className="h-4 w-4 rotate-0 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     <span>{theme === 'dark' ? 'Claro' : 'Escuro'}</span>
                 </DropdownMenuItem>
 

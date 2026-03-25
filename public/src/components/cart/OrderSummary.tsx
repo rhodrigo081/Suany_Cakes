@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { formatters } from "./../../utils/formatters";
-import { DeliveryDatePicker } from "./DeliveryDatePicker";
 import { useCart } from "@/contexts/CartContext/useCart";
 import { useOrder } from "@/contexts/OrderContext/useOrder";
 import { MapPin } from "lucide-react";
-import { AddressDropdown } from "./AddressDropdown";
+import { AddressSelect } from "./AddressSelect";
+import { DatePicker } from "../ui/datePicker";
 
 export const OrderSummary = () => {
   const { cart, clearCart } = useCart();
@@ -45,13 +45,17 @@ export const OrderSummary = () => {
           <span className="text-sm font-medium text-foreground flex items-center gap-1">
             <MapPin size={14} className="text-primary" /> Endereço de Entrega
           </span>
-          <AddressDropdown />
+          <AddressSelect />
         </div>
 
-        <DeliveryDatePicker
-          date={deliveryDate}
-          onDateChange={setDeliveryDate}
-        />
+        <div>
+          <label className="mb-2 block text-sm font-medium">Data de Entrega</label>
+          <DatePicker
+            date={deliveryDate}
+            onDateChange={setDeliveryDate}
+            restriction="future-only"
+          />
+        </div>
 
         <div className="space-y-4 text-sm text-muted-foreground">
           <div className="flex justify-between">

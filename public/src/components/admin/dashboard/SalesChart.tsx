@@ -39,7 +39,7 @@ export const SalesChart = () => {
             <CardContent className='h-full'>
                 <ChartContainer config={lineChartConfig} className="w-full h-90">
                     <LineChart data={salesData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid strokeDasharray="5 5" className="stroke-red" />
+                        <CartesianGrid strokeDasharray="5 5"/>
                         <XAxis dataKey="day" className="text-xs" />
                         <YAxis className="text-xs" />
                         <ChartTooltip content={<ChartTooltipContent />} />

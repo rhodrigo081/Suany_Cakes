@@ -1,6 +1,6 @@
 import { PieChart, Pie, Cell, } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../ui/chart";
 
 const pieChartConfig = {
     doces: { label: 'Doces', color: 'hsl(340, 65%, 55%)' },
