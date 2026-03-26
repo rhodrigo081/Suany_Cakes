@@ -25,13 +25,13 @@ export const OrderDetailsModal = ({
             <DialogPortal>
                 <DialogOverlay className="z-50 bg-background/20 backdrop-blur-xs" />
 
-                <DialogContent className="rounded-2xl p-6">
+                <DialogContent className="rounded-2xl p-6 min-w-lg min-w-lg">
 
                     <DialogTitle className="text-3xl font-serif font-semibold text-foreground">
                         Pedido {order.id}
                     </DialogTitle>
 
-                    <div className="grid grid-cols-2 gap-y-8 gap-x-24 mt-6">
+                    <div className="grid grid-cols-2 gap-y-8 gap-x-4 mt-6">
                         <div>
                             <h4 className="text-lg font-medium text-foreground">Cliente</h4>
                             <p className="text-accent-foreground">{order.customerName}</p>
@@ -50,7 +50,7 @@ export const OrderDetailsModal = ({
                         <div>
                             <h4 className="text-lg font-medium text-foreground">Status</h4>
                             <Select value={order.status} onValueChange={(value) => onStatusChange(order.id, value)}>
-                                <SelectTrigger>
+                                <SelectTrigger className="w-full">
                                     <SelectValue placeholder={order.status} />
                                 </SelectTrigger>
                                 <SelectContent className="bg-card-background">

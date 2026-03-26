@@ -22,6 +22,7 @@ import { CategoryProvider } from "./contexts/CategoryContext/CategoryProvider"
 import { OrderProvider } from "./contexts/OrderContext/OrderProvider"
 import { AdminPage } from "./pages/admin/AdminPage"
 import { OrderManager } from "./pages/admin/OrderManager"
+import { ProductManager } from "./pages/admin/ProductManager"
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -39,6 +40,7 @@ export const App = () => {
         { path: "/login-success", element: <LoginSuccess /> },
         { path: "/dashboard", element: <AdminPage /> },
         { path: "/gerenciar-pedidos", element: <OrderManager /> },
+        { path: "/gerenciar-produtos", element: <ProductManager /> },
 
         {
           element: <ProtectedRoute />,

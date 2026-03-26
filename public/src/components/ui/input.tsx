@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import { Eye, EyeOff, type LucideIcon } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -10,7 +11,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ label, icon: Icon, rightElement, type, error, isRequired, ...props }, ref) => {
+    ({ label, icon: Icon, rightElement, type, error, isRequired, className, ...props }, ref) => {
         const [showPassword, setShowPassword] = useState(false);
         const isPassword = type === 'password';
         const inputType = isPassword && showPassword ? 'text' : type;
@@ -19,7 +20,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         const paddingRight = (isPassword || rightElement) ? 'pr-12' : 'pr-4';
 
         return (
-            <div className="w-full text-left">
+            <div className={cn("text-left flex flex-col", className)}>
                 <div className="flex justify-between items-center mb-2">
                     {label && (
                         <label className={`font-medium text-sm ${error ? 'text-red-500' : 'text-foreground'}`}>
@@ -40,7 +41,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         ref={ref}
                         type={inputType}
                         className={`
-                            w-full py-2 bg-accent/20 border rounded-xl text-base
+                            w-full py-2 bg-accent/20 pr-40 border rounded-xl text-base
                             focus:outline-none font-medium focus:ring-2 transition-all 
                             placeholder:text-accent-foreground/50 text-foreground
                             ${error

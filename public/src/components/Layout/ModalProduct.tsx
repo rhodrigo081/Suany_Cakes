@@ -14,6 +14,7 @@ import {
     DialogTitle,
     DialogClose
 } from "@/components/ui/dialog";
+import { CATEGORY_LABELS } from "@/types/Product";
 
 export const ModalProduct = () => {
     const {
@@ -30,12 +31,6 @@ export const ModalProduct = () => {
     if (!product) return null;
 
     const total = quantity * product.price;
-
-    const categoryLabel: Record<string, string> = {
-        CANDY: 'Doce',
-        SAVORY: 'Salgado',
-        CAKE: 'Bolo'
-    };
 
     const handleAddToCart = () => {
         if (isAuthenticated) {
@@ -54,7 +49,7 @@ export const ModalProduct = () => {
             <DialogPortal>
                 <DialogOverlay className="z-50 bg-background/10 backdrop-blur-xs" />
 
-                <DialogContent className="min-w-2xl p-0 overflow-hidden rounded-3xl border-none bg-card-background">
+                <DialogContent className="min-w-2xl max-w-2xl p-0 overflow-hidden rounded-3xl border-none bg-card-background">
                     <div className="flex flex-col md:flex-row w-full">
                         <div className="w-1/2 h-full overflow-hidden">
                             <img
@@ -76,7 +71,7 @@ export const ModalProduct = () => {
                             </DialogClose>
 
                             <Badge className="flex w-fit px-4 mb-4" variant="ghost">
-                                {categoryLabel[product.category]}
+                                {CATEGORY_LABELS[product.category]}
                             </Badge>
 
                             <DialogTitle className="text-4xl font-serif font-bold text-foreground mb-3">

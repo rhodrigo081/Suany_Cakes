@@ -15,4 +15,13 @@ export interface Product {
   category: CategorySlug;
   featured?: boolean;
   ingredients: string[];
+  isActive: IsActiveSlug;
 }
+
+export const IS_ACTIVE_LABEL = {
+  true: "Disponível",
+  false: "Indisponível",
+} as const;
+
+
+export type IsActiveSlug = keyof typeof IS_ACTIVE_LABEL;

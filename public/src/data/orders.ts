@@ -1,9 +1,9 @@
-import {
+import { ORDER_STATUS_LABELS, type Order } from "@/types/Order";
+import { MOCK_PRODUCTS } from "./products";
+
+const STATUS_OPTIONS = Object.keys(
   ORDER_STATUS_LABELS,
-  type Order,
-  type OrderStatus,
-} from "@/types/Order";
-import { products } from "./products";
+) as (keyof typeof ORDER_STATUS_LABELS)[];
 
 const MOCK_ADDRESSES = [
   {
@@ -64,8 +64,6 @@ const CUSTOMER_NAMES = [
   "Heitor Costa",
 ];
 
-const STATUS_OPTIONS = Object.keys(ORDER_STATUS_LABELS) as OrderStatus[];
-
 export const MOCK_ORDERS: Order[] = Array.from({ length: 40 }).map(
   (_, index) => {
     const status = STATUS_OPTIONS[index % STATUS_OPTIONS.length];
@@ -74,7 +72,7 @@ export const MOCK_ORDERS: Order[] = Array.from({ length: 40 }).map(
 
     const itemsCount = (index % 3) + 1;
     const items = Array.from({ length: itemsCount }).map((_, i) => {
-      const product = products[(index + i) % products.length];
+      const product = MOCK_PRODUCTS[(index + i) % MOCK_PRODUCTS.length];
       const qty = (i % 2) + 1;
 
       return {
@@ -97,8 +95,8 @@ export const MOCK_ORDERS: Order[] = Array.from({ length: 40 }).map(
 
     return {
       id: `ORD-26${index.toString().padStart(4, "0")}`,
-      status: status,
-      customerName: customerName,
+      status,
+      customerName,
       createdAt: createdAt.toISOString(),
       totalPrice: total,
       deliveryDate: deliveryDate.toISOString(),

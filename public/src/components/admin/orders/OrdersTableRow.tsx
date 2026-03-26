@@ -1,8 +1,8 @@
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type Order } from "@/types/Order";
 import { formatters } from "@/utils/formatters";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type Order } from '@/types/Order';
 
 interface OrdersTableRowProps {
     order: Order;

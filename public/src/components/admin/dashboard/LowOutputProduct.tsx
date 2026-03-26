@@ -1,4 +1,4 @@
-import { products } from "@/data/products";
+import { MOCK_PRODUCTS } from "@/data/products";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { formatters } from "@/utils/formatters";
 
@@ -8,7 +8,7 @@ const lowProducts = [
     { id: '5', sold: 15, revenue: 45 },
 ];
 
-const getProduct = (id: string) => products.find((p) => p.id === id);
+const getProduct = (id: string) => MOCK_PRODUCTS.find((p) => p.id === id);
 
 export const LowOutputProduct = () => {
 

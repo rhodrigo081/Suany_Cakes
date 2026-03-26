@@ -1,14 +1,15 @@
-import { useState } from "react";
+    import { useState } from "react";
 import { Search, Undo2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { OrdersTable } from "@/components/admin/orders/OrdersTable";
-import { ORDER_STATUS_LABELS, type Order, type OrderStatus } from "@/types/Order";
+import { ORDER_STATUS_LABELS, type Order, type OrderStatusSlug, } from "@/types/Order";
 import { MOCK_ORDERS } from "@/data/orders";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/datePicker";
 import { OrderDetailsModal } from "@/components/admin/orders/OrderDetailModal";
+import { Wrapper } from "@/components/Wrapper";
 
 export const OrderManager = () => {
 
@@ -34,12 +35,12 @@ export const OrderManager = () => {
     const handleStatusChange = (orderId: string, newStatus: string) => {
 
         setOrders((prev) =>
-            prev.map((o) => (o.id === orderId ? { ...o, status: newStatus as OrderStatus } : o))
+            prev.map((o) => (o.id === orderId ? { ...o, status: newStatus as OrderStatusSlug } : o))
         );
 
 
         if (selectedOrder && selectedOrder.id === orderId) {
-            setSelectedOrder({ ...selectedOrder, status: newStatus as OrderStatus });
+            setSelectedOrder({ ...selectedOrder, status: newStatus as OrderStatusSlug });
         }
 
         console.log(`Status do pedido ${orderId} alterado para ${newStatus}`);
@@ -53,7 +54,7 @@ export const OrderManager = () => {
     };
 
     return (
-        <div className="flex flex-col gap-8 p-8 w-full">
+        <Wrapper className="p-10 flex flex-col gap-8">
             <div className="flex items-center gap-4">
                 <Link to={"/dashboard"}>
                     <Button variant="secondary" buttonSize="icon" className="text-muted-foreground">
@@ -86,7 +87,7 @@ export const OrderManager = () => {
                             </SelectTrigger>
                             <SelectContent className="bg-card-background">
                                 <SelectItem value="all">Todos</SelectItem>
-                                {(Object.keys(ORDER_STATUS_LABELS) as OrderStatus[]).map((status) => (
+                                {(Object.keys(ORDER_STATUS_LABELS) as OrderStatusSlug[]).map((status) => (
                                     <SelectItem key={status} value={status}>
                                         {ORDER_STATUS_LABELS[status]}
                                     </SelectItem>
@@ -133,6 +134,6 @@ export const OrderManager = () => {
                 onOpenChange={setIsModalOpen}
                 onStatusChange={handleStatusChange}
             />
-        </div>
+        </Wrapper>
     );
 };

@@ -2,7 +2,7 @@ import { productsService } from "@/services/products";
 import { ProductCards } from "./ProductCards";
 import { useEffect, useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { products } from "@/data/products";
+import { MOCK_PRODUCTS } from "@/data/products";
 /* import type { Product } from "@/types/Product"; */
 
 export const CatalogSection = ({ activeCategory }: { activeCategory: string }) => {
@@ -17,7 +17,7 @@ export const CatalogSection = ({ activeCategory }: { activeCategory: string }) =
 
                 if (activeCategory === "all") {
                     /* data = await productsService.getAllProducts(); */
-                    data = products;
+                    data = MOCK_PRODUCTS;
                 } else {
                     data = await productsService.getProductByCategory(activeCategory);
                 }
@@ -37,8 +37,8 @@ export const CatalogSection = ({ activeCategory }: { activeCategory: string }) =
 
     return (
         <section className="grid grid-cols-4 gap-10">
-            {products.length > 0 ? (
-                products.map((item) => (
+            {MOCK_PRODUCTS.length > 0 ? (
+                MOCK_PRODUCTS.map((item) => (
                     <ProductCards key={item.id} product={item} />
                 ))
             ) : (

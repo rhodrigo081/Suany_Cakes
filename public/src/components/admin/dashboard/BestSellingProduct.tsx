@@ -1,4 +1,4 @@
-import { products } from "@/data/products";
+import { MOCK_PRODUCTS } from "@/data/products";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { formatters } from "@/utils/formatters";
 
@@ -10,7 +10,7 @@ const topProducts = [
     { id: '4', sold: 95, revenue: 427.5 },
 ];
 
-const getProduct = (id: string) => products.find((p) => p.id === id);
+const getProduct = (id: string) => MOCK_PRODUCTS.find((p) => p.id === id);
 
 export const BestSellingProduct = () => {
     return (
