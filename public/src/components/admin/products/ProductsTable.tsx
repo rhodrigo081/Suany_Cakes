@@ -8,7 +8,7 @@ interface ProductsTableProps {
     search: string;
 }
 
-export const ProducstTable = ({ products, search }: ProductsTableProps) => {
+export const ProductsTable = ({ products, search }: ProductsTableProps) => {
 
     const filteredProducts = useMemo(() => {
         const searchTerm = search.toLowerCase();

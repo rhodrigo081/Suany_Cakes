@@ -9,12 +9,32 @@ class Formartters {
     }).format(value);
   }
 
+  maskCurrency(value: string) {
+    const v = value.replace(/\D/g, "");
+    if (!v) return "";
+
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(v) / 100,
+    );
+
+    return "R$ " + result;
+  }
+
   maskPhone(value: string) {
     return value
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d)/, "$1-$2")
       .replace(/(-\d{4})\d+?$/, "$1");
+  }
+
+  parseCurrencyToNumber(value: string): number {
+    if (!value) return 0;
+
+    const cleanValue = value.replace(/\D/g, "");
+
+    return Number(cleanValue) / 100;
   }
 
   maskCEP(value: string) {

@@ -21,8 +21,10 @@ import { ProtectedRoute } from "./components/ProtectedRoute"
 import { CategoryProvider } from "./contexts/CategoryContext/CategoryProvider"
 import { OrderProvider } from "./contexts/OrderContext/OrderProvider"
 import { AdminPage } from "./pages/admin/AdminPage"
-import { OrderManager } from "./pages/admin/OrderManager"
-import { ProductManager } from "./pages/admin/ProductManager"
+import { OrderManagerPage } from "./pages/admin/OrderManagerPage"
+import { ProductManagerPage } from "./pages/admin/ProductManagerPage"
+import { ProductFormPage } from "./pages/admin/ProductFormPage"
+
 
 export const App = () => {
   const router = createBrowserRouter([
@@ -39,8 +41,9 @@ export const App = () => {
         { path: "/carrinho", element: <ShoppingCartPage /> },
         { path: "/login-success", element: <LoginSuccess /> },
         { path: "/dashboard", element: <AdminPage /> },
-        { path: "/gerenciar-pedidos", element: <OrderManager /> },
-        { path: "/gerenciar-produtos", element: <ProductManager /> },
+        { path: "/gerenciar-pedidos", element: <OrderManagerPage /> },
+        { path: "/gerenciar-produtos", element: <ProductManagerPage /> },
+        { path: "/produto", element: <ProductFormPage /> },
 
         {
           element: <ProtectedRoute />,

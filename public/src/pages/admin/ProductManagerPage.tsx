@@ -1,4 +1,4 @@
-import { ProducstTable } from "@/components/admin/products/ProducstTable"
+import { ProductsTable } from "@/components/admin/products/ProductsTable"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Wrapper } from "@/components/Wrapper"
@@ -7,7 +7,7 @@ import { Plus, Search, Undo2 } from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 
-export const ProductManager = () => {
+export const ProductManagerPage = () => {
     const [search, setSearch] = useState("");
 
     return (
@@ -30,15 +30,17 @@ export const ProductManager = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
 
-                <Button buttonSize="base">
-                    <Plus />
-                    Novo Produto
-                </Button>
+                <Link to="/produto">
+                    <Button buttonSize="base">
+                        <Plus />
+                        Novo Produto
+                    </Button>
+                </Link>
             </div>
 
-            <ProducstTable
-            products={MOCK_PRODUCTS}
-            search={search}/>
+            <ProductsTable
+                products={MOCK_PRODUCTS}
+                search={search} />
         </Wrapper>
     )
 }

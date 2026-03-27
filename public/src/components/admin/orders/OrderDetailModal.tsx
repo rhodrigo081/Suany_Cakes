@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ORDER_STATUS_LABELS, type Order, type OrderStatus } from "@/types/Order";
+import { ORDER_STATUS_LABELS, type Order, type OrderStatusSlug} from "@/types/Order";
 import { formatters } from "@/utils/formatters";
 import { X } from "lucide-react";
 
@@ -54,7 +54,7 @@ export const OrderDetailsModal = ({
                                     <SelectValue placeholder={order.status} />
                                 </SelectTrigger>
                                 <SelectContent className="bg-card-background">
-                                    {(Object.keys(ORDER_STATUS_LABELS) as OrderStatus[]).map((status) => (
+                                    {(Object.keys(ORDER_STATUS_LABELS) as OrderStatusSlug[]).map((status) => (
                                         <SelectItem key={status} value={status}>
                                             {ORDER_STATUS_LABELS[status]}
                                         </SelectItem>

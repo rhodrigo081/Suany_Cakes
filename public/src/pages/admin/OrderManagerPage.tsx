@@ -11,7 +11,7 @@ import { DatePicker } from "@/components/ui/datePicker";
 import { OrderDetailsModal } from "@/components/admin/orders/OrderDetailModal";
 import { Wrapper } from "@/components/Wrapper";
 
-export const OrderManager = () => {
+export const OrderManagerPage = () => {
 
     const [orders, setOrders] = useState<Order[]>(MOCK_ORDERS);
 
@@ -58,11 +58,11 @@ export const OrderManager = () => {
             <div className="flex items-center gap-4">
                 <Link to={"/dashboard"}>
                     <Button variant="secondary" buttonSize="icon" className="text-muted-foreground">
-                        <Undo2 className="h-6 w-6" />
+                        <Undo2 />
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-serif font-semibold text-foreground">Gerenciar Pedidos</h1>
+                    <h1 className="text-4xl font-serif font-semibold text-foreground">Gerenciar Pedidos</h1>
                     <p className="text-muted-foreground text-sm">{orders.length} Pedidos encontrados</p>
                 </div>
             </div>
