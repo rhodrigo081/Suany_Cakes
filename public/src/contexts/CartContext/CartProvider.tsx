@@ -1,7 +1,7 @@
 import type { ShoppingCartResponse } from "@/types/ShoppingCart";
 import { createContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import type { Product } from "@/types/Product";
-import { cartService } from "@/services/shoppingcart";
+import { cartService } from "@/services/customer/shoppingcart";
 
 interface CartContextType {
     cart: ShoppingCartResponse | null;

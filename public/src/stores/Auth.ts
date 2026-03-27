@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { authService } from "@/services/auth";
+import { authService } from "@/services/customer/auth";
 import type { User } from "@/types/User";
 import type { Product } from "@/types/Product";
-import { userService } from "@/services/user";
+import { userService } from "@/services/customer/user";
 import { api } from "@/services/api";
 
 export interface LoginCredentials {

@@ -12,7 +12,7 @@ interface OrdersTableRowProps {
 export const OrdersTableRow = ({ order, onSelect }: OrdersTableRowProps) => {
     return (
         <TableRow className="cursor-pointer hover:bg-accent/20" onClick={() => onSelect(order)}>
-            <TableCell>{order.id}</TableCell>
+            <TableCell>{formatters.formatOrderId(order.id)}</TableCell>
             <TableCell>{order.customerName}</TableCell>
             <TableCell>{format(order.createdAt, "dd/MM/yyyy")}</TableCell>
             <TableCell>

@@ -3,7 +3,6 @@ package com.example.demo.repositories;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,7 @@ import com.example.demo.models.OrderModel;
 import com.example.demo.models.UserModel;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderModel, UUID> {
+public interface OrderRepository extends JpaRepository<OrderModel, Long> {
 
         List<OrderModel> findByUserOrderByCreatedAtDesc(UserModel user);
 

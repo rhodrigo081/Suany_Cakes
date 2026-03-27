@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FeaturedCards } from "./FeaturedCards";
 import type { Product } from "@/types/Product";
-import { productsService } from "@/services/products";
+import { productsService } from "@/services/customer/products";
 
 export const FeaturedSection = () => {
     const [products, setProducts] = useState<Product[]>([])

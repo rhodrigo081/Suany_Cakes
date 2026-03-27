@@ -1,5 +1,5 @@
 import type { User } from "@/types/User";
-import { api } from "./api";
+import { api } from "../api";
 import type { LoginCredentials, RegisterData } from "@/stores/Auth";
 
 interface LoginResponse {

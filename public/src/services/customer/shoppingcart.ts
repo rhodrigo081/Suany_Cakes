@@ -1,5 +1,5 @@
 import type { CartItemRequest, ShoppingCartResponse } from "@/types/ShoppingCart";
-import { api } from "./api";
+import { api } from "../api";
 
 class CartService {
   async getCart() {

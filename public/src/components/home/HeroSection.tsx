@@ -1,8 +1,8 @@
 import heroImage from "@/assets/hero_block_pic.svg"
 import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Button } from "../../ui/button"
-import { GradientText } from "../../ui/gradientText"
+import { GradientText } from "@/components/ui/gradientText"
+import { Button } from "@/components/ui/button"
 
 export const HeroSection = () => {
 

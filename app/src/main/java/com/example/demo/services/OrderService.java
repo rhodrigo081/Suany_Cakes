@@ -3,7 +3,6 @@ package com.example.demo.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,7 +83,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDTO updateOrderStatus(UUID orderId, OrderStatus newStatus) {
+    public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
         OrderModel order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Pedido não encontrado"));
         if (order.getOrderStatus() == OrderStatus.FINISHED || order.getOrderStatus() == OrderStatus.CANCELED) {
@@ -114,8 +113,11 @@ public class OrderService {
                 model.getShippingAddress().getIsPrimary()
         );
 
+        String customerName = model.getUser().getFirstName() + " " + model.getUser().getLastName();
+
         return new OrderResponseDTO(
                 model.getId(),
+                customerName,
                 model.getOrderStatus().name(),
                 model.getCreatedAt(),
                 model.getDeliveryDate(),

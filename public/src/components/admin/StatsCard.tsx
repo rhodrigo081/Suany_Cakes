@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 
 interface StatsCardProps {
   title: string;
-  value: string;
+  value: string | number;
   percentage: string;
   icon: ReactNode;
   iconBgColor: string;

@@ -2,17 +2,17 @@ import { XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_ORDERS } from "@/data/orders";
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type OrderStatus } from "@/types/Order";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type OrderStatusSlug } from "@/types/Order";
 import { cn } from "@/lib/utils";
 
 export const OrdersStates = () => {
   const statusCounts = MOCK_ORDERS.reduce((acc, order) => {
-    const s = order.status as OrderStatus;
+    const s = order.status as OrderStatusSlug;
     acc[s] = (acc[s] || 0) + 1;
     return acc;
-  }, {} as Record<OrderStatus, number>);
+  }, {} as Record<OrderStatusSlug, number>);
 
-  const statusOrder: OrderStatus[] = ["pending", "in_production", "for_delivery", "finished", "cancelled"];
+  const statusOrder: OrderStatusSlug[] = ["PENDING", "IN_PRODUCTION", "FOR_DELIVERY", "FINISHED", "CANCELLED"];
 
   return (
     <Card className="h-120">

@@ -7,6 +7,7 @@ import { CATEGORY_LABELS, type CategorySlug, type Product } from "@/types/Produc
 import { formatters } from "@/utils/formatters";
 import { Plus, Save, Upload, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const ProductForm = () => {
     const [formData, setFormData] = useState<Omit<Partial<Product>, 'price'> & { price: string }>({
@@ -54,7 +55,7 @@ export const ProductForm = () => {
         const priceForBackend = formatters.parseCurrencyToNumber(formData.price);
         const payload = {
             ...formData,
-            price: priceForBackend, 
+            price: priceForBackend,
             isActive: formData.isActive === 'true'
         };
 
@@ -172,13 +173,16 @@ export const ProductForm = () => {
                         <Save size={24} />
                         Salvar Produto
                     </Button>
-                    <Button
-                        type="button"
-                        variant="destructive"
-                        className="w-1/3 border border-border text-2xl py-6 rounded-lg"
-                    >
-                        Cancelar
-                    </Button>
+
+                    <Link to="/gerenciar-produtos">
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            className="w-1/3 border border-border text-2xl py-6 rounded-lg"
+                        >
+                            Cancelar
+                        </Button>
+                    </Link>
                 </div>
             </form>
         </div>

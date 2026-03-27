@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, ChevronDown, Calendar, ShoppingBag, MapPin, Clock } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type Order, type OrderStatus } from "@/types/Order";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type Order } from "@/types/Order";
 import { formatters } from "@/utils/formatters";
 
 interface OrderCardProps {
@@ -31,7 +31,7 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
                     </div>
                     <div className="flex flex-col">
                         <h3 className="text-lg font-bold text-foreground font-display uppercase">
-                            ORD - {order.id.slice(-6)}
+                            {formatters.formatOrderId(order.id)}
                         </h3>
                         <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
                             <Clock size={14} />
@@ -42,8 +42,8 @@ export const OrdersCards = ({ order }: OrderCardProps) => {
 
                 <div className="flex items-center gap-6">
                     <div className="flex flex-col items-end gap-1">
-                        <Badge variant="secondary" className={cn("border-none px-4 py-0.5 font-semibold", ORDER_STATUS_COLORS[order.status as OrderStatus])}>
-                            {ORDER_STATUS_LABELS[order.status as keyof typeof ORDER_STATUS_LABELS] ?? order.status}
+                        <Badge className={`${ORDER_STATUS_COLORS[order.status]}`}>
+                            {ORDER_STATUS_LABELS[order.status]}
                         </Badge>
                         <span className="text-2xl font-bold text-primary">
                             {formatters.formatCurrency(order.totalPrice)}

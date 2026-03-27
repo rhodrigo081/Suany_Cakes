@@ -94,7 +94,7 @@ export const MOCK_ORDERS: Order[] = Array.from({ length: 40 }).map(
     deliveryDate.setDate(createdAt.getDate() + 2);
 
     return {
-      id: `ORD-26${index.toString().padStart(4, "0")}`,
+      id: index + 1,
       status,
       customerName,
       createdAt: createdAt.toISOString(),

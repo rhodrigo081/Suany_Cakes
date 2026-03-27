@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
-public record OrderResponseDTO(UUID id,
+public record OrderResponseDTO(
+        Long id,
+        String customerName,
         String status,
         LocalDateTime createdAt,
         LocalDate deliveryDate,
         BigDecimal totalPrice,
         AddressResponseDTO shippingAddress,
         List<OrderItemResponseDTO> items) {
-
 }

@@ -10,10 +10,25 @@ import { Scheduling } from "@/components/admin/dashboard/Scheduling"
 import { StatsCard } from "@/components/admin/StatsCard"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { dashboardService, type DashboardStatsDTO } from "@/services/admin/dashboard"
+import { formatters } from "@/utils/formatters"
 import { Banknote, ClipboardList, Package, ShoppingCart } from "lucide-react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
 export const AdminLayout = () => {
+    const [data, setData] = useState<DashboardStatsDTO | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        dashboardService.fetchStats()
+            .then(setData)
+            .catch((err) => setError(err.message))
+            .finally(() => setLoading(false));
+    }, []);
+
+
     return (
         <div>
             <div className="py-6 space-y-6">
@@ -26,11 +41,11 @@ export const AdminLayout = () => {
 
                 <div className="flex justify-between gap-4">
                     <StatsCard
-                        title="Faturamento Bruto" value="R$ 4.000,00" percentage="+12% vs. mês anterior"
+                        title="Faturamento Bruto" value={loading ? "Carregando..." : error ? `${error}` : formatters.formatCurrency(data?.totalRevenue ?? 0)} percentage="+12% vs. mês anterior"
                         icon={<Banknote className="text-green" size={24} />} iconBgColor="bg-light-green/30"
                     />
                     <StatsCard
-                        title="Ticket Médio" value="R$ 56,40" percentage="+2% vs. mês anterior"
+                        title="Ticket Médio" value={loading ? "Carregando..." : error ? `${error}` : formatters.formatCurrency(data?.averageTicket ?? 0)} percentage="+2% vs. mês anterior"
                         icon={<ShoppingCart className="text-secondary" size={24} />} iconBgColor="bg-secondary/20"
                     />
                 </div>

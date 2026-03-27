@@ -1,6 +1,6 @@
 import type { User } from "@/types/User";
 import type { Product } from "@/types/Product";
-import { api } from "./api";
+import { api } from "../api";
 
 class UserService {
   async toggleFavorite(productId: string | number): Promise<void> {

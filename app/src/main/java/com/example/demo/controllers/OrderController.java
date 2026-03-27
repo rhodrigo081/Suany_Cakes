@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,7 @@ public class OrderController {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateStatus(
-            @PathVariable UUID id,
+            @PathVariable Long id,
             @RequestBody StatusUpdateRequestDTO request) {
 
         OrderResponseDTO updatedOrder = orderService.updateOrderStatus(id, request.status());

@@ -8,7 +8,7 @@ export const ProductFormPage = () => {
     return (
         <Wrapper className="p-10 flex flex-col gap-8">
             <div className="flex items-center gap-4">
-                <Link to={"/dashboard"}>
+                <Link to="/gerenciar-produtos">
                     <Button variant="secondary" buttonSize="icon" className="text-muted-foreground">
                         <Undo2 className="h-6 w-6" />
                     </Button>

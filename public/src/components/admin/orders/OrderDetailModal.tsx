@@ -9,7 +9,7 @@ interface OrderDetailsModalProps {
     order: Order | null;
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
-    onStatusChange: (orderId: string, newStatus: string) => void;
+    onStatusChange: (orderId: number, newStatus: string) => void;
 }
 
 export const OrderDetailsModal = ({
@@ -28,7 +28,7 @@ export const OrderDetailsModal = ({
                 <DialogContent className="rounded-2xl p-6 min-w-lg min-w-lg">
 
                     <DialogTitle className="text-3xl font-serif font-semibold text-foreground">
-                        Pedido {order.id}
+                        Pedido {formatters.formatOrderId(order.id)}
                     </DialogTitle>
 
                     <div className="grid grid-cols-2 gap-y-8 gap-x-4 mt-6">
@@ -70,7 +70,7 @@ export const OrderDetailsModal = ({
                         {order.items.map((item, index) => (
                             <div key={index} className="flex justify-between text-sm">
                                 <span className="text-muted-foreground font-medium">
-                                    {item.quantity}X {item.productName}
+                                    {item.quantity}x {item.productName}
                                 </span>
                                 <span className="font-bold text-foreground">
                                     {formatters.formatCurrency(item.unitPrice)}

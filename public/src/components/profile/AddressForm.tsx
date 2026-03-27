@@ -34,8 +34,8 @@ export const AddressForm = () => {
     }, [id, addressToEdit, setValue]);
 
     const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const rawValue = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
-        const limitedValue = rawValue.slice(0, 8);         // Limita a 8 dígitos (formato CEP)
+        const rawValue = e.target.value.replace(/\D/g, "");
+        const limitedValue = rawValue.slice(0, 8);        
         const maskedValue = formatters.maskCEP(limitedValue);
 
         setValue("zipCode", maskedValue);
@@ -113,7 +113,7 @@ export const AddressForm = () => {
                     <div className="w-3/4">
                         <Input label="Rua" placeholder="Nome da Rua" {...register("street")} isRequired={true} />
                     </div>
-                    <div className="w-1/4">
+                    <div className="w-1/2">
                         <Input label="Número" placeholder="123" {...register("number")} isRequired={true} />
                     </div>
                 </div>
@@ -125,7 +125,7 @@ export const AddressForm = () => {
                     <div className="w-3/4">
                         <Input label="Cidade" placeholder="Sua Cidade" {...register("city")} isRequired={true} />
                     </div>
-                    <div className="w-1/4">
+                    <div className="w-1/2">
                         <Input label="Estado" placeholder="UF" {...register("state")} isRequired={true} />
                     </div>
                 </div>

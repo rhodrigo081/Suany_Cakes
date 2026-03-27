@@ -32,7 +32,7 @@ export const OrderManagerPage = () => {
     };
 
 
-    const handleStatusChange = (orderId: string, newStatus: string) => {
+    const handleStatusChange = (orderId: number, newStatus: string) => {
 
         setOrders((prev) =>
             prev.map((o) => (o.id === orderId ? { ...o, status: newStatus as OrderStatusSlug } : o))

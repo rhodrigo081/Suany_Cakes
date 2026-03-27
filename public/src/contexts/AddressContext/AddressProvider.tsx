@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react';
 import type { Address } from '@/types/Address';
-import { addressService } from '@/services/address';
+import { addressService } from '@/services/customer/address';
 import { useAuthStore } from '@/stores/Auth';
 
 interface AddressContextType {

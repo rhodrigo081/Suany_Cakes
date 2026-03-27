@@ -1,7 +1,7 @@
 import { NoneOrders } from "@/components/orders/NoneOrders"
 import { OrdersCards } from "@/components/orders/OrdersCard"
 import { Wrapper } from "@/components/Wrapper"
-import { ordersService } from "@/services/orders"
+import { ordersService } from "@/services/customer/orders"
 import { useAuthStore } from "@/stores/Auth"
 import type { Order } from "@/types/Order"
 import { LoaderCircle, Package } from "lucide-react"

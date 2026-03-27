@@ -1,5 +1,5 @@
-import { addressService } from "@/services/address";
-import { ordersService } from "@/services/orders";
+import { addressService } from "@/services/customer/address";
+import { ordersService } from "@/services/customer/orders";
 import type { Address } from "@/types/Address";
 import type { Order } from "@/types/Order";
 import { createContext, useState, useCallback, type ReactNode } from "react";

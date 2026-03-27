@@ -54,6 +54,12 @@ class Formartters {
       locale: ptBR,
     });
   }
+
+  formatOrderId(orderId: number) {
+    const formattedId = String(orderId).padStart(2, "0");
+
+    return "ORD - " + formattedId;
+  }
 }
 
 export const formatters = new Formartters();

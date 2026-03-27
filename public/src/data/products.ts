@@ -53,7 +53,7 @@ export const MOCK_PRODUCTS: Product[] = [
       "Frango desfiado",
       "Massa de batata",
       "Temperos especiais",
-      "Farinha de rosca",
+      "Farinha de rosca"
     ],
     featured: true,
     isActive: "true",
