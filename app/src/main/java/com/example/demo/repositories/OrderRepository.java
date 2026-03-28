@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.dtos.CategorySalesDTO;
@@ -20,6 +21,8 @@ public interface OrderRepository extends JpaRepository<OrderModel, Long> {
 
         List<OrderModel> findAllByOrderByCreatedAtDesc();
 
+        Long countBy();
+
         @Query("SELECT SUM(o.totalPrice) FROM OrderModel o "
                         + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
         BigDecimal sumTotalRevenueFinishedSince(LocalDateTime startDate);
@@ -28,12 +31,13 @@ public interface OrderRepository extends JpaRepository<OrderModel, Long> {
                         + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
         Long countFinishedOrdersSince(LocalDateTime startDate);
 
-        @Query("SELECT new com.example.demo.dtos.DailySalesDTO(CAST(o.createdAt AS LocalDateTime), SUM(o.totalPrice)) "
-                        + "FROM OrderModel o "
-                        + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED "
-                        + "GROUP BY CAST(o.createdAt AS LocalDateTime) "
-                        + "ORDER BY CAST(o.createdAt AS LocalDateTime) ASC")
-        List<DailySalesDTO> findDailySalesSince(LocalDateTime startDate);
+        @Query("SELECT new com.example.demo.dtos.DailySalesDTO(CAST(o.createdAt AS Localdatetime ), SUM(o.totalPrice)) " +
+                "FROM OrderModel o " +
+                "WHERE o.createdAt >= :startDate " +
+                "AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED " +
+                "GROUP BY CAST(o.createdAt AS Localdatetime) " +
+                "ORDER BY CAST(o.createdAt AS Localdatetime) ASC")
+        List<DailySalesDTO> findDailySalesSince(@Param("startDate") LocalDateTime startDate);
 
         @Query("SELECT new com.example.demo.dtos.CategorySalesDTO(i.product.category, SUM(i.subtotal)) "
                         + "FROM OrderItemModel i "

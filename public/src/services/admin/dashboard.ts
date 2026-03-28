@@ -1,4 +1,3 @@
-import type { Order } from "@/types/Order";
 import { api } from "../api";
 
 export interface DashboardStatsDTO {
@@ -46,16 +45,6 @@ class DashBoardService {
       return data;
     } catch (error) {
       console.error("Erro ao buscar vendas por categoria:", error);
-      throw error;
-    }
-  }
-
-  async fetchAllOrders() {
-    try {
-      const { data } = await api.get<Order[]>("/admin/orders");
-      return data;
-    } catch (error) {
-      console.error("Erro ao buscar pedidos:", error);
       throw error;
     }
   }

@@ -41,11 +41,11 @@ export const AdminLayout = () => {
 
                 <div className="flex justify-between gap-4">
                     <StatsCard
-                        title="Faturamento Bruto" value={loading ? "Carregando..." : error ? `${error}` : formatters.formatCurrency(data?.totalRevenue ?? 0)} percentage="+12% vs. mês anterior"
+                        title="Faturamento Bruto" value={loading ? "Carregando..." : error ? `${error}` : formatters.formatCurrency(data?.totalRevenue ?? 0)}
                         icon={<Banknote className="text-green" size={24} />} iconBgColor="bg-light-green/30"
                     />
                     <StatsCard
-                        title="Ticket Médio" value={loading ? "Carregando..." : error ? `${error}` : formatters.formatCurrency(data?.averageTicket ?? 0)} percentage="+2% vs. mês anterior"
+                        title="Ticket Médio" value={loading ? "Carregando..." : error ? `${error}` : formatters.formatCurrency(data?.averageTicket ?? 0)}
                         icon={<ShoppingCart className="text-secondary" size={24} />} iconBgColor="bg-secondary/20"
                     />
                 </div>

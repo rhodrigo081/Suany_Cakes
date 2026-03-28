@@ -3,10 +3,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AlertCircle, Loader2, Package } from "lucide-react";
 import { OrdersTableRow } from "./OrdersTableRow";
 import type { Order } from "@/types/Order";
-import { dashboardService } from "@/services/admin/dashboard";
+import { adminOrdersService } from "@/services/admin/orders";
+
 
 interface OrdersTableProps {
-    orders: Order[];
     search: string;
     statusFilter: string;
     onSelectOrder: (order: Order) => void;
@@ -20,12 +20,12 @@ export const OrdersTable = ({ search, statusFilter, onSelectOrder }: OrdersTable
     useEffect(() => {
         let isMounted = true;
 
-        dashboardService.fetchAllOrders()
+        adminOrdersService.fetchAllOrders()
             .then((data) => {
                 if (isMounted) setOrders(data);
             })
             .catch((err) => {
-                if (isMounted) setError(err.message || "Erro ao carregar pedidos");
+                if (isMounted) setError(err.message || "Erro ao carregar pedidos.");
             })
             .finally(() => {
                 if (isMounted) setLoading(false);

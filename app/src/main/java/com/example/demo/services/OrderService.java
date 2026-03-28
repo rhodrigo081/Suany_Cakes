@@ -82,6 +82,10 @@ public class OrderService {
                 .toList();
     }
 
+    public Long getAllOrdersQuantity(){
+        return orderRepository.countBy();
+    }
+
     @Transactional
     public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
         OrderModel order = orderRepository.findById(orderId)

@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import com.example.demo.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ public class DashboardController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/stats")
     public ResponseEntity<DashboardStatsDTO> getStats() {
@@ -41,8 +44,18 @@ public class DashboardController {
     }
 
     @GetMapping("/salesByCategory")
-    public ResponseEntity<List<CategorySalesDTO>> getSalesByCategory(){
+    public ResponseEntity<List<CategorySalesDTO>> getSalesByCategory() {
         return ResponseEntity.ok(dashboardService.getSalesByCategory());
+    }
+
+    @GetMapping("/count-all-orders")
+    public ResponseEntity<Long> getOrderQuantity() {
+        return ResponseEntity.ok(orderService.getAllOrdersQuantity());
+    }
+
+    @GetMapping("/count-all-products")
+    public ResponseEntity<Long> getProductQuantity() {
+        return ResponseEntity.ok(productService.getAllProductsQuantity());
     }
 
 }

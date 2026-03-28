@@ -20,8 +20,9 @@ public class CartItemMapper {
                 product.getPrice(),
                 product.getImage(),
                 product.getCategory(),
-                product.isFeatured(),
-                product.getIngredients()
+                product.getFeatured(),
+                product.getIngredients(),
+                product.getIsActive()
         );
 
         return new CartItemResponseDTO(productDTO, item.getQuantity(), item.getSubtotal());

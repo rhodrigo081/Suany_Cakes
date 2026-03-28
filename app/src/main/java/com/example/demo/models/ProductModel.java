@@ -38,9 +38,12 @@ public class ProductModel {
     private ProductCategory category;
 
     @Column(name = "featured", nullable = false)
-    private boolean featured;
+    private Boolean featured;
 
     @Column(name = "ingredients", nullable = false)
     private Set<String> ingredients;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
 
 }

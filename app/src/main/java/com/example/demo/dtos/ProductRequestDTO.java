@@ -6,11 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public record ProductRequestDTO(@NotBlank String name,
-                                @NotBlank String description,
-                                @NotNull BigDecimal price,
-                                String image,
-                                @NotBlank String category,
-                                boolean featured,
-                                Set<String> ingredients) {
+public record ProductRequestDTO(@NotBlank String name, @NotBlank String description, @NotNull BigDecimal price,
+                                String image, @NotBlank String category, Boolean featured, Set<String> ingredients,
+                                Boolean isActive) {
 }

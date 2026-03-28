@@ -1,20 +1,21 @@
-    import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Undo2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { OrdersTable } from "@/components/admin/orders/OrdersTable";
 import { ORDER_STATUS_LABELS, type Order, type OrderStatusSlug, } from "@/types/Order";
-import { MOCK_ORDERS } from "@/data/orders";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/datePicker";
 import { OrderDetailsModal } from "@/components/admin/orders/OrderDetailModal";
 import { Wrapper } from "@/components/Wrapper";
+import { adminOrdersService } from "@/services/admin/orders";
 
 export const OrderManagerPage = () => {
 
-    const [orders, setOrders] = useState<Order[]>(MOCK_ORDERS);
-
+    const [data, setData] = useState<number>(0);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
@@ -31,19 +32,27 @@ export const OrderManagerPage = () => {
         setIsModalOpen(true);
     };
 
+    useEffect(() => {
+        let isMounted = true;
+
+        adminOrdersService.countAllOrders()
+            .then((count) => {
+                if (isMounted) setData(count);
+            })
+            .catch((err) => {
+                if (isMounted) setError(err.message || "Erro ao carregar contagem");
+            })
+            .finally(() => {
+                if (isMounted) setLoading(false);
+            });
+
+        return () => { isMounted = false; };
+    }, []);
 
     const handleStatusChange = (orderId: number, newStatus: string) => {
-
-        setOrders((prev) =>
-            prev.map((o) => (o.id === orderId ? { ...o, status: newStatus as OrderStatusSlug } : o))
-        );
-
-
-        if (selectedOrder && selectedOrder.id === orderId) {
+        if (selectedOrder?.id === orderId) {
             setSelectedOrder({ ...selectedOrder, status: newStatus as OrderStatusSlug });
         }
-
-        console.log(`Status do pedido ${orderId} alterado para ${newStatus}`);
     };
 
     const clearFilters = () => {
@@ -63,7 +72,14 @@ export const OrderManagerPage = () => {
                 </Link>
                 <div>
                     <h1 className="text-4xl font-serif font-semibold text-foreground">Gerenciar Pedidos</h1>
-                    <p className="text-muted-foreground text-sm">{orders.length} Pedidos encontrados</p>
+                    <p className="text-muted-foreground text-sm">{loading ? (
+                        "Carregando..."
+                    ) : error ? (
+                        <span className="text-destructive">{error}</span>
+                    ) : (
+                        data == 1 || data == 0 ? `${data} Pedido encontrado` :
+                            `${data} Pedidos encontrados`
+                    )}</p>
                 </div>
             </div>
 
@@ -122,7 +138,6 @@ export const OrderManagerPage = () => {
             </div>
 
             <OrdersTable
-                orders={MOCK_ORDERS}
                 search={search}
                 statusFilter={statusFilter}
                 onSelectOrder={handleSelectOrder}

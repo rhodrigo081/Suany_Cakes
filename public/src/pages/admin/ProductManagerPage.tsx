@@ -2,13 +2,33 @@ import { ProductsTable } from "@/components/admin/products/ProductsTable"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Wrapper } from "@/components/Wrapper"
-import { MOCK_PRODUCTS } from "@/data/products"
+import { adminProductsService } from "@/services/admin/products"
 import { Plus, Search, Undo2 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
 export const ProductManagerPage = () => {
     const [search, setSearch] = useState("");
+    const [data, setData] = useState<number>(0);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        adminProductsService.countAllProducts()
+            .then((count) => {
+                if (isMounted) setData(count);
+            })
+            .catch((err) => {
+                if (isMounted) setError(err.message || "Erro ao carregar contagem");
+            })
+            .finally(() => {
+                if (isMounted) setLoading(false);
+            });
+
+        return () => { isMounted = false; };
+    }, []);
 
     return (
         <Wrapper className="p-10 flex flex-col gap-8">
@@ -19,8 +39,15 @@ export const ProductManagerPage = () => {
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-serif font-semibold text-foreground">Gerenciar Produtos</h1>
-                    <p className="text-muted-foreground text-sm">{MOCK_PRODUCTS.length} Produtos encontrados</p>
+                    <h1 className="text-4xl font-serif font-semibold text-foreground">Gerenciar Pedidos</h1>
+                    <p className="text-muted-foreground text-sm">{loading ? (
+                        "Carregando..."
+                    ) : error ? (
+                        <span className="text-destructive">{error}</span>
+                    ) : (
+                        data == 1 || data == 0 ? `${data} Produto encontrado` :
+                            `${data} Produtos encontrados`
+                    )}</p>
                 </div>
             </div>
             <div className="bg-none w-full flex justify-between items-end">
@@ -39,7 +66,6 @@ export const ProductManagerPage = () => {
             </div>
 
             <ProductsTable
-                products={MOCK_PRODUCTS}
                 search={search} />
         </Wrapper>
     )

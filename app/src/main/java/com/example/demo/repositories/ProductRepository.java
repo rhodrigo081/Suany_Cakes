@@ -18,4 +18,6 @@ public interface ProductRepository extends JpaRepository<ProductModel, UUID> {
     List<ProductModel> findByCategory(ProductCategory category);
 
     List<ProductModel> findTop4ByFeaturedTrue();
+
+    Long countBy();
 }

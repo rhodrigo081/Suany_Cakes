@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.example.demo.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public class ProductService {
         newProduct.setDescription(data.description());
         newProduct.setPrice(data.price());
         newProduct.setImage(data.image());
+        newProduct.setIsActive(data.isActive());
 
         try {
             newProduct.setCategory(ProductCategory.valueOf(data.category().toUpperCase()));
@@ -64,11 +66,11 @@ public class ProductService {
 
     public List<ProductResponseDTO> findByCategory(String categorySlug) {
         try {
-
             ProductCategory categoryEnum = ProductCategory.valueOf(categorySlug.toUpperCase());
-
-            return productRepository.findByCategory(categoryEnum).stream().map(this::convertToResponseDTO).collect(Collectors.toList());
-        } catch (InvalidArgumentException e) {
+            return productRepository.findByCategory(categoryEnum).stream()
+                    .map(this::convertToResponseDTO)
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
             throw new InvalidArgumentException("Categoria inválida: " + categorySlug);
         }
     }
@@ -99,7 +101,7 @@ public class ProductService {
         ProductModel product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
-        product.setFeatured(!product.isFeatured());
+        product.setFeatured(!product.getFeatured());
         return convertToResponseDTO(productRepository.save(product));
     }
 
@@ -112,6 +114,11 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public Long getAllProductsQuantity() {
+        return productRepository.countBy();
+    }
+
+
     public ProductResponseDTO convertToResponseDTO(ProductModel model) {
         return new ProductResponseDTO(
                 model.getId(),
@@ -120,8 +127,9 @@ public class ProductService {
                 model.getPrice(),
                 model.getImage(),
                 model.getCategory(),
-                model.isFeatured(),
-                model.getIngredients()
+                model.getFeatured(),
+                model.getIngredients(),
+                model.getIsActive()
         );
     }
 

@@ -44,7 +44,7 @@ const ChartContainer = React.forwardRef<
         data-chart={chartId}
         ref={ref}
         className={cn(
-          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-secondary [&_.recharts-curve.recharts-tooltip-cursor]:stroke-[2px] [&_.recharts-dot]:stroke-primary [&_.recharts-layer]:outline-none [&_.recharts-polar-grid]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-secondary [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-accent/40 [&_.recharts-reference-line]:stroke-border [&_.recharts-sector]:stroke-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-foreground [&_.recharts-cartesian-grid_line]:stroke-border overflow-hidden [&_.recharts-curve.recharts-tooltip-cursor]:stroke-secondary [&_.recharts-curve.recharts-tooltip-cursor]:stroke-[2px] [&_.recharts-dot]:stroke-primary [&_.recharts-layer]:outline-none [&_.recharts-polar-grid]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-secondary [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-accent/40 [&_.recharts-reference-line]:stroke-border [&_.recharts-sector]:stroke-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
           className,
         )}
         {...props}

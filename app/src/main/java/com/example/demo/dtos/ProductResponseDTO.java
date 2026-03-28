@@ -6,13 +6,8 @@ import java.util.UUID;
 
 import com.example.demo.enums.ProductCategory;
 
-public record ProductResponseDTO(UUID id,
-        String name,
-        String description,
-        BigDecimal price,
-        String image,
-        ProductCategory category,
-        boolean featured,
-        Set<String> ingredients) {
+public record ProductResponseDTO(UUID id, String name, String description, BigDecimal price, String image,
+                                 ProductCategory category, Boolean featured, Set<String> ingredients,
+                                 Boolean isActive) {
 
 }
