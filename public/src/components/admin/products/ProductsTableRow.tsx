@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { CATEGORY_LABELS, IS_ACTIVE_LABEL, type Product } from "@/types/Product"
+import { CATEGORY_LABELS, type Product } from "@/types/Product"
 import { formatters } from "@/utils/formatters";
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -33,8 +33,10 @@ export const ProductsTableRow = ({ product }: ProductsTableRowProps) => {
             </TableCell>
 
             <TableCell>
-                <Badge className="text-base">
-                    {IS_ACTIVE_LABEL[product.isActive]}
+                <Badge
+                    className={`${product.isActive ? "bg-primary" : "bg-destructive"} text-base`}
+                >
+                    {product.isActive ? "Disponível" : "Indisponível"}
                 </Badge>
             </TableCell>
 

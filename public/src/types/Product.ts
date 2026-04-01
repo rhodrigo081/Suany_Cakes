@@ -13,15 +13,8 @@ export interface Product {
   price: number;
   image: string;
   category: CategorySlug;
-  featured?: boolean;
+  featured: boolean;
   ingredients: string[];
-  isActive: IsActiveSlug;
+  isActive: boolean;
 }
 
-export const IS_ACTIVE_LABEL = {
-  true: "Disponível",
-  false: "Indisponível",
-} as const;
-
-
-export type IsActiveSlug = keyof typeof IS_ACTIVE_LABEL;

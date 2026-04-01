@@ -1,7 +1,7 @@
 import { parseISO, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-class Formartters {
+class Formatters {
   formatCurrency(value: number) {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -62,4 +62,4 @@ class Formartters {
   }
 }
 
-export const formatters = new Formartters();
+export const formatters = new Formatters();

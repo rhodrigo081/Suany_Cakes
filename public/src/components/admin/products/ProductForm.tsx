@@ -1,184 +1,318 @@
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ImageInput } from "@/components/ui/imageInput";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { CATEGORY_LABELS, type CategorySlug, type Product } from "@/types/Product";
+import { CATEGORY_LABELS, type CategorySlug } from "@/types/Product";
 import { formatters } from "@/utils/formatters";
-import { Plus, Save, Upload, X } from "lucide-react";
+import { Plus, Save, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { productSchema, type ProductFormData } from "@/schemas/ProductSchema";
+import { adminProductsService } from "@/services/admin/products";
+import { toBase64 } from "@/utils/toBase64";
 
 export const ProductForm = () => {
-    const [formData, setFormData] = useState<Omit<Partial<Product>, 'price'> & { price: string }>({
-        name: '',
-        description: '',
-        price: '',
-        category: 'CAKE',
-        ingredients: [],
-        isActive: 'true',
+    const [currentIngredient, setCurrentIngredient] = useState("");
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<ProductFormData>({
+        resolver: zodResolver(productSchema),
+        defaultValues: {
+            image: undefined,
+            name: "",
+            description: "",
+            price: "",
+            category: "CAKE",
+            featured: false,
+            ingredients: [],
+            isActive: true,
+        },
     });
 
-    const [currentIngredient, setCurrentIngredient] = useState('');
+    const ingredients = watch("ingredients") || [];
 
     const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const rawValue = e.target.value.replace(/\D/g, "");
-
+        const rawValue = e.target.value.replaceAll(/\D/g, "");
         const limitedValue = rawValue.slice(0, 8);
         const maskedValue = formatters.maskCurrency(limitedValue);
-
-        setFormData(prev => ({
-            ...prev,
-            price: maskedValue
-        }));
+        setValue("price", maskedValue, { shouldValidate: true });
     };
 
     const addIngredient = () => {
         if (currentIngredient.trim()) {
-            setFormData(prev => ({
-                ...prev,
-                ingredients: [...(prev.ingredients || []), currentIngredient.trim()]
-            }));
-            setCurrentIngredient('');
+            setValue("ingredients", [...ingredients, currentIngredient.trim()], {
+                shouldValidate: true,
+            });
+            setCurrentIngredient("");
         }
     };
 
     const removeIngredient = (index: number) => {
-        setFormData(prev => ({
-            ...prev,
-            ingredients: prev.ingredients?.filter((_, i) => i !== index)
-        }));
+        setValue(
+            "ingredients",
+            ingredients.filter((_, i) => i !== index),
+            { shouldValidate: true },
+        );
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const priceForBackend = formatters.parseCurrencyToNumber(formData.price);
+    const onSubmit = async (data: ProductFormData) => {
+    setIsSubmitting(true);
+    try {
+        const cleanedPrice = data.price.replace(/[^\d,]/g, "").replace(",", ".");
+        const numericPrice = parseFloat(cleanedPrice);
+
+        const imageBase64 = await toBase64(data.image);
+
         const payload = {
-            ...formData,
-            price: priceForBackend,
-            isActive: formData.isActive === 'true'
+            name: data.name.trim(),
+            description: data.description.trim(),
+            price: numericPrice,
+            image: imageBase64, 
+            category: data.category,
+            featured: data.featured,
+            ingredients: data.ingredients, 
+            isActive: data.isActive
         };
 
-        try {
-            console.log("Payload enviado para o Spring (BigDecimal):", payload);
-            alert("Produto salvo com sucesso!");
-        } catch (error) {
-            console.error("Erro ao salvar:", error);
-        }
-    };
+        await adminProductsService.productCreate(payload);
+
+        alert("Produto salvo com sucesso!");
+        navigate("/gerenciar-produtos");
+    } catch (error) {
+        console.error("Erro completo:", error);
+        alert("Ocorreu um erro ao salvar o produto. Tente novamente.");
+    } finally {
+        setIsSubmitting(false);
+    }
+};
+
     return (
-        <div className="px-80">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="px-4 md:px-80 py-10">
+            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-2">
-                    <label className="text-sm font-medium text-foreground">Imagem do Produto</label>
-                    <div className="border-2 border-dashed bg-accent/20 rounded-3xl p-10 flex flex-col items-center justify-center transition-colors cursor-pointer min-h-96 hover:opacity-80">
-                        <Upload size={40} className="text-accent-foreground mb-3" />
-                        <p className="text-sm text-accent-foreground text-center">
-                            Clique para fazer upload <br />
-                            <span className="text-xs">PNG, JPG até 5MB</span>
-                        </p>
-                    </div>
+                    <label
+                        htmlFor="image-upload"
+                        className="text-sm font-medium text-foreground"
+                    >
+                        Imagem do Produto
+                    </label>
+                    <Controller
+                        control={control}
+                        name="image"
+                        render={({ field }) => (
+                            <ImageInput onChange={(file) => field.onChange(file)} />
+                        )}
+                    />
+                    {errors.image?.message && (
+                        <span className="text-destructive text-xs">
+                            {String(errors.image.message)}
+                        </span>
+                    )}
                 </div>
 
-                <Input
-                    label="Nome do Produto"
-                    placeholder="Ex: Bolo de Chocolate"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full"
-                />
+                <div className="flex flex-col gap-1">
+                    <Input
+                        id="product-name"
+                        label="Nome do Produto"
+                        placeholder="Ex: Bolo de Chocolate"
+                        {...register("name")}
+                    />
+                    {errors.name?.message && (
+                        <span className="text-destructive text-xs">
+                            {String(errors.name.message)}
+                        </span>
+                    )}
+                </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-sm text-foreground">Descrição</label>
+                    <label
+                        htmlFor="description"
+                        className="font-medium text-sm text-foreground"
+                    >
+                        Descrição
+                    </label>
                     <textarea
+                        id="description"
+                        {...register("description")}
                         placeholder="Descreva o produto..."
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="bg-accent/20 w-full min-h-[120px] p-4 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none placeholder:text-accent-foreground/50"
+                        className="bg-accent/20 w-full min-h-30 p-4 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none placeholder:text-accent-foreground/50"
                     />
+                    {errors.description?.message && (
+                        <span className="text-destructive text-xs">
+                            {String(errors.description.message)}
+                        </span>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                        label="Preço"
-                        placeholder="R$ 0,00"
-                        value={formData.price}
-                        onChange={handleCurrencyChange}
-                    />
+                    <div className="flex flex-col gap-1">
+                        <Input
+                            id="price"
+                            label="Preço"
+                            placeholder="R$ 0,00"
+                            {...register("price")}
+                            onChange={handleCurrencyChange}
+                        />
+                        {errors.price?.message && (
+                            <span className="text-destructive text-xs">
+                                {String(errors.price.message)}
+                            </span>
+                        )}
+                    </div>
 
                     <div className="flex flex-col gap-2">
-                        <label className="font-medium text-sm text-foreground">Categoria</label>
-                        <Select
-                            value={formData.category}
-                            onValueChange={(value) => setFormData({ ...formData, category: value as CategorySlug })}
+                        <label
+                            htmlFor="category-select"
+                            className="font-medium text-sm text-foreground"
                         >
-                            <SelectTrigger className="w-full border-border rounded-xl h-[45px]">
-                                <SelectValue placeholder="Selecione uma categoria" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-background border-border">
-                                {(Object.entries(CATEGORY_LABELS) as [CategorySlug, string][]).map(([key, label]) => (
-                                    <SelectItem
-                                        key={key}
-                                        value={key}
-                                        className="focus:bg-accent/10 cursor-pointer"
+                            Categoria
+                        </label>
+                        <Controller
+                            control={control}
+                            name="category"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger
+                                        id="category-select"
+                                        className="w-full border-border rounded-xl h-11.25"
                                     >
-                                        {label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                                        <SelectValue placeholder="Selecione uma categoria" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-background border-border">
+                                        {(
+                                            Object.entries(CATEGORY_LABELS) as [
+                                                CategorySlug,
+                                                string,
+                                            ][]
+                                        ).map(([key, label]) => (
+                                            <SelectItem
+                                                key={key}
+                                                value={key}
+                                                className="focus:bg-accent/10 cursor-pointer"
+                                            >
+                                                {label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.category?.message && (
+                            <span className="text-destructive text-xs">
+                                {String(errors.category.message)}
+                            </span>
+                        )}
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-2">
                     <div className="flex gap-2 items-end">
-                        <Input
-                            label="Ingredientes"
-                            placeholder="Ex: Ganache"
-                            value={currentIngredient}
-                            onChange={(e) => setCurrentIngredient(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addIngredient())}
-                            className="w-5/6"
-                        />
+                        <div className="flex-1">
+                            <Input
+                                id="ingredients-input"
+                                label="Ingredientes"
+                                placeholder="Ex: Ganache"
+                                value={currentIngredient}
+                                onChange={(e) => setCurrentIngredient(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        addIngredient();
+                                    }
+                                }}
+                            />
+                        </div>
                         <Button
                             type="button"
                             onClick={addIngredient}
-                            className="text-base w-1/6"
+                            className="text-base h-11.25"
                         >
-                            <Plus />
-                            Adicionar
+                            <Plus /> Adicionar
                         </Button>
                     </div>
+                    {errors.ingredients?.message && (
+                        <span className="text-destructive text-xs">
+                            {String(errors.ingredients.message)}
+                        </span>
+                    )}
 
                     <div className="flex gap-1 flex-wrap">
-                        {formData.ingredients?.map((ing, idx) => (
-                            <Badge key={idx} variant="ghost" className="text-sm flex items-center gap-1">
+                        {ingredients.map((ing, idx) => (
+                            <Badge
+                                key={`${ing}-${idx}`}
+                                variant="ghost"
+                                className="text-sm flex items-center gap-1"
+                            >
                                 {ing}
-                                <X size={14} className="stroke-[4px] cursor-pointer" onClick={() => removeIngredient(idx)} />
+                                <X
+                                    size={14}
+                                    className="stroke-[4px] cursor-pointer hover:text-destructive"
+                                    onClick={() => removeIngredient(idx)}
+                                />
                             </Badge>
                         ))}
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between p-5 border border-border rounded-2xl">
+                <div className="flex items-center justify-between p-5 border border-border rounded-2xl bg-card-background">
                     <div>
                         <p className="font-bold text-foreground">Disponível para Venda</p>
-                        <p className="text-xs text-accent-foreground">O produto aparecerá no catálogo para os clientes.</p>
+                        <p className="text-xs text-accent-foreground">
+                            O produto aparecerá no catálogo para os clientes.
+                        </p>
                     </div>
-                    <Switch className="cursor-pointer" />
+                    <Controller
+                        control={control}
+                        name="isActive"
+                        render={({ field }) => (
+                            <Switch
+                                id="is-active-switch"
+                                checked={!!field.value}
+                                onCheckedChange={field.onChange}
+                                className="cursor-pointer"
+                            />
+                        )}
+                    />
                 </div>
 
-                <div className="flex gap-6 items-end">
-                    <Button type="submit" className="text-2xl py-6 w-2/3">
-                        <Save size={24} />
-                        Salvar Produto
+                <div className="w-full flex flex-col md:flex-row items-end gap-6 pt-4">
+                    <Button
+                        type="submit"
+                        className="text-2xl py-6 w-full"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? (
+                            "Salvando..."
+                        ) : (
+                            <>
+                                <Save size={24} /> Salvar Produto
+                            </>
+                        )}
                     </Button>
 
-                    <Link to="/gerenciar-produtos">
+                    <Link to="/gerenciar-produtos" className="w-full">
                         <Button
-                            type="button"
                             variant="destructive"
-                            className="w-1/3 border border-border text-2xl py-6 rounded-lg"
+                            className="w-full border border-border text-2xl py-6 rounded-lg"
+                            disabled={isSubmitting}
                         >
                             Cancelar
                         </Button>
@@ -187,4 +321,4 @@ export const ProductForm = () => {
             </form>
         </div>
     );
-}
+};

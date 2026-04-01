@@ -20,4 +20,6 @@ public interface ProductRepository extends JpaRepository<ProductModel, UUID> {
     List<ProductModel> findTop4ByFeaturedTrue();
 
     Long countBy();
+
+    List<ProductModel> findProductModelByIsActive(Boolean isActive);
 }

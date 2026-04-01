@@ -15,7 +15,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "CANDY",
     featured: true,
     ingredients: ["Limão siciliano", "Leite condensado", "Chocolate branco"],
-    isActive: "true",
+    isActive: true,
   },
   {
     id: "2",
@@ -27,7 +27,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "CAKE",
     ingredients: ["Chocolate meio amargo", "Ovos", "Farinha", "Ganache"],
     featured: true,
-    isActive: "true",
+    isActive: true,
   },
   {
     id: "3",
@@ -39,7 +39,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "CANDY",
     ingredients: ["Chocolate", "Leite condensado", "Manteiga", "Granulado"],
     featured: true,
-    isActive: "true",
+    isActive: true,
   },
   {
     id: "4",
@@ -53,10 +53,10 @@ export const MOCK_PRODUCTS: Product[] = [
       "Frango desfiado",
       "Massa de batata",
       "Temperos especiais",
-      "Farinha de rosca"
+      "Farinha de rosca",
     ],
     featured: true,
-    isActive: "true",
+    isActive: true,
   },
   {
     id: "5",
@@ -74,7 +74,7 @@ export const MOCK_PRODUCTS: Product[] = [
       "Milho",
     ],
     featured: true,
-    isActive: "true",
+    isActive: true,
   },
   {
     id: "6",
@@ -92,7 +92,7 @@ export const MOCK_PRODUCTS: Product[] = [
       "Cravo da índia",
     ],
     featured: false,
-    isActive: "true",
+    isActive: true,
   },
   {
     id: "7",
@@ -110,6 +110,6 @@ export const MOCK_PRODUCTS: Product[] = [
       "Pão de ló",
     ],
     featured: true,
-    isActive: "true",
+    isActive: true,
   },
 ];
