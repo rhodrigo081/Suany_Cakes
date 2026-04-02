@@ -2,7 +2,7 @@ import type { CartItemRequest, ShoppingCartResponse } from "@/types/ShoppingCart
 import { api } from "../api";
 
 class CartService {
-  async getCart() {
+  getCart = async () => {
     try {
       const { data } = await api.get<ShoppingCartResponse>("/cart");
       return data;
@@ -12,7 +12,7 @@ class CartService {
     }
   }
 
-  async addItem(request: CartItemRequest) {
+  addItem = async (request: CartItemRequest) => {
     try {
       const { data } = await api.post<ShoppingCartResponse>(
         "/cart/items",
@@ -25,7 +25,7 @@ class CartService {
     }
   }
 
-  async updateItemQuantity(productId: string, quantity: number) {
+  updateItemQuantity = async (productId: string, quantity: number) => {
     try {
       const { data } = await api.put<ShoppingCartResponse>(
         `/cart/items/${productId}`,
@@ -38,7 +38,7 @@ class CartService {
     }
   }
 
-  async removeItem(productId: string) {
+  removeItem = async (productId: string) => {
     try {
       const { data } = await api.delete<ShoppingCartResponse>(
         `/cart/items/${productId}`,
@@ -50,7 +50,7 @@ class CartService {
     }
   }
 
-  async clearCart() {
+  clearCart = async () => {
     try {
       await api.delete("/cart");
     } catch (error) {

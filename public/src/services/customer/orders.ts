@@ -7,7 +7,7 @@ interface OrderRequest {
 }
 
 class OrdersService {
-  async getOrdersUser() {
+  getOrdersUser = async () => {
     try {
       const { data } = await api.get<Order[]>("/orders/history");
       return data;
@@ -17,7 +17,7 @@ class OrdersService {
     }
   }
 
-  async checkout(request: OrderRequest) {
+  checkout = async (request: OrderRequest) => {
     try {
       const { data } = await api.post<Order>("/orders", request);
       return data;

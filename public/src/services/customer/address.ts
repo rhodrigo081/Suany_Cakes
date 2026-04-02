@@ -12,7 +12,7 @@ interface AddressRequest {
 }
 
 class AddressService {
-  async getAddresses() {
+  getAddresses = async () => {
     try {
       const { data } = await api.get("/address");
       return data;
@@ -22,7 +22,7 @@ class AddressService {
     }
   }
 
-  async create(request: AddressRequest) {
+  create = async (request: AddressRequest) => {
     try {
       const { data } = await api.post("/address", request);
       return data;
@@ -32,7 +32,7 @@ class AddressService {
     }
   }
 
-  async update(id: string, request: AddressRequest) {
+  update = async (id: string, request: AddressRequest) => {
     try {
       const { data } = await api.put(`/address/${id}`, request);
       return data;
@@ -42,7 +42,7 @@ class AddressService {
     }
   }
 
-  async setIsPrimary(id: string) {
+  setIsPrimary = async (id: string) => {
     try {
       const { data } = await api.patch(`/address/${id}/primary`);
       return data;
@@ -52,7 +52,7 @@ class AddressService {
     }
   }
 
-  async delete(id: string) {
+  delete = async (id: string) => {
     try {
       await api.delete(`/address/${id}`);
     } catch (error) {

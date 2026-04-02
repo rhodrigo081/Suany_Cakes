@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.example.demo.repositories.OrderRepository;
+import com.example.demo.models.OrderItem;
+import com.example.demo.repositories.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import com.example.demo.enums.OrderStatus;
 import com.example.demo.enums.ProductCategory;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.models.ProductModel;
+import com.example.demo.models.Product;
 import com.example.demo.repositories.OrderItemRepository;
 import com.example.demo.repositories.ProductRepository;
 
@@ -30,13 +31,16 @@ public class ProductService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
     @Transactional
     public ProductResponseDTO create(ProductRequestDTO data) {
         if (productRepository.findByName(data.name()).isPresent()) {
             throw new InvalidArgumentException("Já existe um produto cadastrado com este nome.");
         }
 
-        ProductModel newProduct = new ProductModel();
+        Product newProduct = new Product();
         newProduct.setName(data.name());
         newProduct.setDescription(data.description());
         newProduct.setPrice(data.price());
@@ -60,77 +64,88 @@ public class ProductService {
     }
 
     public ProductResponseDTO findById(UUID id) {
-        ProductModel product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
         return convertToResponseDTO(product);
     }
 
     public List<ProductResponseDTO> findByCategory(String categorySlug) {
         try {
             ProductCategory categoryEnum = ProductCategory.valueOf(categorySlug.toUpperCase());
-            return productRepository.findByCategory(categoryEnum).stream()
-                    .map(this::convertToResponseDTO)
-                    .collect(Collectors.toList());
+            return productRepository.findByCategory(categoryEnum).stream().map(this::convertToResponseDTO).collect(Collectors.toList());
         } catch (IllegalArgumentException e) {
             throw new InvalidArgumentException("Categoria inválida: " + categorySlug);
         }
     }
 
     public List<ProductResponseDTO> findFeatured() {
-        return productRepository.findTop4ByFeaturedTrue().stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+        return productRepository.findTop4ByFeaturedTrue().stream().map(this::convertToResponseDTO).collect(Collectors.toList());
     }
 
     @Transactional
     public void updateAllProductsPopularity() {
 
-        List<ProductModel> allFeatured = productRepository.findByFeaturedTrue();
+        List<Product> allFeatured = productRepository.findByFeaturedTrue();
         allFeatured.forEach(p -> p.setFeatured(false));
         productRepository.saveAll(allFeatured);
 
         Pageable topFour = PageRequest.of(0, 4);
         List<UUID> topProductIds = orderItemRepository.findTopSellingProductIds(OrderStatus.FINISHED, topFour);
 
-        List<ProductModel> topProducts = productRepository.findAllById(topProductIds);
+        List<Product> topProducts = productRepository.findAllById(topProductIds);
         topProducts.forEach(p -> p.setFeatured(true));
         productRepository.saveAll(topProducts);
     }
 
     @Transactional
-    public ProductResponseDTO toggleFeatured(UUID id) {
-        ProductModel product = productRepository.findById(id)
+    public void delete(UUID id) {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
-        product.setFeatured(!product.getFeatured());
-        return convertToResponseDTO(productRepository.save(product));
-    }
+        cartItemRepository.deleteByProduct(product);
 
-    @Transactional
-    public void delete(UUID id) {
-        if (!productRepository.existsById(id)) {
-            throw new NotFoundException("Produto não encontrado");
-        }
+        orderItemRepository.nullifyProductId(product.getId());
 
-        productRepository.deleteById(id);
+        productRepository.delete(product);
     }
 
     public Long getAllProductsQuantity() {
         return productRepository.countBy();
     }
 
+    @Transactional
+    public ProductResponseDTO update(UUID id, ProductRequestDTO data) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
-    public ProductResponseDTO convertToResponseDTO(ProductModel model) {
-        return new ProductResponseDTO(
-                model.getId(),
-                model.getName(),
-                model.getDescription(),
-                model.getPrice(),
-                model.getImage(),
-                model.getCategory(),
-                model.getFeatured(),
-                model.getIngredients(),
-                model.getIsActive()
-        );
+        productRepository.findByName(data.name()).ifPresent(existingProduct -> {
+            if (!existingProduct.getId().equals(id)) {
+                throw new InvalidArgumentException("Já existe outro produto cadastrado com este nome.");
+            }
+        });
+
+        product.setName(data.name());
+        product.setDescription(data.description());
+        product.setPrice(data.price());
+        product.setImage(data.image());
+        product.setIsActive(data.isActive());
+        product.setFeatured(data.featured());
+        product.setIngredients(data.ingredients());
+
+        try {
+            product.setCategory(ProductCategory.valueOf(data.category().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new InvalidArgumentException("Categoria inválida: " + data.category());
+        }
+
+        return convertToResponseDTO(productRepository.save(product));
+    }
+
+    public List<ProductResponseDTO> findByActiveStatus(Boolean isActive) {
+        return productRepository.findByIsActive(isActive).stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+    }
+
+
+    public ProductResponseDTO convertToResponseDTO(Product model) {
+        return new ProductResponseDTO(model.getId(), model.getName(), model.getDescription(), model.getPrice(), model.getImage(), model.getCategory(), model.getFeatured(), model.getIngredients(), model.getIsActive());
     }
 
 }

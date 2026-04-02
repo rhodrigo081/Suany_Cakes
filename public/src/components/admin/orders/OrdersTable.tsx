@@ -82,8 +82,9 @@ export const OrdersTable = ({ search, statusFilter, onSelectOrder }: OrdersTable
                 {filteredOrders.length === 0 ? (
                     <TableRow>
                         <TableCell colSpan={6} className="h-64 text-center">
-                            <Package className="mx-auto mb-3 h-10 w-10 opacity-40" />
-                            <p className="font-medium">Nenhum pedido encontrado</p>
+                            <p className="flex flex-col items-center justify-center h-64 font-medium text-destructive">
+                                <Package size={32} className="mb-4" />
+                                Nenhum pedido encontrado</p>
                         </TableCell>
                     </TableRow>
                 ) : (

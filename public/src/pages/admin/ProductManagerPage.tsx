@@ -57,7 +57,7 @@ export const ProductManagerPage = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
 
-                <Link to="/produto">
+                <Link to="/novo-produto">
                     <Button buttonSize="base">
                         <Plus />
                         Novo Produto

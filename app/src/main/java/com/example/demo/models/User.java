@@ -19,7 +19,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "TB_User")
-public class UserModel implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -44,11 +44,11 @@ public class UserModel implements UserDetails {
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<AddressModel> addresses;
+    private Set<Address> addresses;
 
     @ManyToMany
     @JoinTable(name = "TB_USER_FAVORITES", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<ProductModel> favorites = new ArrayList<>();
+    private List<Product> favorites = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;

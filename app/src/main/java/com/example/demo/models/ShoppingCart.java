@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "TB_Shopping_Cart")
-public class ShoppingCartModel {
+public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,10 +23,10 @@ public class ShoppingCartModel {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private UserModel user;
+    private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItemModel> items = new ArrayList<>();
+    private List<CartItem> items = new ArrayList<>();
 
     private BigDecimal totalPrice;
 

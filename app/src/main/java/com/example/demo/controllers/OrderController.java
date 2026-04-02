@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dtos.OrderRequestDTO;
 import com.example.demo.dtos.OrderResponseDTO;
 import com.example.demo.dtos.StatusUpdateRequestDTO;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 import com.example.demo.services.OrderService;
 
 import jakarta.validation.Valid;
@@ -31,13 +31,13 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponseDTO> checkout(Authentication authentication,
             @RequestBody @Valid OrderRequestDTO request) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(orderService.createOrder(user, request));
     }
 
     @GetMapping("/history")
     public ResponseEntity<List<OrderResponseDTO>> getOrderHistory(Authentication authentication) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(orderService.getOrdersByUser(user));
     }
 

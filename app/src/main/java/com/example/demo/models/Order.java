@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderModel {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class OrderModel {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserModel user;
+    private User user;
 
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
@@ -41,11 +41,11 @@ public class OrderModel {
     private LocalDate deliveryDate;
 
     @OneToMany( mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItemModel> items;
+    private List<OrderItem> items;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
-    private AddressModel shippingAddress;
+    private Address shippingAddress;
 
     @PrePersist
     private void prePersist(){

@@ -13,8 +13,8 @@ import com.example.demo.dtos.AddressRequestDTO;
 import com.example.demo.dtos.AddressResponseDTO;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.UnauthorizedAccessException;
-import com.example.demo.models.AddressModel;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.Address;
+import com.example.demo.models.User;
 import com.example.demo.repositories.AddressRepository;
 
 @Service
@@ -24,12 +24,12 @@ public class AddressService {
     private AddressRepository addressRepository;
 
     @Transactional
-    public AddressResponseDTO create(UserModel user, AddressRequestDTO dto) {
-        AddressModel address = new AddressModel();
+    public AddressResponseDTO create(User user, AddressRequestDTO dto) {
+        Address address = new Address();
         BeanUtils.copyProperties(dto, address);
         address.setUser(user);
 
-        AddressModel saved = addressRepository.save(address);
+        Address saved = addressRepository.save(address);
 
         if (Boolean.TRUE.equals(saved.getIsPrimary())) {
             addressRepository.clearPrimaryAddresses(user.getId(), saved.getId());
@@ -38,15 +38,15 @@ public class AddressService {
         return convertToResponse(saved);
     }
 
-    public List<AddressResponseDTO> findByUser(UserModel user) {
+    public List<AddressResponseDTO> findByUser(User user) {
         return addressRepository.findByUser(user).stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public AddressResponseDTO update(UserModel user, UUID id, AddressRequestDTO dto) {
-        AddressModel address = addressRepository.findById(id)
+    public AddressResponseDTO update(User user, UUID id, AddressRequestDTO dto) {
+        Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
         if (!address.getUser().getId().equals(user.getId())) {
@@ -54,7 +54,7 @@ public class AddressService {
         }
 
         BeanUtils.copyProperties(dto, address, "id", "user");
-        AddressModel saved = addressRepository.save(address);
+        Address saved = addressRepository.save(address);
 
         if (Boolean.TRUE.equals(saved.getIsPrimary())) {
             addressRepository.clearPrimaryAddresses(user.getId(), saved.getId());
@@ -64,8 +64,8 @@ public class AddressService {
     }
 
     @Transactional
-    public AddressResponseDTO setPrimary(UserModel user, UUID id) {
-        AddressModel address = addressRepository.findById(id)
+    public AddressResponseDTO setPrimary(User user, UUID id) {
+        Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
         if (!address.getUser().getId().equals(user.getId())) {
@@ -79,8 +79,8 @@ public class AddressService {
     }
 
     @Transactional
-    public void delete(UserModel user, UUID id) {
-        AddressModel address = addressRepository.findById(id)
+    public void delete(User user, UUID id) {
+        Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
         if (!address.getUser().getId().equals(user.getId())) {
@@ -90,7 +90,7 @@ public class AddressService {
         addressRepository.deleteById(id);
     }
 
-    public AddressResponseDTO convertToResponse(AddressModel address) {
+    public AddressResponseDTO convertToResponse(Address address) {
         return new AddressResponseDTO(
                 address.getId(),
                 address.getLabel(),

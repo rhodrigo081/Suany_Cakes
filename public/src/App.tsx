@@ -43,7 +43,8 @@ export const App = () => {
         { path: "/dashboard", element: <AdminPage /> },
         { path: "/gerenciar-pedidos", element: <OrderManagerPage /> },
         { path: "/gerenciar-produtos", element: <ProductManagerPage /> },
-        { path: "/produto", element: <ProductFormPage /> },
+        { path: "/novo-produto", element: <ProductFormPage /> },
+        { path: "/editar-produto/:id", element: <ProductFormPage /> },
 
         {
           element: <ProtectedRoute />,

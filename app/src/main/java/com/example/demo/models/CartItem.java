@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemModel {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,7 +28,7 @@ public class CartItemModel {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private ProductModel product;
+    private Product product;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity = 1;
@@ -38,9 +38,9 @@ public class CartItemModel {
 
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
-    private ShoppingCartModel cart;
+    private ShoppingCart cart;
 
-    public CartItemModel(ProductModel product, Integer quantity, ShoppingCartModel cart) {
+    public CartItem(Product product, Integer quantity, ShoppingCart cart) {
         this.product = product;
         this.quantity = quantity;
         this.subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));

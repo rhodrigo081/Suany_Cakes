@@ -1,9 +1,9 @@
 import { api } from "../api";
 
 class ProductsService {
-  async getAllProducts() {
+  async getActiveProducts() {
     try {
-      const { data } = await api.get("/products");
+      const { data } = await api.get("/products/active");
       return data;
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);

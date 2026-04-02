@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.dtos.UpdateUserRequestDTO;
 import com.example.demo.dtos.UserResponseDTO;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 import com.example.demo.services.UserService;
 
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<UserResponseDTO> update(Authentication authentication, @RequestBody @Valid UpdateUserRequestDTO dto) {
 
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(userService.updateUser(user.getEmail(), dto));
     }
@@ -41,21 +41,21 @@ public class UserController {
     @DeleteMapping("/remove")
     public ResponseEntity<UserResponseDTO> delete(Authentication authentication) {
 
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(userService.deleteUser(user.getEmail()));
     }
 
     @PostMapping("/favorites/{productId}")
     public ResponseEntity<Void> toggleFavorite(@PathVariable UUID productId, Authentication authentication) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         userService.toggleFavorite(user.getId(), productId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/favorites")
     public ResponseEntity<List<ProductResponseDTO>> getFavorites(Authentication authentication) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(userService.getFavorites(user.getId()));
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dtos.CartItemRequestDTO;
 import com.example.demo.dtos.ShoppingCartResponseDTO;
 import com.example.demo.dtos.UpdateQuantityRequestDTO;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 import com.example.demo.services.CartItemService;
 import com.example.demo.services.ShoppingCartService;
 
@@ -38,7 +38,7 @@ public class ShoppingCartController {
     @PostMapping("/items")
     public ResponseEntity<ShoppingCartResponseDTO> addItem(Authentication authentication,
             @RequestBody @Valid CartItemRequestDTO request) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(cartItemService.addItem(user, request));
     }
 
@@ -46,26 +46,26 @@ public class ShoppingCartController {
     public ResponseEntity<ShoppingCartResponseDTO> updateItem(Authentication authentication,
             @PathVariable UUID productId,
             @RequestBody @Valid UpdateQuantityRequestDTO request) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(cartItemService.updateItemQuantity(user, productId, request.quantity()));
     }
 
     @DeleteMapping("/items/{productId}")
     public ResponseEntity<ShoppingCartResponseDTO> removeItem(Authentication authentication,
             @PathVariable UUID productId) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(cartItemService.removeItem(user, productId));
     }
 
     @GetMapping
     public ResponseEntity<ShoppingCartResponseDTO> getCart(Authentication authentication) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(shoppingCartService.getCart(user));
     }
 
     @DeleteMapping
     public ResponseEntity<Void> clearCart(Authentication authentication) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         shoppingCartService.clearCart(user);
         return ResponseEntity.noContent().build();
     }

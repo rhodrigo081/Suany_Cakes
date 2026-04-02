@@ -15,13 +15,15 @@ import { Switch } from "@/components/ui/switch";
 import { CATEGORY_LABELS, type CategorySlug } from "@/types/Product";
 import { formatters } from "@/utils/formatters";
 import { Plus, Save, X } from "lucide-react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { productSchema, type ProductFormData } from "@/schemas/ProductSchema";
 import { adminProductsService } from "@/services/admin/products";
 import { toBase64 } from "@/utils/toBase64";
 
 export const ProductForm = () => {
+    const { id } = useParams<{ id: string }>();
+    const isEditing = Boolean(id);
     const [currentIngredient, setCurrentIngredient] = useState("");
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,6 +34,7 @@ export const ProductForm = () => {
         control,
         setValue,
         watch,
+        reset,
         formState: { errors },
     } = useForm<ProductFormData>({
         resolver: zodResolver(productSchema),
@@ -46,6 +49,26 @@ export const ProductForm = () => {
             isActive: true,
         },
     });
+
+    useEffect(() => {
+        if (isEditing && id) {
+            const loadProduct = async () => {
+                try {
+                    const product = await adminProductsService.getById(id);
+                    reset({
+                        ...product,
+                        price: formatters.maskCurrency(product.price.toFixed(2).replace(".", "")),
+                        image: product.image,
+                    });
+                } catch (error) {
+                    console.error("Erro ao carregar:", error);
+                    alert("Erro ao carregar produto.");
+                    navigate("/gerenciar-produtos");
+                }
+            };
+            loadProduct();
+        }
+    }, [id, isEditing, reset, navigate]);
 
     const ingredients = watch("ingredients") || [];
 
@@ -74,35 +97,45 @@ export const ProductForm = () => {
     };
 
     const onSubmit = async (data: ProductFormData) => {
-    setIsSubmitting(true);
-    try {
-        const cleanedPrice = data.price.replace(/[^\d,]/g, "").replace(",", ".");
-        const numericPrice = parseFloat(cleanedPrice);
+        setIsSubmitting(true);
+        try {
+            const cleanedPrice = data.price.replaceAll(/[^\d,]/g, "").replace(",", ".");
+            const numericPrice = Number.parseFloat(cleanedPrice);
 
-        const imageBase64 = await toBase64(data.image);
+            let imageBase64 = "";
 
-        const payload = {
-            name: data.name.trim(),
-            description: data.description.trim(),
-            price: numericPrice,
-            image: imageBase64, 
-            category: data.category,
-            featured: data.featured,
-            ingredients: data.ingredients, 
-            isActive: data.isActive
-        };
+            if (data.image instanceof File) {
+                imageBase64 = await toBase64(data.image);
+            } else if (typeof data.image === "string") {
+                imageBase64 = data.image;
+            }
 
-        await adminProductsService.productCreate(payload);
+            const payload = {
+                name: data.name.trim(),
+                description: data.description.trim(),
+                price: numericPrice,
+                image: imageBase64,
+                category: data.category,
+                featured: data.featured,
+                ingredients: data.ingredients,
+                isActive: data.isActive
+            };
 
-        alert("Produto salvo com sucesso!");
-        navigate("/gerenciar-produtos");
-    } catch (error) {
-        console.error("Erro completo:", error);
-        alert("Ocorreu um erro ao salvar o produto. Tente novamente.");
-    } finally {
-        setIsSubmitting(false);
-    }
-};
+            if (isEditing && id) {
+                await adminProductsService.productUpdate(id, payload);
+            } else {
+                await adminProductsService.productCreate(payload);
+            }
+
+            alert(isEditing ? "Produto atualizado!" : "Produto criado!");
+            navigate("/gerenciar-produtos");
+        } catch (error) {
+            console.error("Erro ao salvar produto:", error);
+            alert("Erro ao salvar produto. Verifique os consoles para detalhes.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="px-4 md:px-80 py-10">
@@ -118,7 +151,10 @@ export const ProductForm = () => {
                         control={control}
                         name="image"
                         render={({ field }) => (
-                            <ImageInput onChange={(file) => field.onChange(file)} />
+                            <ImageInput
+                                value={field.value} 
+                                onChange={(file) => field.onChange(file)}
+                            />
                         )}
                     />
                     {errors.image?.message && (

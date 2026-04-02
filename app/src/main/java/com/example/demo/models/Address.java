@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "TB_Address")
-public class AddressModel {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -54,6 +54,6 @@ public class AddressModel {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserModel user;
+    private User user;
 
 }

@@ -11,7 +11,7 @@ import com.example.demo.dtos.RegisterRequestDTO;
 import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 
 @Service
@@ -41,7 +41,7 @@ public class AuthService implements UserDetailsService {
             throw new InvalidArgumentException("As senhas não são iguais");
         }
 
-        UserModel newUser = new UserModel();
+        User newUser = new User();
         newUser.setFirstName(data.firstName());
         newUser.setLastName(data.lastName());
         newUser.setEmail(data.email());
@@ -55,9 +55,9 @@ public class AuthService implements UserDetailsService {
     }
 
     @Transactional
-    public UserModel socialMediaLogin(String email, String firstName, String lastName) {
+    public User socialMediaLogin(String email, String firstName, String lastName) {
         return userRepository.findByEmail(email).orElseGet(() -> {
-            UserModel newUser = new UserModel();
+            User newUser = new User();
             newUser.setFirstName(firstName);
             newUser.setLastName(lastName != null ? lastName : "");
             newUser.setEmail(email);

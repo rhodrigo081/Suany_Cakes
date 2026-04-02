@@ -1,7 +1,10 @@
 import z from "zod";
 import { CATEGORY_LABELS, type CategorySlug } from "@/types/Product";
 
-const CATEGORY_KEYS = Object.keys(CATEGORY_LABELS) as [CategorySlug, ...CategorySlug[]];
+const CATEGORY_KEYS = Object.keys(CATEGORY_LABELS) as [
+  CategorySlug,
+  ...CategorySlug[],
+];
 
 export const productSchema = z.object({
   name: z
@@ -42,14 +45,19 @@ export const productSchema = z.object({
     error: "O status de atividade é obrigatório",
   }),
 
-  image: z
-    .instanceof(File, { message: "A imagem é obrigatória" })
-    .refine((file) => file.size > 0, "Arquivo inválido")
-    .refine((file) => file.size <= 5 * 1024 * 1024, "Máximo 5MB")
-    .refine(
-      (file) => ["image/jpeg", "image/png", "image/webp", "image/svg+xml"].includes(file.type),
-      "Use JPG, PNG, WebP ou SVG"
-    ),
+  image: z.union([
+    z
+      .instanceof(File)
+      .refine((file) => file.size <= 5 * 1024 * 1024, "Máximo 5MB")
+      .refine(
+        (file) =>
+          ["image/jpeg", "image/png", "image/webp", "image/svg+xml"].includes(
+            file.type,
+          ),
+        "Use JPG, PNG, WebP ou SVG",
+      ).refine((file) => file.size == 0 || file.size > 0, "A imagem é obrigatória"),
+    z.string().min(1, "A imagem é obrigatória"),
+  ]),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

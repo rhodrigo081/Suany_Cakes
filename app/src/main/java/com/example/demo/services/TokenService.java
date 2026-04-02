@@ -14,7 +14,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.demo.exception.UnauthorizedAccessException;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 
 @Service
 public class TokenService {
@@ -22,7 +22,7 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(UserModel user) {
+    public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 

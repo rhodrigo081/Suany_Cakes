@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 export const AddressSelect = () => {
-    const alignItemWithTrigger = true;
     const { addresses, selectedAddress, selectAddress, fetchAddresses } = useOrder();
 
     useEffect(() => {
@@ -19,7 +18,8 @@ export const AddressSelect = () => {
                     : "Selecione um endereço"} />
             </SelectTrigger>
             <SelectContent
-                position={alignItemWithTrigger ? "item-aligned" : "popper"}
+                position="popper"
+                className="bg-card-background"
             >
                 <SelectGroup>
                     {addresses.length === 0 ? (

@@ -15,7 +15,7 @@ import org.springframework.security.core.Authentication;
 
 import com.example.demo.dtos.AddressRequestDTO;
 import com.example.demo.dtos.AddressResponseDTO;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 
 @RestController
 @RequestMapping("/address")
@@ -27,13 +27,13 @@ public class AddressController {
     @PostMapping
     public ResponseEntity<AddressResponseDTO> create(Authentication authentication,
             @RequestBody @Valid AddressRequestDTO dto) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(addressService.create(user, dto));
     }
 
     @GetMapping
     public ResponseEntity<List<AddressResponseDTO>> findAll(Authentication authentication) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(addressService.findByUser(user));
     }
 
@@ -41,21 +41,21 @@ public class AddressController {
     public ResponseEntity<AddressResponseDTO> update(Authentication authentication,
             @PathVariable UUID id,
             @RequestBody @Valid AddressRequestDTO dto) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(addressService.update(user, id, dto));
     }
 
     @PatchMapping("/{id}/primary")
     public ResponseEntity<AddressResponseDTO> setPrimary(Authentication authentication,
             @PathVariable UUID id) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(addressService.setPrimary(user, id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(Authentication authentication,
             @PathVariable UUID id) {
-        UserModel user = (UserModel) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         addressService.delete(user, id);
         return ResponseEntity.noContent().build();
     }

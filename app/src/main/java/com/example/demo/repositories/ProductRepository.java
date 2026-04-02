@@ -1,7 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.enums.ProductCategory;
-import com.example.demo.models.ProductModel;
+import com.example.demo.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -9,17 +9,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductModel, UUID> {
+public interface ProductRepository extends JpaRepository<Product, UUID> {
 
-    Optional<ProductModel> findByName(String name);
+    Optional<Product> findByName(String name);
 
-    List<ProductModel> findByFeaturedTrue();
+    List<Product> findByFeaturedTrue();
 
-    List<ProductModel> findByCategory(ProductCategory category);
+    List<Product> findByCategory(ProductCategory category);
 
-    List<ProductModel> findTop4ByFeaturedTrue();
+    List<Product> findTop4ByFeaturedTrue();
 
     Long countBy();
 
-    List<ProductModel> findProductModelByIsActive(Boolean isActive);
+    List<Product> findByIsActive(Boolean isActive);
 }

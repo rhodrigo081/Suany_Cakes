@@ -25,7 +25,7 @@ export const OrderDetailsModal = ({
             <DialogPortal>
                 <DialogOverlay className="z-50 bg-background/20 backdrop-blur-xs" />
 
-                <DialogContent className="rounded-2xl p-6 min-w-lg min-w-lg">
+                <DialogContent className="rounded-2xl p-6 min-w-lg">
 
                     <DialogTitle className="text-3xl font-serif font-semibold text-foreground">
                         Pedido {formatters.formatOrderId(order.id)}
@@ -64,7 +64,7 @@ export const OrderDetailsModal = ({
                         </div>
                     </div>
 
-                    <hr className="my-4 border-t-1 border-border" />
+                    <hr className="my-4 border-t border-border" />
 
                     <div className="space-y-4">
                         {order.items.map((item, index) => (
@@ -79,7 +79,7 @@ export const OrderDetailsModal = ({
                         ))}
                     </div>
 
-                    <div className="mt-4 pt-8 border-t-1 border-border flex justify-between items-center">
+                    <div className="mt-4 pt-8 border-t border-border flex justify-between items-center">
                         <span className="text-2xl font-bold text-muted-foreground">Total</span>
                         <span className="text-3xl font-bold text-primary">
                             {formatters.formatCurrency(order.totalPrice)}

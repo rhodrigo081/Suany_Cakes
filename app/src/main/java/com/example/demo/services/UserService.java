@@ -12,8 +12,8 @@ import com.example.demo.dtos.UpdateUserRequestDTO;
 import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.models.ProductModel;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.Product;
+import com.example.demo.models.User;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.repositories.UserRepository;
 
@@ -29,7 +29,7 @@ public class UserService {
     @Autowired
     private ProductService productService;
 
-    public UserResponseDTO convertToResponse(UserModel user) {
+    public UserResponseDTO convertToResponse(User user) {
         if (user == null) {
             return null;
         }
@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public List<ProductResponseDTO> getFavorites(UUID userId) {
-        UserModel user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
         return user.getFavorites().stream()
@@ -50,7 +50,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO updateUser(String email, UpdateUserRequestDTO updateUserRequestDTO) {
-        UserModel userByEmail = userRepository.findByEmail(email).orElseThrow(() -> new InvalidArgumentException("User not found"));
+        User userByEmail = userRepository.findByEmail(email).orElseThrow(() -> new InvalidArgumentException("User not found"));
 
         if (updateUserRequestDTO.email() != null && !updateUserRequestDTO.email().isEmpty()) {
 
@@ -85,9 +85,9 @@ public class UserService {
 
     @Transactional
     public void toggleFavorite(UUID userId, UUID productId) {
-        UserModel user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
-        ProductModel product = productRepository.findById(productId).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
         if (user.getFavorites().contains(product)) {
             user.getFavorites().remove(product);
@@ -100,7 +100,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO deleteUser(String email) {
-        UserModel deletedUser = userRepository.findByEmail(email).orElseThrow(() -> new InvalidArgumentException("User not found"));
+        User deletedUser = userRepository.findByEmail(email).orElseThrow(() -> new InvalidArgumentException("User not found"));
 
         userRepository.delete(deletedUser);
 

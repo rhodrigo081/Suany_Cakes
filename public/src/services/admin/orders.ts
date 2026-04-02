@@ -2,7 +2,7 @@ import type { Order } from "@/types/Order";
 import { api } from "../api";
 
 class AdminOrdersService {
-  async fetchAllOrders() {
+  fetchAllOrders = async () => {
     try {
       const { data } = await api.get<Order[]>("/admin/orders");
       return data;
@@ -13,7 +13,7 @@ class AdminOrdersService {
   }
 
 
-  async countAllOrders() {
+  countAllOrders = async () => {
     try {
       const { data } = await api.get<number>("/admin/count-all-orders");
       return data;

@@ -15,10 +15,10 @@ import com.example.demo.dtos.OrderResponseDTO;
 import com.example.demo.enums.OrderStatus;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.models.AddressModel;
-import com.example.demo.models.OrderModel;
-import com.example.demo.models.ShoppingCartModel;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.Address;
+import com.example.demo.models.Order;
+import com.example.demo.models.ShoppingCart;
+import com.example.demo.models.User;
 import com.example.demo.repositories.AddressRepository;
 import com.example.demo.repositories.OrderRepository;
 import com.example.demo.repositories.ShoppingCartRepository;
@@ -36,22 +36,22 @@ public class OrderService {
     private OrderItemService orderItemService;
 
     @Transactional
-    public OrderResponseDTO createOrder(UserModel user, OrderRequestDTO request) {
-        ShoppingCartModel cart = shoppingCartRepository.findByUser(user)
+    public OrderResponseDTO createOrder(User user, OrderRequestDTO request) {
+        ShoppingCart cart = shoppingCartRepository.findByUser(user)
                 .orElseThrow(() -> new NotFoundException("Carrinho não encontrado"));
 
         if (cart.getItems().isEmpty()) {
             throw new InvalidArgumentException("O carrinho está vazio");
         }
 
-        AddressModel address = addressRepository.findByIdAndUser(request.addressId(), user)
+        Address address = addressRepository.findByIdAndUser(request.addressId(), user)
                 .orElseThrow(() -> new InvalidArgumentException("Endereço inválido"));
 
         if (request.deliveryDate() != null && request.deliveryDate().isBefore(LocalDate.now())) {
             throw new InvalidArgumentException("A data de entrega não pode ser no passado.");
         }
 
-        OrderModel order = new OrderModel();
+        Order order = new Order();
         order.setUser(user);
         order.setShippingAddress(address);
         order.setOrderStatus(OrderStatus.PENDING);
@@ -69,7 +69,7 @@ public class OrderService {
         return convertToResponseDTO(orderRepository.save(order));
     }
 
-    public List<OrderResponseDTO> getOrdersByUser(UserModel user) {
+    public List<OrderResponseDTO> getOrdersByUser(User user) {
         return orderRepository.findByUserOrderByCreatedAtDesc(user).stream()
                 .map(this::convertToResponseDTO)
                 .toList();
@@ -88,7 +88,7 @@ public class OrderService {
 
     @Transactional
     public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
-        OrderModel order = orderRepository.findById(orderId)
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Pedido não encontrado"));
         if (order.getOrderStatus() == OrderStatus.FINISHED || order.getOrderStatus() == OrderStatus.CANCELED) {
             throw new InvalidArgumentException("Não é possível alterar um pedido já finalizado ou cancelado.");
@@ -99,7 +99,7 @@ public class OrderService {
         return convertToResponseDTO(orderRepository.save(order));
     }
 
-    private OrderResponseDTO convertToResponseDTO(OrderModel model) {
+    private OrderResponseDTO convertToResponseDTO(Order model) {
         List<OrderItemResponseDTO> items = model.getItems().stream()
                 .map(orderItemService::toResponseDTO)
                 .toList();

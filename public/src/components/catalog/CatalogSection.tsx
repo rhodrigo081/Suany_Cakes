@@ -1,7 +1,7 @@
 import { productsService } from "@/services/customer/products";
 import { ProductCards } from "./ProductCards";
 import { useEffect, useState } from "react";
-import { LoaderCircle } from "lucide-react";
+import { CircleAlert, LoaderCircle } from "lucide-react";
 import type { Product } from "@/types/Product"; 
 
 export const CatalogSection = ({ activeCategory }: { activeCategory: string }) => {
@@ -15,7 +15,7 @@ export const CatalogSection = ({ activeCategory }: { activeCategory: string }) =
                 let data;
 
                 if (activeCategory === "all") {
-                     data = await productsService.getAllProducts(); 
+                     data = await productsService.getActiveProducts(); 
                 } else {
                     data = await productsService.getProductByCategory(activeCategory);
                 }
@@ -40,7 +40,8 @@ export const CatalogSection = ({ activeCategory }: { activeCategory: string }) =
                     <ProductCards key={item.id} product={item} />
                 ))
             ) : (
-                <p className="col-span-4 text-center text-accent-foreground py-10">
+                <p className="col-span-4 flex flex-col justify-center items-center gap-4 text-center text-2xl ">
+                    <CircleAlert size={48}/>
                     Nenhum produto encontrado nesta categoria.
                 </p>
             )}

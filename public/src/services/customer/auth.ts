@@ -8,18 +8,18 @@ interface LoginResponse {
 }
 
 class AuthService {
-  async login(credentials: LoginCredentials): Promise<LoginResponse> {
+  login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   const { data } = await api.post<LoginResponse>("/auth/login", credentials);
   console.log("Dados recebidos do servidor:", data); 
   return data;
 }
 
-  async register(userData: RegisterData) {
+  register = async (userData: RegisterData) => {
     const { data } = await api.post("/auth/register", userData);
     return data;
   }
 
-  logout() {
+  logout = () => {
     localStorage.removeItem("token");
   }
 }

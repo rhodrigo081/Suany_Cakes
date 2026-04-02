@@ -11,10 +11,10 @@ import com.example.demo.dtos.CartItemRequestDTO;
 import com.example.demo.dtos.ShoppingCartResponseDTO;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.models.CartItemModel;
-import com.example.demo.models.ProductModel;
-import com.example.demo.models.ShoppingCartModel;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.CartItem;
+import com.example.demo.models.Product;
+import com.example.demo.models.ShoppingCart;
+import com.example.demo.models.User;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.repositories.ShoppingCartRepository;
 
@@ -31,10 +31,10 @@ public class CartItemService {
     private ShoppingCartService shoppingCartService;
 
     @Transactional
-    public ShoppingCartResponseDTO addItem(UserModel user, CartItemRequestDTO request) {
-        ShoppingCartModel cart = shoppingCartService.getOrCreateCart(user);
+    public ShoppingCartResponseDTO addItem(User user, CartItemRequestDTO request) {
+        ShoppingCart cart = shoppingCartService.getOrCreateCart(user);
 
-        ProductModel product = productRepository.findById(request.productId())
+        Product product = productRepository.findById(request.productId())
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado."));
 
         cart.getItems().stream()
@@ -46,7 +46,7 @@ public class CartItemService {
                             item.setSubtotal(item.getProduct().getPrice()
                                     .multiply(BigDecimal.valueOf(item.getQuantity())));
                         },
-                        () -> cart.getItems().add(new CartItemModel(product, request.quantity(), cart))
+                        () -> cart.getItems().add(new CartItem(product, request.quantity(), cart))
                 );
 
         shoppingCartService.updateTotal(cart);
@@ -54,15 +54,15 @@ public class CartItemService {
     }
 
     @Transactional
-    public ShoppingCartResponseDTO updateItemQuantity(UserModel user, UUID productId, Integer quantity) {
+    public ShoppingCartResponseDTO updateItemQuantity(User user, UUID productId, Integer quantity) {
         if (quantity <= 0) {
             throw new InvalidArgumentException("A quantidade deve ser maior que zero.");
         }
 
-        ShoppingCartModel cart = shoppingCartRepository.findByUser(user)
+        ShoppingCart cart = shoppingCartRepository.findByUser(user)
                 .orElseThrow(() -> new NotFoundException("Carrinho não encontrado."));
 
-        CartItemModel item = cart.getItems().stream()
+        CartItem item = cart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Item não encontrado no carrinho."));
@@ -75,8 +75,8 @@ public class CartItemService {
     }
 
     @Transactional
-    public ShoppingCartResponseDTO removeItem(UserModel user, UUID productId) {
-        ShoppingCartModel cart = shoppingCartRepository.findByUser(user)
+    public ShoppingCartResponseDTO removeItem(User user, UUID productId) {
+        ShoppingCart cart = shoppingCartRepository.findByUser(user)
                 .orElseThrow(() -> new NotFoundException("Carrinho não encontrado."));
 
         boolean removed = cart.getItems().removeIf(i -> i.getProduct().getId().equals(productId));

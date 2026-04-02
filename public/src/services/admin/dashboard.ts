@@ -17,7 +17,7 @@ export interface CategorySalesDTO {
 }
 
 class DashBoardService {
-  async fetchStats() {
+  fetchStats = async () => {
     try {
       const { data } = await api.get<DashboardStatsDTO>("/admin/stats");
       return data;
@@ -25,9 +25,9 @@ class DashBoardService {
       console.error("Erro ao buscar estatísticas:", error);
       throw error;
     }
-  }
+  };
 
-  async fetchDailySales() {
+  fetchDailySales = async () => {
     try {
       const { data } = await api.get<DailySalesDTO[]>("/admin/dailysales");
       return data;
@@ -35,9 +35,9 @@ class DashBoardService {
       console.error("Erro ao buscar vendas diárias:", error);
       throw error;
     }
-  }
+  };
 
-  async fetchSalesByCategory() {
+  fetchSalesByCategory = async () => {
     try {
       const { data } = await api.get<CategorySalesDTO[]>(
         "/admin/salesByCategory",
@@ -47,7 +47,7 @@ class DashBoardService {
       console.error("Erro ao buscar vendas por categoria:", error);
       throw error;
     }
-  }
+  };
 }
 
 export const dashboardService = new DashBoardService();

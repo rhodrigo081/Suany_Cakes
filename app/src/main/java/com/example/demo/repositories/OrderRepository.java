@@ -11,28 +11,28 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dtos.CategorySalesDTO;
 import com.example.demo.dtos.DailySalesDTO;
-import com.example.demo.models.OrderModel;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.Order;
+import com.example.demo.models.User;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderModel, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-        List<OrderModel> findByUserOrderByCreatedAtDesc(UserModel user);
+        List<Order> findByUserOrderByCreatedAtDesc(User user);
 
-        List<OrderModel> findAllByOrderByCreatedAtDesc();
+        List<Order> findAllByOrderByCreatedAtDesc();
 
         Long countBy();
 
-        @Query("SELECT SUM(o.totalPrice) FROM OrderModel o "
+        @Query("SELECT SUM(o.totalPrice) FROM Order o "
                         + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
         BigDecimal sumTotalRevenueFinishedSince(LocalDateTime startDate);
 
-        @Query("SELECT COUNT(o) FROM OrderModel o "
+        @Query("SELECT COUNT(o) FROM Order o "
                         + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
         Long countFinishedOrdersSince(LocalDateTime startDate);
 
         @Query("SELECT new com.example.demo.dtos.DailySalesDTO(CAST(o.createdAt AS Localdatetime ), SUM(o.totalPrice)) " +
-                "FROM OrderModel o " +
+                "FROM Order o " +
                 "WHERE o.createdAt >= :startDate " +
                 "AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED " +
                 "GROUP BY CAST(o.createdAt AS Localdatetime) " +
@@ -40,7 +40,7 @@ public interface OrderRepository extends JpaRepository<OrderModel, Long> {
         List<DailySalesDTO> findDailySalesSince(@Param("startDate") LocalDateTime startDate);
 
         @Query("SELECT new com.example.demo.dtos.CategorySalesDTO(i.product.category, SUM(i.subtotal)) "
-                        + "FROM OrderItemModel i "
+                        + "FROM OrderItem i "
                         + "WHERE i.order.createdAt >= :startDate AND i.order.orderStatus = com.example.demo.enums.OrderStatus.FINISHED "
                         + "GROUP BY i.product.category")
         List<CategorySalesDTO> findSalesByCategorySince(LocalDateTime startDate);

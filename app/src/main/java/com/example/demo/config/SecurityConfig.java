@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.TokenService;
 
@@ -46,23 +46,25 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                .requestMatchers("/login/**", "/oauth2/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/products/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/orders/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/orders/**").permitAll()
-                .requestMatchers(HttpMethod.PATCH, "/orders/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/address/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/address/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/address/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/admin/**").permitAll()
-                .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers("/login/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/address/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/address/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/address/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/admin/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                .successHandler(oAuth2AuthenticationSuccessHandler())
+                        .successHandler(oAuth2AuthenticationSuccessHandler())
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -77,7 +79,7 @@ public class SecurityConfig {
             String firstName = oAuth2User.getAttribute("given_name");
             String lastName = oAuth2User.getAttribute("family_name");
 
-            UserModel user = authService.socialMediaLogin(email, firstName, lastName);
+            User user = authService.socialMediaLogin(email, firstName, lastName);
 
             String token = tokenService.generateToken(user);
 

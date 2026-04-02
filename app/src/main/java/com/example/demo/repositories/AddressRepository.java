@@ -10,18 +10,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.models.AddressModel;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.Address;
+import com.example.demo.models.User;
 
 @Repository
-public interface AddressRepository extends JpaRepository<AddressModel, UUID> {
+public interface AddressRepository extends JpaRepository<Address, UUID> {
 
-    List<AddressModel> findByUser(UserModel user);
+    List<Address> findByUser(User user);
 
     @Modifying
-    @Query("UPDATE AddressModel a SET a.isPrimary = false WHERE a.user.id = :userId AND a.id <> :exceptId")
+    @Query("UPDATE Address a SET a.isPrimary = false WHERE a.user.id = :userId AND a.id <> :exceptId")
     void clearPrimaryAddresses(@Param("userId") UUID userId, @Param("exceptId") UUID exceptId);
 
-    Optional<AddressModel> findByIdAndUser(UUID id, UserModel user);
+    Optional<Address> findByIdAndUser(UUID id, User user);
 
 }

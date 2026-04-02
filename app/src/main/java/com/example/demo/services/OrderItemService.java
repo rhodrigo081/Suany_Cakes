@@ -3,38 +3,45 @@ package com.example.demo.services;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.example.demo.models.Product;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dtos.OrderItemResponseDTO;
-import com.example.demo.models.CartItemModel;
-import com.example.demo.models.OrderItemModel;
-import com.example.demo.models.OrderModel;
+import com.example.demo.models.CartItem;
+import com.example.demo.models.OrderItem;
+import com.example.demo.models.Order;
 
 @Service
 public class OrderItemService {
 
-    public List<OrderItemModel> convertFromCart(List<CartItemModel> cartItems, OrderModel order) {
+    public List<OrderItem> convertFromCart(List<CartItem> cartItems, Order order) {
         return cartItems.stream()
                 .map(cartItem -> {
-                    OrderItemModel orderItem = new OrderItemModel();
-                    orderItem.setProduct(cartItem.getProduct());
-                    orderItem.setQuantity(cartItem.getQuantity());
-                    orderItem.setSubtotal(
-                            cartItem.getProduct().getPrice()
-                                    .multiply(BigDecimal.valueOf(cartItem.getQuantity()))
-                    );
+                    Product product = cartItem.getProduct();
+
+                    OrderItem orderItem = new OrderItem();
                     orderItem.setOrder(order);
+                    orderItem.setProduct(product);
+
+                    orderItem.setProductName(product.getName());
+                    orderItem.setProductImage(product.getImage());
+                    orderItem.setProductPrice(product.getPrice());
+
+                    orderItem.setQuantity(cartItem.getQuantity());
+                    orderItem.setSubtotal(product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+
                     return orderItem;
                 })
                 .toList();
     }
 
-    public OrderItemResponseDTO toResponseDTO(OrderItemModel item) {
+    public OrderItemResponseDTO toResponseDTO(OrderItem item) {
+
         return new OrderItemResponseDTO(
-                item.getProduct().getName(),
-                item.getProduct().getImage(),
+                item.getProductName(),
+                item.getProductImage(),
                 item.getQuantity(),
-                item.getProduct().getPrice(),
+                item.getProductPrice(),
                 item.getSubtotal()
         );
     }

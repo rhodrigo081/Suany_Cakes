@@ -2,8 +2,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ProductsTableRow } from "./ProductsTableRow";
 import type { Product } from "@/types/Product";
 import { useEffect, useMemo, useState } from "react";
-import { productsService } from "@/services/customer/products";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { adminProductsService } from "@/services/admin/products";
 
 interface ProductsTableProps {
     search: string;
@@ -31,7 +31,7 @@ export const ProductsTable = ({ search }: ProductsTableProps) => {
     useEffect(() => {
         let isMounted = true;
 
-        productsService.getAllProducts()
+        adminProductsService.getAllProducts()
             .then((data) => {
                 if (isMounted) setProducts(data);
             })
@@ -49,7 +49,7 @@ export const ProductsTable = ({ search }: ProductsTableProps) => {
         return (
             <div className="w-full flex h-64 flex-col items-center justify-center gap-2">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground">Carregando pedidos...</p>
+                <p className="text-muted-foreground">Carregando produtos...</p>
             </div>
         );
     }
@@ -75,14 +75,17 @@ export const ProductsTable = ({ search }: ProductsTableProps) => {
                     <TableHead>Categoria</TableHead>
                     <TableHead>Preço</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Excluir</TableHead>
+                    <TableHead>Ação</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {filteredProducts.length === 0 ? (
                     <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center">
-                            <p className="font-medium text-muted-foreground">Nenhum produto encontrado</p>
+                        <TableCell colSpan={6}>
+                            <p className="flex flex-col items-center justify-center h-64 font-medium text-destructive">
+                                <AlertCircle size={32} className="mb-4"/>
+                                Nenhum produto encontrado
+                            </p>
                         </TableCell>
                     </TableRow>
                 ) : (

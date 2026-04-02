@@ -1,15 +1,38 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { adminProductsService } from "@/services/admin/products";
 import { CATEGORY_LABELS, type Product } from "@/types/Product"
 import { formatters } from "@/utils/formatters";
 import { Pencil, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ProductsTableRowProps {
     product: Product;
 }
 
 export const ProductsTableRow = ({ product }: ProductsTableRowProps) => {
+
+    const navigate = useNavigate();
+
+    const handleEdit = () => {
+        navigate(`/editar-produto/${product.id}`);
+    };
+
+
+    const handleDelete = async () => {
+        if (confirm(`Tem certeza que deseja excluir "${product.name}"?`)) {
+            try {
+                await adminProductsService.productDelete(product.id);
+                alert("Produto excluído com sucesso!");
+                window.location.reload();
+            } catch (error) {
+                console.error("Erro ao excluir produto:", error);
+                alert("Erro ao excluir produto.");
+            }
+        }
+    };
+
     return (
         <TableRow>
             <TableCell className="flex items-center justify-center">
@@ -43,10 +66,10 @@ export const ProductsTableRow = ({ product }: ProductsTableRowProps) => {
 
             <TableCell>
                 <div className="flex justify-center items-center gap-4">
-                    <Button variant="ghost" buttonSize="icon">
+                    <Button variant="ghost" buttonSize="icon" onClick={handleEdit}>
                         <Pencil />
                     </Button>
-                    <Button variant="destructive" buttonSize="icon">
+                    <Button variant="destructive" buttonSize="icon" onClick={handleDelete}>
                         <Trash2 />
                     </Button>
                 </div>

@@ -19,7 +19,7 @@ import com.example.demo.dtos.LoginResponseDTO;
 import com.example.demo.dtos.RegisterRequestDTO;
 import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.models.UserModel;
+import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.TokenService;
@@ -57,7 +57,7 @@ public class AuthController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var user = (UserModel) auth.getPrincipal();
+        var user = (User) auth.getPrincipal();
         var token = tokenService.generateToken(user);
 
         var userResponse = userService.convertToResponse(user);
@@ -75,7 +75,7 @@ public class AuthController {
         String firstName = principal.getAttribute("given_name");
         String lastName = principal.getAttribute("family_name");
 
-        UserModel user = authService.socialMediaLogin(email, firstName, lastName);
+        User user = authService.socialMediaLogin(email, firstName, lastName);
         String token = tokenService.generateToken(user);
 
         var userResponse = userService.convertToResponse(user);
@@ -98,7 +98,7 @@ public class AuthController {
             email = authentication.getName();
         }
 
-        UserModel user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
         return ResponseEntity.ok(userService.convertToResponse(user));

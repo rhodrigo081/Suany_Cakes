@@ -4,14 +4,14 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.dtos.CartItemResponseDTO;
 import com.example.demo.dtos.ProductResponseDTO;
-import com.example.demo.models.CartItemModel;
-import com.example.demo.models.ProductModel;
+import com.example.demo.models.CartItem;
+import com.example.demo.models.Product;
 
 @Component
 public class CartItemMapper {
 
-    public CartItemResponseDTO toResponseDTO(CartItemModel item) {
-        ProductModel product = item.getProduct();
+    public CartItemResponseDTO toResponseDTO(CartItem item) {
+        Product product = item.getProduct();
 
         ProductResponseDTO productDTO = new ProductResponseDTO(
                 product.getId(),
