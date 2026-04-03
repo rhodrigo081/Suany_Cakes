@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
+import { AlertCircle } from "lucide-react";
 import { dashboardService } from "@/services/admin/dashboard";
 
 const lineChartConfig = {
@@ -46,10 +47,19 @@ export const SalesChart = () => {
                 {loading && (
                     <p className="text-sm text-muted-foreground">Carregando...</p>
                 )}
+                
                 {error && (
                     <p className="text-sm text-destructive">{error}</p>
                 )}
-                {!loading && !error && (
+                
+                {!loading && !error && salesData.length === 0 && (
+                    <p className="flex flex-col items-center justify-center h-64 font-medium text-destructive">
+                                <AlertCircle size={32} className="mb-4"/>
+                                Nenhuma venda encontrada.
+                            </p>
+                )}
+
+                {!loading && !error && salesData.length > 0 && (
                     <ChartContainer config={lineChartConfig} className="w-full h-90">
                         <LineChart
                             data={salesData}

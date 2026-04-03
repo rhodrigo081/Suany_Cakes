@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell } from "recharts";
+import { AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../ui/chart";
 import { dashboardService, type CategorySalesDTO } from "@/services/admin/dashboard";
@@ -46,8 +47,24 @@ export const CategoryChart = () => {
             <CardHeader>
                 <CardTitle className="font-display text-2xl">Vendas por Categoria</CardTitle>
             </CardHeader>
-            <CardContent className="overflow-visible">
-                {!loading && !error && (
+            <CardContent className="overflow-visible h-full flex flex-col justify-center">
+                {loading && (
+                    <p className="text-sm text-muted-foreground text-center">Carregando...</p>
+                )}
+
+                {error && (
+                    <p className="text-sm text-destructive text-center">{error}</p>
+                )}
+
+                {!loading && !error && data.length === 0 && (
+                    <p className="flex flex-col items-center justify-center h-64 font-medium text-destructive">
+                                <AlertCircle size={32} className="mb-4"/>
+                                Nenhuma venda encontrada.
+                            </p>
+                )}
+
+                {/* Gráfico renderizado apenas se houver dados */}
+                {!loading && !error && data.length > 0 && (
                     <ChartContainer config={pieChartConfig} className="h-90 w-full">
                         <PieChart margin={{ left: 40, right: 40 }}>
                             <Pie
@@ -67,6 +84,7 @@ export const CategoryChart = () => {
                                         fill={fill}
                                         textAnchor={textAnchor}
                                         dominantBaseline="central"
+                                        className="text-xs font-medium"
                                     >
                                         {`${displayName} ${(percent * 100).toFixed(0)}%`}
                                     </text>

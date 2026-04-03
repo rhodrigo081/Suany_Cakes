@@ -14,8 +14,8 @@ export const NavBar = () => {
                 <NavLink
                     key={link.href}
                     to={link.href}
-                    className="text-xm font-medium transition-all duration-300 hover:text-primary text-foreground"
-                    activeClassName="text-primary font-medium"
+                    className="text-xm font-medium transition-all duration-300 hover:text-foreground text-accent-foreground/70"
+                    activeClassName="text-foregrond font-medium"
                 >
                     {link.label}
                 </NavLink>
