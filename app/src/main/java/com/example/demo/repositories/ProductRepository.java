@@ -19,6 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     List<Product> findTop4ByFeaturedTrue();
 
+    List<Product> findAllByNameIn(List<String> names);
+
     Long countBy();
 
     List<Product> findByIsActive(Boolean isActive);

@@ -1,16 +1,19 @@
-import { MOCK_PRODUCTS } from "@/data/products";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { formatters } from "@/utils/formatters";
-
-const lowProducts = [
-    { id: '6', sold: 8, revenue: 56 },
-    { id: '8', sold: 12, revenue: 48 },
-    { id: '5', sold: 15, revenue: 45 },
-];
-
-const getProduct = (id: string) => MOCK_PRODUCTS.find((p) => p.id === id);
+import { adminProductsService, type ProductRanking } from "@/services/admin/products";
 
 export const LowOutputProduct = () => {
+    const [products, setProducts] = useState<ProductRanking[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        adminProductsService.getLowSelling()
+            .then(setProducts)
+            .finally(() => setLoading(false));
+    }, []);
+
+    if (loading) return null;
 
     return (
         <Card className="h-120">
@@ -20,23 +23,19 @@ export const LowOutputProduct = () => {
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-                {lowProducts.map((item) => {
-                    const product = getProduct(item.id);
-                    if (!product) return null;
-                    return (
-                        <div key={item.id} className="flex items-center gap-3 rounded-lg border border-accent bg-accent/20 p-3">
-                            <img src={product.image} alt={product.name} className="h-10 w-10 rounded-md object-cover" />
-                            <div className="flex-1 min-w-0">
-                                <p className="truncate font-medium text-sm">{product.name}</p>
-                                <p className="text-xs text-muted-foreground">Apenas {item.sold} un. vendidas</p>
-                            </div>
-                            <span className="text-xl font-bold text-accet">
-                                {formatters.formatCurrency(item.revenue)}
-                            </span>
+                {products.map((item) => (
+                    <div key={item.name} className="flex items-center gap-3 rounded-lg border border-accent bg-accent/20 p-3">
+                        <img src={item.image} alt={item.name} className="h-10 w-10 rounded-md object-cover" />
+                        <div className="flex-1 min-w-0">
+                            <p className="truncate font-medium text-sm">{item.name}</p>
+                            <p className="text-xs text-muted-foreground">Apenas {item.totalQuantity} un. vendidas</p>
                         </div>
-                    );
-                })}
+                        <span className="text-xl font-bold text-accent">
+                            {formatters.formatCurrency(item.totalRevenue)}
+                        </span>
+                    </div>
+                ))}
             </CardContent>
         </Card>
-    )
-}
+    );
+};

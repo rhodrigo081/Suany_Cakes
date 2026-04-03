@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -28,7 +27,7 @@ public class Order {
     private User user;
 
     @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "order_status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -49,7 +48,7 @@ public class Order {
 
     @PrePersist
     private void prePersist(){
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDate.now();
     }
 
 }

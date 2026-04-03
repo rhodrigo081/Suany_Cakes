@@ -12,6 +12,13 @@ interface ProductRequest {
   isActive: boolean;
 }
 
+export interface ProductRanking {
+  name: string;
+  image: string;
+  totalQuantity: number;
+  totalRevenue: number;
+}
+
 class AdminProductService {
   getAllProducts = async () => {
     try {
@@ -71,6 +78,26 @@ class AdminProductService {
       await api.delete(`/products/${id}`);
     } catch (error) {
       console.error("Erro ao deletar produto:", error);
+      throw error;
+    }
+  };
+
+  getTopSelling = async (): Promise<ProductRanking[]> => {
+    try {
+      const { data } = await api.get<ProductRanking[]>("/admin/products/top-selling");
+      return data;
+    } catch (error) {
+      console.error("Erro ao buscar top produtos:", error);
+      throw error;
+    }
+  };
+
+  getLowSelling = async (): Promise<ProductRanking[]> => {
+    try {
+      const { data } = await api.get<ProductRanking[]>("/admin/products/low-selling");
+      return data;
+    } catch (error) {
+      console.error("Erro ao buscar produtos com baixa saída:", error);
       throw error;
     }
   };

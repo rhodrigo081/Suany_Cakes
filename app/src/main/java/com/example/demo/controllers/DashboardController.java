@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import com.example.demo.dtos.*;
 import com.example.demo.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dtos.CategorySalesDTO;
-import com.example.demo.dtos.DailySalesDTO;
-import com.example.demo.dtos.DashboardStatsDTO;
-import com.example.demo.dtos.OrderResponseDTO;
 import com.example.demo.services.DashboardService;
 import com.example.demo.services.OrderService;
 
@@ -58,4 +55,13 @@ public class DashboardController {
         return ResponseEntity.ok(productService.getAllProductsQuantity());
     }
 
+    @GetMapping("/products/top-selling")
+    public ResponseEntity<List<ProductRankingDTO>> getTopSelling() {
+        return ResponseEntity.ok(productService.getTopSelling());
+    }
+
+    @GetMapping("/products/low-selling")
+    public ResponseEntity<List<ProductRankingDTO>> getLowSelling() {
+        return ResponseEntity.ok(productService.getLowSelling());
+    }
 }

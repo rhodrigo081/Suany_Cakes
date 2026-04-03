@@ -2,7 +2,8 @@ package com.example.demo.services;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class DashboardService {
     @Autowired
     private OrderRepository orderRepository;
 
-    private LocalDateTime getThirtyDaysAgo() {
-        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+    private LocalDate getThirtyDaysAgo() {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
 
         return thirtyDaysAgo;
     }

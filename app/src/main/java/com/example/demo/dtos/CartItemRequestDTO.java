@@ -4,9 +4,6 @@ import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
 
-public record CartItemRequestDTO(@NotNull
-        UUID productId,
-        @NotNull
-        Integer quantity) {
+public record CartItemRequestDTO(@NotNull UUID productId, @NotNull Integer quantity) {
 
 }

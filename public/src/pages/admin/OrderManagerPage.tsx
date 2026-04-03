@@ -26,6 +26,8 @@ export const OrderManagerPage = () => {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [refreshSignal, setRefreshSignal] = useState(0);
+
 
     const handleSelectOrder = (order: Order) => {
         setSelectedOrder(order);
@@ -49,9 +51,23 @@ export const OrderManagerPage = () => {
         return () => { isMounted = false; };
     }, []);
 
-    const handleStatusChange = (orderId: number, newStatus: string) => {
-        if (selectedOrder?.id === orderId) {
-            setSelectedOrder({ ...selectedOrder, status: newStatus as OrderStatusSlug });
+    const handleStatusChange = async (orderId: number, newStatus: string) => {
+        try {
+            await adminOrdersService.updateOrderStatus(orderId, newStatus);
+
+            if (selectedOrder?.id === orderId) {
+                setSelectedOrder({
+                    ...selectedOrder,
+                    status: newStatus as OrderStatusSlug
+                });
+            }
+
+            setRefreshSignal(prev => prev + 1);
+
+            console.log(`Pedido ${orderId} atualizado para ${newStatus}`);
+        } catch (err) {
+            console.error("Erro ao atualizar status:", err);
+            alert("Não foi possível atualizar o status do pedido.");
         }
     };
 
@@ -141,6 +157,7 @@ export const OrderManagerPage = () => {
                 search={search}
                 statusFilter={statusFilter}
                 onSelectOrder={handleSelectOrder}
+                key={refreshSignal}
             />
 
             <OrderDetailsModal

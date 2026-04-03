@@ -12,13 +12,24 @@ class AdminOrdersService {
     }
   }
 
-
   countAllOrders = async () => {
     try {
       const { data } = await api.get<number>("/admin/count-all-orders");
       return data;
     } catch (error) {
       console.error("Erro ao buscar pedidos:", error);
+      throw error;
+    }
+  }
+
+  updateOrderStatus = async (orderId: number, status: string) => {
+    try {
+      const { data } = await api.patch<Order>(`/orders/${orderId}/status`, {
+        status: status
+      });
+      return data;
+    } catch (error) {
+      console.error("Erro ao atualizar status do pedido:", error);
       throw error;
     }
   }

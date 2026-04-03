@@ -1,8 +1,8 @@
 package com.example.demo.dtos;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record DailySalesDTO(LocalDateTime date, BigDecimal value) {
+public record DailySalesDTO(LocalDate date, BigDecimal value) {
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.example.demo.dtos.ProductRankingDTO;
 import com.example.demo.models.OrderItem;
 import com.example.demo.repositories.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,17 +84,44 @@ public class ProductService {
 
     @Transactional
     public void updateAllProductsPopularity() {
-
         List<Product> allFeatured = productRepository.findByFeaturedTrue();
         allFeatured.forEach(p -> p.setFeatured(false));
         productRepository.saveAll(allFeatured);
 
         Pageable topFour = PageRequest.of(0, 4);
-        List<UUID> topProductIds = orderItemRepository.findTopSellingProductIds(OrderStatus.FINISHED, topFour);
+        List<ProductRankingDTO> topSellingData = orderItemRepository.findTopSellingProducts(OrderStatus.FINISHED, topFour);
 
-        List<Product> topProducts = productRepository.findAllById(topProductIds);
+        List<String> names = topSellingData.stream().map(ProductRankingDTO::name).toList();
+        List<Product> topProducts = productRepository.findAllByNameIn(names);
+
         topProducts.forEach(p -> p.setFeatured(true));
         productRepository.saveAll(topProducts);
+    }
+
+    public List<ProductRankingDTO> getTopSelling() {
+        return orderItemRepository.findTopSellingProducts(
+                OrderStatus.FINISHED,
+                PageRequest.of(0, 4)
+        );
+    }
+
+    public List<ProductRankingDTO> getLowSelling() {
+
+        List<ProductRankingDTO> topSelling = getTopSelling();
+        List<String> topNames = topSelling.stream()
+                .map(ProductRankingDTO::name)
+                .toList();
+
+        if (topNames.isEmpty()) {
+            topNames = List.of("");
+        }
+
+
+        return orderItemRepository.findLowSellingProductsExcluding(
+                OrderStatus.FINISHED,
+                topNames,
+                PageRequest.of(0, 4)
+        );
     }
 
     @Transactional
