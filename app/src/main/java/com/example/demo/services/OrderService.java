@@ -99,6 +99,21 @@ public class OrderService {
         return convertToResponseDTO(orderRepository.save(order));
     }
 
+    public List<OrderStatusCountDTO> countOrdersByStatus(){
+        List<OrderStatusCountDTO> = orderRepository.countOrdersByStatus();
+
+        long totalOrders = orderRepository.count();
+        Long cancelledOrders = orderRepository.countOrdersByStatus(OrderStatus.CANCELLED)
+
+        Double cancellationRate = 0.0;
+
+        if(totalOrders > 0){
+            cancellationRate = (Double) cancelledOrders / totalOrders * 100;
+        }
+
+        return new OrderStatusCountDTO();
+    }
+
     private OrderResponseDTO convertToResponseDTO(Order model) {
         List<OrderItemResponseDTO> items = model.getItems().stream()
                 .map(orderItemService::toResponseDTO)

@@ -44,4 +44,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             + "WHERE i.order.createdAt >= :startDate AND i.order.orderStatus = com.example.demo.enums.OrderStatus.FINISHED "
             + "GROUP BY i.product.category")
     List<CategorySalesDTO> findSalesByCategorySince(LocalDate startDate);
+
+    @Query("SELECT new com.example.demo.dtos.OrderStatusCountDTO(o.orderStatus, COUNT(o)) " +
+            "FROM Order o GROUP BY o.orderStatus")
+    List<OrderStatusCountDTO> countOrdersByStatus();
 }

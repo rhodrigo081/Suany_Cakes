@@ -6,6 +6,6 @@ public enum OrderStatus {
     IN_PRODUCTION,
     FOR_DELIVERY,
     FINISHED,
-    CANCELED
+    CANCELLED
 
 }
