@@ -1,48 +1,97 @@
-import { XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { XCircle, Loader2, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MOCK_ORDERS } from "@/data/orders";
 import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type OrderStatusSlug } from "@/types/Order";
 import { cn } from "@/lib/utils";
+import { adminOrdersService, type DashboardStatusResponse } from "@/services/admin/orders";
 
 export const OrdersStates = () => {
-  const statusCounts = MOCK_ORDERS.reduce((acc, order) => {
-    const s = order.status as OrderStatusSlug;
-    acc[s] = (acc[s] || 0) + 1;
-    return acc;
-  }, {} as Record<OrderStatusSlug, number>);
+  const [data, setData] = useState<DashboardStatusResponse | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const statusOrder: OrderStatusSlug[] = ["PENDING", "IN_PRODUCTION", "FOR_DELIVERY", "FINISHED", "CANCELLED"];
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const response = await adminOrdersService.getOrdersStatusSummary();
+        setData(response);
+      } catch (error) {
+        console.error("Falha ao carregar status dos pedidos", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStatus();
+  }, []);
+
+  const statusOrder: OrderStatusSlug[] = [
+    "PENDING",
+    "IN_PRODUCTION",
+    "FOR_DELIVERY",
+    "FINISHED",
+    "CANCELLED",
+  ];
+
+  const getCount = (status: OrderStatusSlug) => {
+    return data?.statusList.find((s) => s.status === status)?.count || 0;
+  };
+
+  const hasNoOrders = !data || data.statusList.reduce((acc, curr) => acc + curr.count, 0) === 0;
 
   return (
     <Card className="h-120">
       <CardHeader>
-        <CardTitle className="font-display text-2xl">
-          Status dos Pedidos
-        </CardTitle>
+        <CardTitle className="font-display text-2xl">Status dos Pedidos</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-8">
-        {statusOrder.map((status) => (
-          <div key={status} className="flex items-center justify-between">
-            <Badge
-              variant="secondary"
-              className={cn("border-0 font-semibold", ORDER_STATUS_COLORS[status])}
-            >
-              {ORDER_STATUS_LABELS[status]}
-            </Badge>
-            <span className="text-lg font-bold">
-              {statusCounts[status] || 0}
-            </span>
+      
+      <CardContent className="flex flex-col h-[calc(100%-80px)] justify-center">
+        {loading && (
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            <p className="text-sm text-muted-foreground italic">Carregando status...</p>
           </div>
-        ))}
+        )}
 
-        <div className="flex items-center gap-3 rounded-lg border p-3 bg-destructive/20 border-red-400">
-          <XCircle className="h-8 w-8 text-red-400" />
-          <div className="leading-tight">
-            <p className="text-xl font-medium text-red-400">Taxa de Cancelamento</p>
+        {!loading && hasNoOrders && (
+          <div className="flex flex-col items-center justify-center h-full font-medium text-destructive">
+            <AlertCircle size={32} className="mb-4" />
+            <p>Nenhum pedido encontrado.</p>
           </div>
-          <span className="ml-auto text- font-bold text-red-400">3,2%</span>
-        </div>
+        )}
+
+        {!loading && !hasNoOrders && (
+          <div className="flex flex-col h-full justify-between">
+            <div className="space-y-8">
+              {statusOrder.map((status) => (
+                <div key={status} className="flex items-center justify-between">
+                  <Badge
+                    variant="secondary"
+                    className={cn("border-0 font-semibold px-4 py-1", ORDER_STATUS_COLORS[status])}
+                  >
+                    {ORDER_STATUS_LABELS[status]}
+                  </Badge>
+                  <span className="text-lg font-bold">
+                    {getCount(status)}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border p-4 bg-destructive/10 border-red-500/50 mt-auto">
+              <XCircle className="h-6 w-6 text-red-500" />
+              <div className="leading-tight">
+                <p className="text-lg font-medium text-red-500">Taxa de Cancelamento</p>
+              </div>
+              <span className="ml-auto text-xl font-bold text-red-500">
+                {data?.cancellationRate.toLocaleString("pt-BR", {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}%
+              </span>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

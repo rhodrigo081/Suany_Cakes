@@ -4,14 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.demo.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dtos.AddressResponseDTO;
-import com.example.demo.dtos.OrderItemResponseDTO;
-import com.example.demo.dtos.OrderRequestDTO;
-import com.example.demo.dtos.OrderResponseDTO;
 import com.example.demo.enums.OrderStatus;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
@@ -90,7 +87,7 @@ public class OrderService {
     public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Pedido não encontrado"));
-        if (order.getOrderStatus() == OrderStatus.FINISHED || order.getOrderStatus() == OrderStatus.CANCELED) {
+        if (order.getOrderStatus() == OrderStatus.FINISHED || order.getOrderStatus() == OrderStatus.CANCELLED) {
             throw new InvalidArgumentException("Não é possível alterar um pedido já finalizado ou cancelado.");
         }
 
@@ -99,19 +96,33 @@ public class OrderService {
         return convertToResponseDTO(orderRepository.save(order));
     }
 
-    public List<OrderStatusCountDTO> countOrdersByStatus(){
-        List<OrderStatusCountDTO> = orderRepository.countOrdersByStatus();
+    public DashboardStatusResponseDTO getOrdersStatusSummary() {
+        List<OrderStatusCountDTO> statusCounts = orderRepository.countOrdersByStatus();
 
         long totalOrders = orderRepository.count();
-        Long cancelledOrders = orderRepository.countOrdersByStatus(OrderStatus.CANCELLED)
+        long canceledOrders = orderRepository.countByOrderStatus(OrderStatus.CANCELLED);
 
-        Double cancellationRate = 0.0;
-
-        if(totalOrders > 0){
-            cancellationRate = (Double) cancelledOrders / totalOrders * 100;
+        double cancellationRate = 0.0;
+        if (totalOrders > 0) {
+            cancellationRate = (double) canceledOrders / totalOrders * 100;
         }
 
-        return new OrderStatusCountDTO();
+        return new DashboardStatusResponseDTO(statusCounts, cancellationRate);
+    }
+
+    public List<OrderScheduleCountDTO> getWeeklySchedules() {
+        LocalDate today = LocalDate.now();
+        LocalDate endOfWeek = today.plusDays(6);
+
+        List<OrderScheduleCountDTO> dbResults = orderRepository.countOrdersByDeliveryDateRange(today, endOfWeek);
+
+        return java.util.stream.IntStream.range(0, 7)
+                .mapToObj(today::plusDays)
+                .map(date -> dbResults.stream()
+                        .filter(res -> res.date().equals(date))
+                        .findFirst()
+                        .orElse(new OrderScheduleCountDTO(date, 0L)))
+                .toList();
     }
 
     private OrderResponseDTO convertToResponseDTO(Order model) {

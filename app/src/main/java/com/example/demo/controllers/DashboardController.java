@@ -64,4 +64,14 @@ public class DashboardController {
     public ResponseEntity<List<ProductRankingDTO>> getLowSelling() {
         return ResponseEntity.ok(productService.getLowSelling());
     }
+
+    @GetMapping("/orders/status-summary")
+    public ResponseEntity<DashboardStatusResponseDTO> getOrdersStatusSummary() {
+        return ResponseEntity.ok(orderService.getOrdersStatusSummary());
+    }
+
+    @GetMapping("/orders/weekly-schedules")
+    public ResponseEntity<List<OrderScheduleCountDTO>> getWeeklySchedules() {
+        return ResponseEntity.ok(orderService.getWeeklySchedules());
+    }
 }

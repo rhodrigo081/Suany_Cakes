@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.demo.dtos.OrderScheduleCountDTO;
+import com.example.demo.dtos.OrderStatusCountDTO;
+import com.example.demo.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,11 +24,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByOrderByCreatedAtDesc();
 
-    Long countBy();
 
     @Query("SELECT SUM(o.totalPrice) FROM Order o "
             + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
     BigDecimal sumTotalRevenueFinishedSince(LocalDate startDate);
+
+    Long countBy();
 
     @Query("SELECT COUNT(o) FROM Order o "
             + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
@@ -48,4 +52,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT new com.example.demo.dtos.OrderStatusCountDTO(o.orderStatus, COUNT(o)) " +
             "FROM Order o GROUP BY o.orderStatus")
     List<OrderStatusCountDTO> countOrdersByStatus();
+
+    @Query("SELECT new com.example.demo.dtos.OrderScheduleCountDTO(o.deliveryDate, COUNT(o)) " +
+            "FROM Order o WHERE o.deliveryDate BETWEEN :start AND :end " +
+            "GROUP BY o.deliveryDate ORDER BY o.deliveryDate ASC")
+    List<OrderScheduleCountDTO> countOrdersByDeliveryDateRange(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    long countByOrderStatus(OrderStatus status);
 }
