@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,6 +47,7 @@ public class AuthService implements UserDetailsService {
         newUser.setLastName(data.lastName());
         newUser.setEmail(data.email());
         newUser.setPhone(data.phone());
+        newUser.setRole(UserRole.ROLE_USER);
         newUser.setPassword(passwordEncoder.encode(data.password()));
 
         userRepository.save(newUser);

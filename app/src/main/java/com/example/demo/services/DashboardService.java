@@ -3,15 +3,15 @@ package com.example.demo.services;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+import com.example.demo.dtos.*;
+import com.example.demo.enums.UserRole;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dtos.CategorySalesDTO;
-import com.example.demo.dtos.DailySalesDTO;
-import com.example.demo.dtos.DashboardStatsDTO;
 import com.example.demo.repositories.OrderRepository;
 
 @Service
@@ -19,6 +19,9 @@ public class DashboardService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private LocalDate getThirtyDaysAgo() {
         LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
@@ -59,5 +62,31 @@ public class DashboardService {
         }
 
         return categorySales;
+    }
+
+    public CustomerRetentionDTO getCustomerRetention() {
+        long totalCustomers = userRepository.countByRole(UserRole.ROLE_USER);
+        long recurringCustomers = orderRepository.countUsersWithMultipleOrders();
+
+        java.time.LocalDate firstDayOfMonth = java.time.LocalDate.now()
+                .with(TemporalAdjusters.firstDayOfMonth());
+
+        long newCustomers = userRepository.countByRoleAndCreatedAtAfter(UserRole.ROLE_USER, firstDayOfMonth);
+
+        int percentage = 0;
+        if (totalCustomers > 0) {
+            percentage = (int) Math.round(((double) recurringCustomers / totalCustomers) * 100);
+        }
+
+        return new CustomerRetentionDTO(
+                totalCustomers,
+                recurringCustomers,
+                newCustomers,
+                percentage
+        );
+    }
+
+    public List<NeighborhoodRankingDTO> getNeighborhoodRanking() {
+        return orderRepository.findTopNeighborhoods();
     }
 }

@@ -74,4 +74,15 @@ public class DashboardController {
     public ResponseEntity<List<OrderScheduleCountDTO>> getWeeklySchedules() {
         return ResponseEntity.ok(orderService.getWeeklySchedules());
     }
+
+    @GetMapping("/customer-retention")
+    public ResponseEntity<CustomerRetentionDTO> getCustomerRetention() {
+        return ResponseEntity.ok(dashboardService.getCustomerRetention());
+    }
+
+
+    @GetMapping("/neighborhood-ranking")
+    public ResponseEntity<List<NeighborhoodRankingDTO>> getNeighborhoodRanking() {
+        return ResponseEntity.ok(dashboardService.getNeighborhoodRanking());
+    }
 }

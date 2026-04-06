@@ -130,7 +130,8 @@ export const useAuthStore = create<AuthState>()(
 
       logout: () => {
         set({ user: null, token: null, isAuthenticated: false, favorites: [] });
-        localStorage.removeItem("@SuanyCakes:token");
+        delete api.defaults.headers.common["Authorization"];
+        localStorage.removeItem("@SuanyCakes:token"); 
       },
     }),
     { name: "@SuanyCakes:token" },

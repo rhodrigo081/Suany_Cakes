@@ -67,7 +67,7 @@ export const Scheduling = () => {
             <div className="flex-1 space-y-4">
               {schedules.map((day) => (
                 <div key={day.date} className="flex items-center gap-3">
-                  <span className="w-28 text-base font-medium">
+                  <span className="w-32 text-base font-medium">
                     {formatDateLabel(day.date)}
                   </span>
                   <div className="flex-1">

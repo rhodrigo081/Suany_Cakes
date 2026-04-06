@@ -4,16 +4,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.demo.dtos.OrderScheduleCountDTO;
-import com.example.demo.dtos.OrderStatusCountDTO;
+import com.example.demo.dtos.*;
 import com.example.demo.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.dtos.CategorySalesDTO;
-import com.example.demo.dtos.DailySalesDTO;
 import com.example.demo.models.Order;
 import com.example.demo.models.User;
 
@@ -59,4 +56,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<OrderScheduleCountDTO> countOrdersByDeliveryDateRange(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
     long countByOrderStatus(OrderStatus status);
+
+    @Query("SELECT new com.example.demo.dtos.NeighborhoodRankingDTO(a.neighborhood, COUNT(o)) " +
+            "FROM Order o JOIN o.shippingAddress a " +
+            "GROUP BY a.neighborhood " +
+            "ORDER BY COUNT(o) DESC")
+    List<NeighborhoodRankingDTO> findTopNeighborhoods();
+
+    @Query("SELECT COUNT(u) FROM User u WHERE (SELECT COUNT(o) FROM Order o WHERE o.user = u) >= 2")
+    Long countUsersWithMultipleOrders();
 }

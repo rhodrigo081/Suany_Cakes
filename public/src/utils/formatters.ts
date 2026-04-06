@@ -60,6 +60,12 @@ class Formatters {
 
     return "ORD - " + formattedId;
   }
+
+  formatDateSafe = (dateSource: string | Date) => {
+        if (!dateSource) return "—";
+        const date = typeof dateSource === 'string' ? parseISO(dateSource) : dateSource;
+        return format(date, "dd/MM/yyyy");
+    };
 }
 
 export const formatters = new Formatters();

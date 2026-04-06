@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { formatters } from "@/utils/formatters";
@@ -14,9 +13,9 @@ export const OrdersTableRow = ({ order, onSelect }: OrdersTableRowProps) => {
         <TableRow className="cursor-pointer hover:bg-accent/20" onClick={() => onSelect(order)}>
             <TableCell>{formatters.formatOrderId(order.id)}</TableCell>
             <TableCell>{order.customerName}</TableCell>
-            <TableCell>{format(order.createdAt, "dd/MM/yyyy")}</TableCell>
+            <TableCell>{formatters.formatDateSafe(order.createdAt)}</TableCell>
             <TableCell>
-                {order.deliveryDate ? format(order.deliveryDate, "dd/MM/yyyy") : "—"}
+                {formatters.formatDateSafe(order.deliveryDate)}
             </TableCell>
             <TableCell>
                 <Badge className={`${ORDER_STATUS_COLORS[order.status]}`}>

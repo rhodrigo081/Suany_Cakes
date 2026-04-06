@@ -16,6 +16,18 @@ export interface CategorySalesDTO {
   percentage: number;
 }
 
+export interface CustomerRetentionDTO {
+  totalCustomers: number;
+  recurringCustomers: number;
+  newCustomersThisMonth: number;
+  retentionPercentage: number; 
+}
+
+export interface NeighborhoodRankingDTO {
+  neighborhood: string;
+  orderCount: number;
+}
+
 class DashBoardService {
   fetchStats = async () => {
     try {
@@ -45,6 +57,30 @@ class DashBoardService {
       return data;
     } catch (error) {
       console.error("Erro ao buscar vendas por categoria:", error);
+      throw error;
+    }
+  };
+
+  fetchCustomerRetention = async () => {
+    try {
+      const { data } = await api.get<CustomerRetentionDTO>(
+        "/admin/customer-retention"
+      );
+      return data;
+    } catch (error) {
+      console.error("Erro ao buscar retenção de clientes:", error);
+      throw error;
+    }
+  };
+
+  fetchNeighborhoodRanking = async () => {
+    try {
+      const { data } = await api.get<NeighborhoodRankingDTO[]>(
+        "/admin/neighborhood-ranking"
+      );
+      return data;
+    } catch (error) {
+      console.error("Erro ao buscar ranking de bairros:", error);
       throw error;
     }
   };

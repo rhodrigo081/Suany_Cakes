@@ -10,7 +10,6 @@ interface LoginResponse {
 class AuthService {
   login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   const { data } = await api.post<LoginResponse>("/auth/login", credentials);
-  console.log("Dados recebidos do servidor:", data); 
   return data;
 }
 

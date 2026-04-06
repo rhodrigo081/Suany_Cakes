@@ -40,14 +40,9 @@ export const App = () => {
         { path: "/cadastro", element: <RegisterPage /> },
         { path: "/carrinho", element: <ShoppingCartPage /> },
         { path: "/login-success", element: <LoginSuccess /> },
-        { path: "/dashboard", element: <AdminPage /> },
-        { path: "/gerenciar-pedidos", element: <OrderManagerPage /> },
-        { path: "/gerenciar-produtos", element: <ProductManagerPage /> },
-        { path: "/novo-produto", element: <ProductFormPage /> },
-        { path: "/editar-produto/:id", element: <ProductFormPage /> },
 
         {
-          element: <ProtectedRoute />,
+          element: <ProtectedRoute />, 
           children: [
             { path: "/perfil", element: <ProfilePage /> },
             { path: "/historico-de-pedidos", element: <OrderHistoryPage /> },
@@ -55,6 +50,17 @@ export const App = () => {
             { path: "/novo-endereco", element: <AddressFormPage /> },
             { path: "/editar-endereco/:id", element: <AddressFormPage /> },
             { path: "/editar-perfil", element: <EditProfilePage /> },
+          ]
+        },
+
+        {
+          element: <ProtectedRoute adminOnly={true} />,
+          children: [
+            { path: "/dashboard", element: <AdminPage /> },
+            { path: "/gerenciar-pedidos", element: <OrderManagerPage /> },
+            { path: "/gerenciar-produtos", element: <ProductManagerPage /> },
+            { path: "/novo-produto", element: <ProductFormPage /> },
+            { path: "/editar-produto/:id", element: <ProductFormPage /> },
           ]
         }
       ]

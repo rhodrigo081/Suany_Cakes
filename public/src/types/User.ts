@@ -11,4 +11,5 @@ export interface User {
   phone: string;
   createdAt: string;
   favorites: Product[];
+  role: 'ROLE_USER' | 'ROLE_ADMIN';
 }

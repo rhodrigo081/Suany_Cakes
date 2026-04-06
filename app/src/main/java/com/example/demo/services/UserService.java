@@ -36,7 +36,7 @@ public class UserService {
 
         List<ProductResponseDTO> favoriteDTOs = user.getFavorites().stream().map(productService::convertToResponseDTO).toList();
 
-        return new UserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getCreatedAt(), user.getPhone(), favoriteDTOs);
+        return new UserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getCreatedAt(), user.getPhone(), favoriteDTOs, user.getRole());
     }
 
     public List<ProductResponseDTO> getFavorites(UUID userId) {

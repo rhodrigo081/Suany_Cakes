@@ -6,7 +6,8 @@ import {
     UserPlus,
     Heart,
     Moon,
-    Sun
+    Sun,
+    LayoutDashboard
 } from "lucide-react"
 import { Button } from "../../ui/button"
 import { Link } from "react-router-dom"
@@ -15,7 +16,7 @@ import { useAuthStore } from "@/stores/Auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export const DropDown = () => {
-    const { isAuthenticated, logout } = useAuthStore();
+    const { user, isAuthenticated, logout } = useAuthStore();
     const { theme, setTheme } = useTheme();
 
     const toggleTheme = () => {
@@ -39,6 +40,14 @@ export const DropDown = () => {
 
                 {isAuthenticated ? (
                     <>
+                    {user?.role === 'ROLE_ADMIN' && (
+                            <DropdownMenuItem asChild>
+                                <Link to="/dashboard" className="flex items-center gap-2 cursor-pointer font-semibold text-primary">
+                                    <LayoutDashboard className="h-4 w-4" />
+                                    Dashboard
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem asChild>
                             <Link to="/perfil" className="flex items-center gap-2 cursor-pointer">
                                 <User className="h-4 w-4" />

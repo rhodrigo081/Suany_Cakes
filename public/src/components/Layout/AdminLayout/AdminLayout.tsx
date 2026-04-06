@@ -3,9 +3,8 @@ import { CategoryChart } from "@/components/admin/dashboard/CategoryChart"
 import { CustomerRetention } from "@/components/admin/dashboard/CustomerRetention"
 import { LowOutputProduct } from "@/components/admin/dashboard/LowOutputProduct"
 import { MostRequestedNeighborhoods } from "@/components/admin/dashboard/MostRequestedNeighborhoods"
-import { OrdersStates } from "@/components/admin/dashboard/OrdersStates"
+import { OrdersStatus } from "@/components/admin/dashboard/OrdersStatus"
 import { SalesChart } from "@/components/admin/dashboard/SalesChart"
-import { SalesOrigin } from "@/components/admin/dashboard/SalesOrigin"
 import { Scheduling } from "@/components/admin/dashboard/Scheduling"
 import { StatsCard } from "@/components/admin/StatsCard"
 import { Button } from "@/components/ui/button"
@@ -73,12 +72,11 @@ export const AdminLayout = () => {
                         <LowOutputProduct />
                     </TabsContent>
                     <TabsContent value="operations" className="grid grid-cols-2 gap-6">
-                        <OrdersStates />
+                        <OrdersStatus />
                         <Scheduling />
                     </TabsContent>
-                    <TabsContent value="customers" className="grid grid-cols-3 gap-6">
+                    <TabsContent value="customers" className="grid grid-cols-2 gap-6">
                         <CustomerRetention />
-                        <SalesOrigin />
                         <MostRequestedNeighborhoods />
                     </TabsContent>
 

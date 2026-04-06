@@ -2,9 +2,7 @@ import { addressService } from "@/services/customer/address";
 import { ordersService } from "@/services/customer/orders";
 import type { Address } from "@/types/Address";
 import type { Order } from "@/types/Order";
-import { createContext, useState, useCallback, type ReactNode } from "react";
-
-
+import { createContext, useState, useCallback, useMemo, type ReactNode } from "react";
 
 interface OrderContextType {
     orders: Order[];
@@ -31,8 +29,14 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
             const data = await addressService.getAddresses();
             setAddresses(data);
 
-            const primary = data.find((a: Address) => a.isPrimary);
-            if (primary) setSelectedAddress(primary);
+            setSelectedAddress((prev) => {
+                if (prev && data.some((a: Address) => a.id === prev.id)) return prev;
+
+                const primary = data.find((a: Address) => a.isPrimary);
+                if (primary) return primary;
+
+                return data.length > 0 ? data[0] : null;
+            });
         } catch (error) {
             console.error("Erro ao buscar endereços:", error);
             throw error;
@@ -54,11 +58,11 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    const selectAddress = (address: Address) => {
+    const selectAddress = useCallback((address: Address) => {
         setSelectedAddress(address);
-    };
+    }, []);
 
-    const checkout = async (deliveryDate?: Date) => {
+    const checkout = useCallback(async (deliveryDate?: Date) => {
         if (!selectedAddress) {
             throw new Error("Selecione um endereço de entrega.");
         }
@@ -76,19 +80,21 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [selectedAddress]);
+
+    const contextValue = useMemo(() => ({
+        orders,
+        addresses,
+        selectedAddress,
+        isLoading,
+        selectAddress,
+        fetchAddresses,
+        fetchOrders,
+        checkout,
+    }), [orders, addresses, selectedAddress, isLoading, selectAddress, fetchAddresses, fetchOrders, checkout]);
 
     return (
-        <OrderContext.Provider value={{
-            orders,
-            addresses,
-            selectedAddress,
-            isLoading,
-            selectAddress,
-            fetchAddresses,
-            fetchOrders,
-            checkout,
-        }}>
+        <OrderContext.Provider value={contextValue}>
             {children}
         </OrderContext.Provider>
     );

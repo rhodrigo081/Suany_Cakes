@@ -6,7 +6,7 @@ import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, type OrderStatusSlug } from "
 import { cn } from "@/lib/utils";
 import { adminOrdersService, type DashboardStatusResponse } from "@/services/admin/orders";
 
-export const OrdersStates = () => {
+export const OrdersStatus = () => {
   const [data, setData] = useState<DashboardStatusResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -78,12 +78,12 @@ export const OrdersStates = () => {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 rounded-lg border p-4 bg-destructive/10 border-red-500/50 mt-auto">
-              <XCircle className="h-6 w-6 text-red-500" />
+            <div className="flex items-center gap-3 rounded-lg border p-4 bg-destructive/10 border-destructive/50 mt-auto">
+              <XCircle className="h-6 w-6 text-destructive" />
               <div className="leading-tight">
-                <p className="text-lg font-medium text-red-500">Taxa de Cancelamento</p>
+                <p className="text-lg font-medium text-destructive">Taxa de Cancelamento</p>
               </div>
-              <span className="ml-auto text-xl font-bold text-red-500">
+              <span className="ml-auto text-xl font-bold text-destructive"> 
                 {data?.cancellationRate.toLocaleString("pt-BR", {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
