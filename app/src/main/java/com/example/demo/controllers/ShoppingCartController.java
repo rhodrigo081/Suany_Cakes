@@ -2,6 +2,9 @@ package com.example.demo.controllers;
 
 import java.util.UUID;
 
+import com.example.demo.dtos.request.CartItemRequestDTO;
+import com.example.demo.dtos.request.UpdateQuantityRequestDTO;
+import com.example.demo.dtos.response.ShoppingCartResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dtos.CartItemRequestDTO;
-import com.example.demo.dtos.ShoppingCartResponseDTO;
-import com.example.demo.dtos.UpdateQuantityRequestDTO;
 import com.example.demo.models.User;
 import com.example.demo.services.CartItemService;
 import com.example.demo.services.ShoppingCartService;
@@ -37,7 +37,7 @@ public class ShoppingCartController {
 
     @PostMapping("/items")
     public ResponseEntity<ShoppingCartResponseDTO> addItem(Authentication authentication,
-            @RequestBody @Valid CartItemRequestDTO request) {
+                                                           @RequestBody @Valid CartItemRequestDTO request) {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(cartItemService.addItem(user, request));
     }

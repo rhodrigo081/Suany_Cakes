@@ -3,12 +3,12 @@ package com.example.demo.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.dtos.request.ProductRequestDTO;
+import com.example.demo.dtos.response.ProductResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dtos.ProductRequestDTO;
-import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.services.ProductService;
 
 import jakarta.validation.Valid;

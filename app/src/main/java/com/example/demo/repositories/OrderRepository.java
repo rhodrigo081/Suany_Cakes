@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.demo.dtos.*;
+import com.example.demo.dtos.response.*;
 import com.example.demo.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,7 +32,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             + "WHERE o.createdAt >= :startDate AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED")
     Long countFinishedOrdersSince(LocalDate startDate);
 
-    @Query("SELECT new com.example.demo.dtos.DailySalesDTO(CAST(o.createdAt AS localdate), SUM(o.totalPrice)) " +
+    @Query("SELECT new com.example.demo.dtos.response.DailySalesDTO(CAST(o.createdAt AS localdate), SUM(o.totalPrice)) " +
             "FROM Order o " +
             "WHERE o.createdAt >= :startDate " +
             "AND o.orderStatus = com.example.demo.enums.OrderStatus.FINISHED " +
@@ -40,24 +40,24 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY CAST(o.createdAt AS localdate) ASC")
     List<DailySalesDTO> findDailySalesSince(@Param("startDate") LocalDate startDate);
 
-    @Query("SELECT new com.example.demo.dtos.CategorySalesDTO(i.product.category, SUM(i.subtotal)) "
+    @Query("SELECT new com.example.demo.dtos.response.CategorySalesDTO(i.product.category, SUM(i.subtotal)) "
             + "FROM OrderItem i "
             + "WHERE i.order.createdAt >= :startDate AND i.order.orderStatus = com.example.demo.enums.OrderStatus.FINISHED "
             + "GROUP BY i.product.category")
     List<CategorySalesDTO> findSalesByCategorySince(LocalDate startDate);
 
-    @Query("SELECT new com.example.demo.dtos.OrderStatusCountDTO(o.orderStatus, COUNT(o)) " +
+    @Query("SELECT new com.example.demo.dtos.response.OrderStatusCountDTO(o.orderStatus, COUNT(o)) " +
             "FROM Order o GROUP BY o.orderStatus")
     List<OrderStatusCountDTO> countOrdersByStatus();
 
-    @Query("SELECT new com.example.demo.dtos.OrderScheduleCountDTO(o.deliveryDate, COUNT(o)) " +
+    @Query("SELECT new com.example.demo.dtos.response.OrderScheduleCountDTO(o.deliveryDate, COUNT(o)) " +
             "FROM Order o WHERE o.deliveryDate BETWEEN :start AND :end " +
             "GROUP BY o.deliveryDate ORDER BY o.deliveryDate ASC")
     List<OrderScheduleCountDTO> countOrdersByDeliveryDateRange(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
     long countByOrderStatus(OrderStatus status);
 
-    @Query("SELECT new com.example.demo.dtos.NeighborhoodRankingDTO(a.neighborhood, COUNT(o)) " +
+    @Query("SELECT new com.example.demo.dtos.response.NeighborhoodRankingDTO(a.neighborhood, COUNT(o)) " +
             "FROM Order o JOIN o.shippingAddress a " +
             "GROUP BY a.neighborhood " +
             "ORDER BY COUNT(o) DESC")

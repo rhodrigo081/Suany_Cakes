@@ -1,9 +1,9 @@
 package com.example.demo.mappers;
 
+import com.example.demo.dtos.response.CartItemResponseDTO;
+import com.example.demo.dtos.response.ProductResponseDTO;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.dtos.CartItemResponseDTO;
-import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.models.CartItem;
 import com.example.demo.models.Product;
 

@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.example.demo.dtos.ProductRankingDTO;
-import com.example.demo.models.OrderItem;
+import com.example.demo.dtos.request.ProductRequestDTO;
+import com.example.demo.dtos.response.ProductRankingDTO;
+import com.example.demo.dtos.response.ProductResponseDTO;
 import com.example.demo.repositories.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dtos.ProductRequestDTO;
-import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.enums.OrderStatus;
 import com.example.demo.enums.ProductCategory;
 import com.example.demo.exception.InvalidArgumentException;

@@ -1,5 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dtos.request.AuthRequestDTO;
+import com.example.demo.dtos.request.RegisterRequestDTO;
+import com.example.demo.dtos.response.LoginResponseDTO;
+import com.example.demo.dtos.response.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dtos.AuthRequestDTO;
-import com.example.demo.dtos.LoginResponseDTO;
-import com.example.demo.dtos.RegisterRequestDTO;
-import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;

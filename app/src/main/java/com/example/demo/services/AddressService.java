@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.example.demo.dtos.request.AddressRequestDTO;
+import com.example.demo.dtos.response.AddressResponseDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.example.demo.dtos.AddressRequestDTO;
-import com.example.demo.dtos.AddressResponseDTO;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.UnauthorizedAccessException;
 import com.example.demo.models.Address;

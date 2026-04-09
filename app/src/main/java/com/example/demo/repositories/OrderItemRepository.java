@@ -1,10 +1,8 @@
 package com.example.demo.repositories;
 
-import com.example.demo.dtos.ProductRankingDTO;
+import com.example.demo.dtos.response.ProductRankingDTO;
 import com.example.demo.enums.OrderStatus;
-import com.example.demo.models.Order;
 import com.example.demo.models.OrderItem;
-import com.example.demo.models.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +16,7 @@ import java.util.UUID;
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, UUID> {
 
-    @Query("SELECT new com.example.demo.dtos.ProductRankingDTO(" +
+    @Query("SELECT new com.example.demo.dtos.response.ProductRankingDTO(" +
             "oi.productName, oi.productImage, SUM(oi.quantity), SUM(oi.subtotal)) " +
             "FROM OrderItem oi " +
             "WHERE oi.order.orderStatus = :status " +
@@ -27,7 +25,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, UUID> {
     List<ProductRankingDTO> findTopSellingProducts(OrderStatus status, Pageable pageable);
 
 
-    @Query("SELECT new com.example.demo.dtos.ProductRankingDTO(" +
+    @Query("SELECT new com.example.demo.dtos.response.ProductRankingDTO(" +
             "oi.productName, oi.productImage, SUM(oi.quantity), SUM(oi.subtotal)) " +
             "FROM OrderItem oi " +
             "WHERE oi.order.orderStatus = :status " +

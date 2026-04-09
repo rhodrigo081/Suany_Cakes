@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.dtos.response.CartItemResponseDTO;
+import com.example.demo.dtos.response.ShoppingCartResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dtos.CartItemResponseDTO;
-import com.example.demo.dtos.ShoppingCartResponseDTO;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mappers.CartItemMapper;
 import com.example.demo.models.CartItem;

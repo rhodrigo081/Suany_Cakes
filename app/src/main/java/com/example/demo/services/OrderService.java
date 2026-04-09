@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.demo.dtos.*;
+import com.example.demo.dtos.request.OrderRequestDTO;
+import com.example.demo.dtos.response.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import com.example.demo.repositories.OrderRepository;
 import com.example.demo.repositories.ShoppingCartRepository;
 
 @Service
+@Slf4j
 public class OrderService {
 
     @Autowired
@@ -90,6 +93,9 @@ public class OrderService {
         if (order.getOrderStatus() == OrderStatus.FINISHED || order.getOrderStatus() == OrderStatus.CANCELLED) {
             throw new InvalidArgumentException("Não é possível alterar um pedido já finalizado ou cancelado.");
         }
+
+        log.info("Alterando status do pedido {} de {} para {}", orderId, order.getOrderStatus(), newStatus);
+        order.setOrderStatus(newStatus);
 
         order.setOrderStatus(newStatus);
 

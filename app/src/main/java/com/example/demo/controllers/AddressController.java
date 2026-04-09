@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dtos.request.AddressRequestDTO;
+import com.example.demo.dtos.response.AddressResponseDTO;
 import com.example.demo.services.AddressService;
 
 import jakarta.validation.Valid;
@@ -13,8 +15,6 @@ import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 
-import com.example.demo.dtos.AddressRequestDTO;
-import com.example.demo.dtos.AddressResponseDTO;
 import com.example.demo.models.User;
 
 @RestController
@@ -26,7 +26,7 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<AddressResponseDTO> create(Authentication authentication,
-            @RequestBody @Valid AddressRequestDTO dto) {
+                                                     @RequestBody @Valid AddressRequestDTO dto) {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(addressService.create(user, dto));
     }

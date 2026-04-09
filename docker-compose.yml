@@ -34,6 +34,10 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       EMAIL_ADMIN: ${EMAIL_ADMIN}
       PASSWORD_ADMIN: ${PASSWORD_ADMIN}
+      MP_ACCESS_TOKEN: ${MP_ACCESS_TOKEN}
+      MP_PUBLIC_KEY: ${MP_PUBLIC_KEY}
+      MP_NOTIFICATION_URL: ${MP_NOTIFICATION_URL}
+      MP_WEBHOOK_SECRET: ${MP_WEBHOOK_SECRET}
     develop:
       watch:
         - action: sync
@@ -54,3 +58,18 @@ services:
       - "80:80"
     depends_on:
       - backend
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: suany-cakes-ngrok
+    restart: always
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    command:
+      - "http"
+      - "backend:8080"
+      - "--url=ricarda-mucigenous-brooklynn.ngrok-free.dev"
+    depends_on:
+      - backend
+    ports:
+      - "4040:4040"

@@ -3,12 +3,12 @@ package com.example.demo.services;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import com.example.demo.dtos.request.CartItemRequestDTO;
+import com.example.demo.dtos.response.ShoppingCartResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dtos.CartItemRequestDTO;
-import com.example.demo.dtos.ShoppingCartResponseDTO;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.models.CartItem;

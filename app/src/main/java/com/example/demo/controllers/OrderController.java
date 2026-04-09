@@ -2,6 +2,9 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import com.example.demo.dtos.request.OrderRequestDTO;
+import com.example.demo.dtos.request.StatusUpdateRequestDTO;
+import com.example.demo.dtos.response.OrderResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dtos.OrderRequestDTO;
-import com.example.demo.dtos.OrderResponseDTO;
-import com.example.demo.dtos.StatusUpdateRequestDTO;
 import com.example.demo.models.User;
 import com.example.demo.services.OrderService;
 
@@ -30,7 +30,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDTO> checkout(Authentication authentication,
-            @RequestBody @Valid OrderRequestDTO request) {
+                                                     @RequestBody @Valid OrderRequestDTO request) {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(orderService.createOrder(user, request));
     }

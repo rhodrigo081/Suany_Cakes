@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import com.example.demo.dtos.request.RegisterRequestDTO;
+import com.example.demo.dtos.response.UserResponseDTO;
 import com.example.demo.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dtos.RegisterRequestDTO;
-import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.models.User;

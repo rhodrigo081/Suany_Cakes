@@ -3,13 +3,13 @@ package com.example.demo.services;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.dtos.request.UpdateUserRequestDTO;
+import com.example.demo.dtos.response.ProductResponseDTO;
+import com.example.demo.dtos.response.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dtos.ProductResponseDTO;
-import com.example.demo.dtos.UpdateUserRequestDTO;
-import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exception.InvalidArgumentException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.models.Product;

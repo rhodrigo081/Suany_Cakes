@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
-import com.example.demo.dtos.*;
+import com.example.demo.dtos.response.*;
 import com.example.demo.enums.UserRole;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
