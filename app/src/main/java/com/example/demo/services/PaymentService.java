@@ -6,10 +6,12 @@ import com.example.demo.enums.OrderStatus;
 
 import com.example.demo.mappers.OrderMapper;
 import com.mercadopago.client.order.*;
+import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.payment.Payment;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,27 +88,37 @@ public class PaymentService {
     }
 
     @Transactional
-    public void handleNotification(String id) {
+    public void handleNotification(String id, String type) {
         try {
-            Order order = new OrderClient().get(id);
+            String externalReference = null;
+            String mpStatus = null;
 
-            if (order.getExternalReference() == null) {
-                log.warn("Notificação para order {} sem externalReference", id);
+            if ("payment".equals(type)) {
+                Payment payment = new PaymentClient().get(Long.parseLong(id));
+                externalReference = payment.getExternalReference();
+                mpStatus = payment.getStatus();
+                log.info("Processando notificação de PAGAMENTO. Status MP: {}", mpStatus);
+
+            } else if ("merchant_order".equals(type) || "order".equals(type)) {
+                Order order = new OrderClient().get(id);
+                externalReference = order.getExternalReference();
+                mpStatus = order.getStatus();
+                log.info("Processando notificação de ORDER. Status MP: {}", mpStatus);
+            }
+
+            if (externalReference == null) {
+                log.warn("Notificação para {} {} sem externalReference", type, id);
                 return;
             }
 
-            Long orderId = Long.parseLong(order.getExternalReference());
-            OrderStatus newStatus = orderMapper.mapMpStatusToOrderStatus(order.getStatus());
+            Long orderId = Long.parseLong(externalReference);
+            OrderStatus newStatus = orderMapper.mapMpStatusToOrderStatus(mpStatus);
             orderService.updateOrderStatus(orderId, newStatus);
 
-            log.info("Pedido {} atualizado para status {}", orderId, newStatus);
+            log.info("Pedido Interno {} atualizado para status {}", orderId, newStatus);
 
         } catch (MPApiException e) {
-            if (e.getApiResponse().getStatusCode() == 404) {
-                log.warn("ID {} recebido via webhook não existe no Mercado Pago (provavelmente simulação)", id);
-            } else {
-                log.error("Erro ao buscar order {} no MP: {}", id, e.getApiResponse().getContent());
-            }
+            log.error("Erro na API do Mercado Pago ao processar {} {}: {}", type, id, e.getApiResponse().getContent());
         } catch (Exception e) {
             log.error("Erro inesperado ao processar notificação: {}", e.getMessage());
         }

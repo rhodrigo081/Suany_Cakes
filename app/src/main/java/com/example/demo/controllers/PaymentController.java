@@ -36,14 +36,15 @@ public class PaymentController {
 
     @PostMapping("/webhook")
     public ResponseEntity<Void> handleWebhook(
-            @RequestBody Map<String, Object> payload, // Recebe o JSON completo
+            @RequestBody Map<String, Object> payload,
             @RequestHeader(value = "x-signature", required = false) String signature,
             @RequestHeader(value = "x-request-id", required = false) String requestId) {
 
+        String type = String.valueOf(payload.get("type")); // Captura o tipo (payment, order, etc)
         Map<String, Object> data = (Map<String, Object>) payload.get("data");
         String dataId = (data != null) ? String.valueOf(data.get("id")) : null;
 
-        log.info("Webhook recebido - DataID: {}, RequestID: {}", dataId, requestId);
+        log.info("Webhook recebido - Tipo: {}, DataID: {}", type, dataId);
 
         if (dataId == null || dataId.equals("null")) {
             return ResponseEntity.ok().build();
@@ -51,9 +52,12 @@ public class PaymentController {
 
         if (!signatureValidator.isValid(signature, requestId, dataId)) {
             log.warn("Webhook rejeitado: assinatura inválida");
+
         }
 
-        paymentService.handleNotification(dataId);
+
+        paymentService.handleNotification(dataId, type);
+
         return ResponseEntity.ok().build();
     }
 }
